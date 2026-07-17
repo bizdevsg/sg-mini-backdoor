@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\ImagePath;
 use Database\Factories\PenghargaanFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -58,7 +59,7 @@ class Penghargaan extends Model
                     return $image;
                 }
 
-                return asset('storage/' . ltrim($image, '/'));
+                return asset('storage/' . ltrim((string) ImagePath::normalize($image), '/'));
             },
         );
     }

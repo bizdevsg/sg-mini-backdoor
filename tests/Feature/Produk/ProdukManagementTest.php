@@ -24,8 +24,8 @@ test('authenticated users can view product pages', function () {
 
     $this->actingAs($user);
 
-    $this->get(route('produk.index', ['section' => 'spa']))->assertSuccessful()->assertSee('Produk SPA');
-    $this->get(route('produk.create', ['section' => 'spa']))->assertSuccessful()->assertSee('Tambah produk spa');
+    $this->get(route('produk.index', ['section' => 'spa']))->assertSuccessful()->assertSee('Produk Bilateral');
+    $this->get(route('produk.create', ['section' => 'spa']))->assertSuccessful()->assertSee('Tambah produk bilateral');
     $this->get(route('produk.show', ['section' => 'spa', 'produk' => $produk]))->assertSuccessful()->assertSee($produk->nama_produk);
     $this->get(route('produk.edit', ['section' => 'spa', 'produk' => $produk]))->assertSuccessful()->assertSee('Edit');
 });
@@ -37,7 +37,7 @@ test('authenticated users can create and update products', function () {
 
     $this->app->instance(OptimizedImageStorage::class, new class extends OptimizedImageStorage
     {
-        public function store(UploadedFile $file, string $directory = 'produk-images'): string
+        public function store(UploadedFile $file, string $directory = 'uploads/produk'): string
         {
             $path = trim($directory, '/').'/'.uniqid('produk-', true).'.webp';
             Storage::disk('public')->put($path, 'fake-image');

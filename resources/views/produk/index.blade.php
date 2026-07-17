@@ -1,28 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Produk ' . $sectionLabel)
+@section('title', 'Produk ' . $sectionName)
 
 @section('content')
     <section class="space-y-6">
-        <div
-            class="flex flex-col gap-4 rounded-2xl border border-white/8 bg-white/4 p-6 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-                <p class="text-xs font-medium uppercase tracking-[0.18em] text-smoke">Catalog management</p>
-                <h2 class="mt-2 text-3xl font-semibold tracking-[-0.04em] text-white">Produk {{ $sectionLabel }}</h2>
-            </div>
-
-            <a href="{{ route('produk.create', ['section' => $section]) }}"
-                class="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-medium text-obsidian transition-colors hover:bg-slate-200">
-                <i class="fa-solid fa-plus text-xs"></i>
-                Tambah Produk
-            </a>
-        </div>
-
-        @if (session('status'))
-            <div class="rounded-xl border border-gold/20 bg-gold/10 px-4 py-3 text-sm text-gold-soft">
-                {{ session('status') }}
-            </div>
-        @endif
+        @include('components.molecules.page-header', [
+            'eyebrow' => 'Catalog management',
+            'title' => 'Produk ' . $sectionName,
+            'action' => [
+                'href' => route('produk.create', ['section' => $section]),
+                'label' => 'Tambah Produk',
+                'icon' => 'fa-solid fa-plus text-xs',
+                'class' => 'inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-medium text-obsidian transition-colors hover:bg-slate-200',
+            ],
+        ])
 
         <div class="rounded-2xl border border-white/8 bg-white/4 p-6">
             <form action="{{ route('produk.index', ['section' => $section]) }}" method="GET"
@@ -53,7 +44,7 @@
                         class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-white/8 bg-white/5 text-gold-soft">
                         <i class="fa-solid fa-box-open text-xl"></i>
                     </div>
-                    <h3 class="mt-5 text-2xl font-semibold text-white">Belum ada produk {{ strtolower($sectionLabel) }}</h3>
+                    <h3 class="mt-5 text-2xl font-semibold text-white">Belum ada produk {{ strtolower($sectionName) }}</h3>
                     <p class="mt-2 text-sm text-smoke">Mulai dengan menambahkan produk pertama ke katalog.</p>
                     <a href="{{ route('produk.create', ['section' => $section]) }}"
                         class="mt-6 inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-medium text-obsidian transition-colors hover:bg-slate-200">
@@ -78,7 +69,7 @@
                                     <td class="px-6 py-5">
                                         <p class="font-medium text-white">{{ $produk->nama_produk }}</p>
                                         <p class="mt-1 line-clamp-2 max-w-md text-sm text-smoke">
-                                            {{ $produk->deskripsi_produk }}
+                                            {{ \Illuminate\Support\Str::limit(strip_tags($produk->deskripsi_produk), 140) }}
                                         </p>
                                     </td>
                                     <td class="px-6 py-5">

@@ -20,11 +20,11 @@ class UpdatePenghargaanRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:150'],
-            'subtitle' => ['required', 'string', 'max:255'],
+            'subtitle' => ['required', 'string', 'max:500'],
             'slug' => [
                 'nullable',
                 'string',
-                'max:255',
+                'max:500',
                 Rule::unique('penghargaans', 'slug')->ignore($this->route('penghargaan')),
             ],
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,avif', 'max:5120'],

@@ -4,26 +4,17 @@
 
 @section('content')
     <section class="space-y-6">
-        <div
-            class="flex flex-col gap-4 rounded-2xl border border-white/8 bg-white/4 p-6 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-                <p class="text-xs font-medium uppercase tracking-[0.18em] text-smoke">Recognition management</p>
-                <h2 class="mt-2 text-3xl font-semibold tracking-[-0.04em] text-white">Penghargaan</h2>
-                <p class="mt-2 max-w-2xl text-sm leading-7 text-smoke">Kelola daftar penghargaan dalam bentuk card yang ringkas dan mudah dibaca.</p>
-            </div>
-
-            <a href="{{ route('penghargaan.create') }}"
-                class="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-medium text-obsidian transition-colors hover:bg-slate-200">
-                <i class="fa-solid fa-plus text-xs"></i>
-                Tambah Penghargaan
-            </a>
-        </div>
-
-        @if (session('status'))
-            <div class="rounded-xl border border-gold/20 bg-gold/10 px-4 py-3 text-sm text-gold-soft">
-                {{ session('status') }}
-            </div>
-        @endif
+        @include('components.molecules.page-header', [
+            'eyebrow' => 'Recognition management',
+            'title' => 'Penghargaan',
+            'description' => 'Kelola daftar penghargaan dalam bentuk card yang ringkas dan mudah dibaca.',
+            'action' => [
+                'href' => route('penghargaan.create'),
+                'label' => 'Tambah Penghargaan',
+                'icon' => 'fa-solid fa-plus text-xs',
+                'class' => 'inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-medium text-obsidian transition-colors hover:bg-slate-200',
+            ],
+        ])
 
         <div class="rounded-2xl border border-white/8 bg-white/4 p-6">
             <form action="{{ route('penghargaan.index') }}" method="GET" class="grid gap-4 lg:grid-cols-[1fr_180px]">
@@ -84,7 +75,7 @@
                         <div class="mt-3">
                             <h3 class="mt-2 text-xl font-semibold text-white">{{ $penghargaan->title }}</h3>
                             <p class="mt-3 text-sm leading-7 text-smoke">
-                                {{ \Illuminate\Support\Str::limit($penghargaan->subtitle, 140) }}
+                                {{ \Illuminate\Support\Str::limit(strip_tags($penghargaan->subtitle), 140) }}
                             </p>
                         </div>
 

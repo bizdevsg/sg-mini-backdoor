@@ -23,7 +23,7 @@ class UpdateInformasiRequest extends FormRequest
             'slug' => [
                 'nullable',
                 'string',
-                'max:255',
+                'max:500',
                 Rule::unique('informasis', 'slug')->ignore($this->route('informasi')),
             ],
             'content' => ['required', 'string'],

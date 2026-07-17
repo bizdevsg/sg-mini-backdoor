@@ -22,12 +22,8 @@
 
             <div>
                 <label for="subtitle" class="mb-2 block text-sm font-medium text-white">Subtitle</label>
-                <textarea id="subtitle" name="subtitle" rows="4"
-                    class="w-full rounded-lg border bg-onyx px-4 py-3 text-champagne placeholder:text-smoke focus:border-gold/30 focus:outline-none focus:ring-2 focus:ring-gold/15 {{ $errors->has('subtitle') ? 'border-red-400/60' : 'border-white/8' }}"
-                    placeholder="Tulis subtitle singkat penghargaan." required>{{ old('subtitle', $penghargaan?->subtitle) }}</textarea>
-                @error('subtitle')
-                    <p class="mt-2 text-sm text-red-300">{{ $message }}</p>
-                @enderror
+                <x-forms.tinymce-editor id="subtitle" name="subtitle" :value="old('subtitle', $penghargaan?->subtitle)"
+                    :height="260" placeholder="Tulis subtitle singkat penghargaan." required />
             </div>
 
             <div>

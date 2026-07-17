@@ -56,7 +56,7 @@ class InformasiController extends Controller
 
         if ($request->hasFile('image')) {
             try {
-                $imagePath = $this->optimizedImageStorage->store($request->file('image'), 'informasi-images');
+                $imagePath = $this->optimizedImageStorage->store($request->file('image'), 'uploads/informasi');
             } catch (\RuntimeException $exception) {
                 throw ValidationException::withMessages([
                     'image' => $exception->getMessage(),
@@ -97,7 +97,7 @@ class InformasiController extends Controller
 
         if ($request->hasFile('image')) {
             try {
-                $imagePath = $this->optimizedImageStorage->store($request->file('image'), 'informasi-images');
+                $imagePath = $this->optimizedImageStorage->store($request->file('image'), 'uploads/informasi');
             } catch (\RuntimeException $exception) {
                 throw ValidationException::withMessages([
                     'image' => $exception->getMessage(),

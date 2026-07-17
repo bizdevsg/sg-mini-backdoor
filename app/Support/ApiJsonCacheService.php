@@ -2,16 +2,35 @@
 
 namespace App\Support;
 
+use App\Http\Resources\BannerResource;
+use App\Http\Resources\CompanyProfileResource;
+use App\Http\Resources\EbookResource;
+use App\Http\Resources\EbookCategoryResource;
 use App\Http\Resources\InformasiResource;
+use App\Http\Resources\LegalitasResource;
 use App\Http\Resources\PenghargaanResource;
 use App\Http\Resources\ProdukResource;
+use App\Models\Banner;
+use App\Models\CompanyProfile;
+use App\Models\Ebook;
+use App\Models\EbookCategory;
 use App\Models\Informasi;
+use App\Models\Legalitas;
 use App\Models\Penghargaan;
 use App\Models\Produk;
 use Illuminate\Support\Facades\File;
 
 class ApiJsonCacheService
 {
+    public function ensureBannerCache(): void
+    {
+        if ($this->cacheExists('banner')) {
+            return;
+        }
+
+        $this->refreshBanner();
+    }
+
     public function ensureProdukCache(): void
     {
         if ($this->cacheExists('produk-spa') && $this->cacheExists('produk-jfx')) {
@@ -30,6 +49,24 @@ class ApiJsonCacheService
         $this->refreshPengumuman();
     }
 
+    public function ensureEbookCache(): void
+    {
+        if ($this->cacheExists('ebook')) {
+            return;
+        }
+
+        $this->refreshEbook();
+    }
+
+    public function ensureEbookCategoryCache(): void
+    {
+        if ($this->cacheExists('ebook-categories')) {
+            return;
+        }
+
+        $this->refreshEbookCategories();
+    }
+
     public function ensurePenghargaanCache(): void
     {
         if ($this->cacheExists('penghargaan')) {
@@ -37,6 +74,24 @@ class ApiJsonCacheService
         }
 
         $this->refreshPenghargaan();
+    }
+
+    public function ensureLegalitasCache(): void
+    {
+        if ($this->cacheExists('legalitas')) {
+            return;
+        }
+
+        $this->refreshLegalitas();
+    }
+
+    public function ensureCompanyProfileCache(): void
+    {
+        if ($this->cacheExists('company-profile')) {
+            return;
+        }
+
+        $this->refreshCompanyProfile();
     }
 
     public function refreshProduk(): void
@@ -59,6 +114,19 @@ class ApiJsonCacheService
         $this->write('produk-jfx', $jfxItems);
     }
 
+    public function refreshBanner(): void
+    {
+        $items = Banner::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order', 'asc')
+            ->latest('id')
+            ->get()
+            ->map(fn (Banner $banner) => (new BannerResource($banner))->resolve())
+            ->all();
+
+        $this->write('banner', $items);
+    }
+
     public function refreshPengumuman(): void
     {
         $items = Informasi::query()
@@ -70,6 +138,30 @@ class ApiJsonCacheService
         $this->write('pengumuman', $items);
     }
 
+    public function refreshEbook(): void
+    {
+        $items = Ebook::query()
+            ->with('category')
+            ->latest()
+            ->get()
+            ->map(fn (Ebook $ebook) => (new EbookResource($ebook))->resolve())
+            ->all();
+
+        $this->write('ebook', $items);
+    }
+
+    public function refreshEbookCategories(): void
+    {
+        $items = EbookCategory::query()
+            ->withCount('ebooks')
+            ->orderBy('name')
+            ->get()
+            ->map(fn (EbookCategory $category) => (new EbookCategoryResource($category))->resolve())
+            ->all();
+
+        $this->write('ebook-categories', $items);
+    }
+
     public function refreshPenghargaan(): void
     {
         $items = Penghargaan::query()
@@ -79,6 +171,28 @@ class ApiJsonCacheService
             ->all();
 
         $this->write('penghargaan', $items);
+    }
+
+    public function refreshLegalitas(): void
+    {
+        $items = Legalitas::query()
+            ->latest()
+            ->get()
+            ->map(fn (Legalitas $legalitas) => (new LegalitasResource($legalitas))->resolve())
+            ->all();
+
+        $this->write('legalitas', $items);
+    }
+
+    public function refreshCompanyProfile(): void
+    {
+        $profile = CompanyProfile::query()->latest('id')->first();
+
+        $items = $profile
+            ? [(new CompanyProfileResource($profile))->resolve()]
+            : [];
+
+        $this->write('company-profile', $items);
     }
 
     /**
@@ -95,12 +209,36 @@ class ApiJsonCacheService
     /**
      * @return array<int, array<string, mixed>>
      */
+    public function bannerItems(): array
+    {
+        return $this->readItems('banner');
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function pengumumanItems(): array
     {
         return array_map(
-            fn (array $item) => $this->normalizePengumumanItem($item),
+            fn (array $item) => $this->normalizeInformasiItem($item),
             $this->readItems('pengumuman')
         );
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function ebookItems(): array
+    {
+        return $this->readItems('ebook');
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function ebookCategoryItems(): array
+    {
+        return $this->readItems('ebook-categories');
     }
 
     /**
@@ -109,6 +247,28 @@ class ApiJsonCacheService
     public function penghargaanItems(): array
     {
         return $this->readItems('penghargaan');
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function legalitasItems(): array
+    {
+        return $this->readItems('legalitas');
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function companyProfileItem(): ?array
+    {
+        $items = $this->readItems('company-profile');
+
+        if ($items === []) {
+            return null;
+        }
+
+        return is_array($items[0] ?? null) ? $items[0] : null;
     }
 
     /**
@@ -250,7 +410,7 @@ class ApiJsonCacheService
      * @param  array<string, mixed>  $item
      * @return array<string, mixed>
      */
-    private function normalizePengumumanItem(array $item): array
+    private function normalizeInformasiItem(array $item): array
     {
         if (array_key_exists('content_html', $item)) {
             $item['content'] = $item['content_html'] ?: ($item['content'] ?? '');

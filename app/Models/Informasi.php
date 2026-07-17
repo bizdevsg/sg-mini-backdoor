@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\ImagePath;
 use DOMDocument;
 use DOMElement;
 use DOMNode;
@@ -47,7 +48,6 @@ class Informasi extends Model
 
         return $slug;
     }
-
     protected function imageUrl(): Attribute
     {
         return Attribute::make(
@@ -62,7 +62,7 @@ class Informasi extends Model
                     return $image;
                 }
 
-                return asset('storage/' . ltrim($image, '/'));
+                return asset('storage/' . ltrim((string) ImagePath::normalize($image), '/'));
             },
         );
     }

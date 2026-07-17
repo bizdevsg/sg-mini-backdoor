@@ -47,6 +47,7 @@ class ProdukController extends Controller
             'produks' => $produks,
             'section' => $section,
             'sectionLabel' => $this->sectionLabel($section),
+            'sectionName' => $this->sectionName($section),
         ]);
     }
 
@@ -57,6 +58,7 @@ class ProdukController extends Controller
         return view('produk.create', [
             'section' => $section,
             'sectionLabel' => $this->sectionLabel($section),
+            'sectionName' => $this->sectionName($section),
         ]);
     }
 
@@ -95,6 +97,7 @@ class ProdukController extends Controller
             'produk' => $produk,
             'section' => $section,
             'sectionLabel' => $this->sectionLabel($section),
+            'sectionName' => $this->sectionName($section),
         ]);
     }
 
@@ -107,6 +110,7 @@ class ProdukController extends Controller
             'produk' => $produk,
             'section' => $section,
             'sectionLabel' => $this->sectionLabel($section),
+            'sectionName' => $this->sectionName($section),
         ]);
     }
 
@@ -183,6 +187,14 @@ class ProdukController extends Controller
     private function categoryForSection(string $section): string
     {
         return $this->sectionLabel($section);
+    }
+
+    private function sectionName(string $section): string
+    {
+        return match ($section) {
+            'jfx' => 'Multilateral',
+            default => 'Bilateral',
+        };
     }
 
     private function ensureSectionMatchesProduk(Produk $produk, string $section): void

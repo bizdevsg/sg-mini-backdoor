@@ -1,3 +1,4 @@
+@import '@fortawesome/fontawesome-free/css/all.min.css';
 @import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
@@ -7,15 +8,15 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
-    --color-obsidian: #0b0d12;
-    --color-noir: #12151c;
-    --color-onyx: #171b23;
-    --color-carbon: #232836;
-    --color-smoke: #8f98aa;
-    --color-gold: #caa64a;
-    --color-gold-soft: #e1c980;
-    --color-gold-deep: #8b6a1f;
-    --color-champagne: #e7eaf0;
-    --color-ivory: #f8fafc;
-    --color-bronze: #604a1f;
+    --color-obsidian: #15110d;
+    --color-noir: #1c1712;
+    --color-onyx: #272019;
+    --color-carbon: #3a2f24;
+    --color-smoke: #a79a89;
+    --color-gold: #c7a15a;
+    --color-gold-soft: #e2c78f;
+    --color-gold-deep: #8f6832;
+    --color-champagne: #ece1cf;
+    --color-ivory: #f7f0e6;
+    --color-bronze: #6b4a22;
 }

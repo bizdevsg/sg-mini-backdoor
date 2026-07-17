@@ -20,7 +20,7 @@ class StoreInformasiRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:150'],
-            'slug' => ['nullable', 'string', 'max:255', Rule::unique('informasis', 'slug')],
+            'slug' => ['nullable', 'string', 'max:500', Rule::unique('informasis', 'slug')],
             'content' => ['required', 'string'],
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,avif', 'max:5120'],
         ];

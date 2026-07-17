@@ -28,5 +28,9 @@ class AppServiceProvider extends ServiceProvider
 
             return Limit::perMinute(5)->by(Str::transliterate($email.'|'.$request->ip()));
         });
+
+        RateLimiter::for('contact-form', function (Request $request): Limit {
+            return Limit::perMinute(10)->by(Str::transliterate('contact-form|'.$request->ip()));
+        });
     }
 }

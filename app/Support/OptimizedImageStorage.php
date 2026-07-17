@@ -9,7 +9,7 @@ use RuntimeException;
 
 class OptimizedImageStorage
 {
-    public function store(UploadedFile $file, string $directory = 'produk-images'): string
+    public function store(UploadedFile $file, string $directory = 'uploads/produk'): string
     {
         $extension = $this->targetExtension();
         $path = trim($directory, '/').'/'.Str::uuid().'.'.$extension;
@@ -31,7 +31,12 @@ class OptimizedImageStorage
             return;
         }
 
-        Storage::disk('public')->delete($path);
+        $normalizedPath = ImagePath::normalize($path);
+
+        Storage::disk('public')->delete(array_values(array_unique(array_filter([
+            $path,
+            $normalizedPath,
+        ]))));
     }
 
     private function targetExtension(): string

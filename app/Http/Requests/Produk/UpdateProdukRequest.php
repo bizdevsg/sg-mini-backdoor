@@ -23,7 +23,7 @@ class UpdateProdukRequest extends FormRequest
             'slug' => [
                 'nullable',
                 'string',
-                'max:255',
+                'max:500',
                 Rule::unique('produks', 'slug')->ignore($this->route('produk')),
             ],
             'deskripsi_produk' => ['required', 'string'],

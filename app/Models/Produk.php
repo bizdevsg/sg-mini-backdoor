@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\ImagePath;
 use DOMDocument;
 use DOMElement;
 use DOMNode;
@@ -69,7 +70,7 @@ class Produk extends Model
                     return $image;
                 }
 
-                return asset('storage/' . ltrim($image, '/'));
+                return asset('storage/' . ltrim((string) ImagePath::normalize($image), '/'));
             },
         );
     }

@@ -4,25 +4,16 @@
 
 @section('content')
     <section class="space-y-6">
-        <div
-            class="flex flex-col gap-4 rounded-2xl border border-white/8 bg-white/4 p-6 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-                <p class="text-xs font-medium uppercase tracking-[0.18em] text-smoke">Announcement management</p>
-                <h2 class="mt-2 text-3xl font-semibold tracking-[-0.04em] text-white">Pengumuman</h2>
-            </div>
-
-            <a href="{{ route('pengumuman.create') }}"
-                class="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-medium text-obsidian transition-colors hover:bg-slate-200">
-                <i class="fa-solid fa-plus text-xs"></i>
-                Tambah Pengumuman
-            </a>
-        </div>
-
-        @if (session('status'))
-            <div class="rounded-xl border border-gold/20 bg-gold/10 px-4 py-3 text-sm text-gold-soft">
-                {{ session('status') }}
-            </div>
-        @endif
+        @include('components.molecules.page-header', [
+            'eyebrow' => 'Announcement management',
+            'title' => 'Pengumuman',
+            'action' => [
+                'href' => route('pengumuman.create'),
+                'label' => 'Tambah Pengumuman',
+                'icon' => 'fa-solid fa-plus text-xs',
+                'class' => 'inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-medium text-obsidian transition-colors hover:bg-slate-200',
+            ],
+        ])
 
         <div class="rounded-2xl border border-white/8 bg-white/4 p-6">
             <form action="{{ route('pengumuman.index') }}" method="GET" class="grid gap-4 lg:grid-cols-[1fr_180px]">

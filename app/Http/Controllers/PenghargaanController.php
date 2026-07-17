@@ -57,7 +57,7 @@ class PenghargaanController extends Controller
 
         if ($request->hasFile('image')) {
             try {
-                $imagePath = $this->optimizedImageStorage->store($request->file('image'), 'penghargaan-images');
+                $imagePath = $this->optimizedImageStorage->store($request->file('image'), 'uploads/penghargaan');
             } catch (\RuntimeException $exception) {
                 throw ValidationException::withMessages([
                     'image' => $exception->getMessage(),
@@ -91,7 +91,7 @@ class PenghargaanController extends Controller
 
         if ($request->hasFile('image')) {
             try {
-                $imagePath = $this->optimizedImageStorage->store($request->file('image'), 'penghargaan-images');
+                $imagePath = $this->optimizedImageStorage->store($request->file('image'), 'uploads/penghargaan');
             } catch (\RuntimeException $exception) {
                 throw ValidationException::withMessages([
                     'image' => $exception->getMessage(),

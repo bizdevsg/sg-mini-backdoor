@@ -20,7 +20,7 @@ class StoreProdukRequest extends FormRequest
     {
         return [
             'nama_produk' => ['required', 'string', 'max:100'],
-            'slug' => ['nullable', 'string', 'max:255', Rule::unique('produks', 'slug')],
+            'slug' => ['nullable', 'string', 'max:500', Rule::unique('produks', 'slug')],
             'deskripsi_produk' => ['required', 'string'],
             'specs' => ['required', 'string'],
             'image' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,avif', 'max:5120'],
