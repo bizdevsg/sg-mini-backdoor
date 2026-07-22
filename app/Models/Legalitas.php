@@ -26,7 +26,12 @@ class Legalitas extends Model
 
     public static function generateSlug(string $title, ?self $ignore = null): string
     {
-        $baseSlug = now()->format('dmYHi') . '-' . Str::slug($title);
+        $baseSlug = Str::slug($title);
+
+        if ($baseSlug === '') {
+            $baseSlug = 'legalitas';
+        }
+
         $slug = $baseSlug;
         $counter = 2;
 

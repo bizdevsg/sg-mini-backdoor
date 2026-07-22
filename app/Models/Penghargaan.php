@@ -30,7 +30,12 @@ class Penghargaan extends Model
 
     public static function generateSlug(string $title, ?self $ignore = null): string
     {
-        $baseSlug = now()->format('dmYHi') . '-' . Str::slug($title);
+        $baseSlug = Str::slug($title);
+
+        if ($baseSlug === '') {
+            $baseSlug = 'penghargaan';
+        }
+
         $slug = $baseSlug;
         $counter = 2;
 

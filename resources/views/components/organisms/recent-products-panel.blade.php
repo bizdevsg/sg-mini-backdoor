@@ -1,4 +1,5 @@
-<div class="{{ cn('overflow-hidden rounded-2xl border border-white/8 bg-white/4') }}">
+<div
+    class="{{ cn('overflow-hidden rounded-2xl border border-white/8 bg-white/4 motion-safe:motion-preset-slide-up-sm motion-safe:motion-delay-[220ms]') }}">
     @include('components.molecules.section-header', [
         'eyebrow' => 'Produk terbaru',
         'title' => 'Aktivitas katalog terbaru',

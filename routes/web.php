@@ -8,7 +8,6 @@ use App\Http\Controllers\EbookController;
 use App\Http\Controllers\EbookCategoryController;
 use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\LegalitasController;
-use App\Http\Controllers\MassageController;
 use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TinyMceImageController;
@@ -100,12 +99,6 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', [CompanyProfileController::class, 'show'])->name('show');
             Route::put('/', [CompanyProfileController::class, 'update'])->name('update');
-        });
-    Route::prefix('massages')
-        ->name('massages.')
-        ->group(function () {
-            Route::get('/', [MassageController::class, 'index'])->name('index');
-            Route::get('/{massage}', [MassageController::class, 'show'])->name('show');
         });
     Route::prefix('user-management')
         ->name('user-management.')

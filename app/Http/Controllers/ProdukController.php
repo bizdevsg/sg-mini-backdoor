@@ -143,7 +143,7 @@ class ProdukController extends Controller
         $this->apiJsonCacheService->refreshProduk();
 
         return redirect()
-            ->route('produk.index', ['section' => $section])
+            ->route('produk.show', ['section' => $section, 'produk' => $produk])
             ->with('status', 'Produk berhasil diperbarui.');
     }
 

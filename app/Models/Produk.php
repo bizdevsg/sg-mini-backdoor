@@ -34,7 +34,12 @@ class Produk extends Model
 
     public static function generateSlug(string $namaProduk, ?self $ignore = null): string
     {
-        $baseSlug = now()->format('dmYHi') . '-' . Str::slug($namaProduk);
+        $baseSlug = Str::slug($namaProduk);
+
+        if ($baseSlug === '') {
+            $baseSlug = 'produk';
+        }
+
         $slug = $baseSlug;
         $counter = 2;
 

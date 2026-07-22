@@ -37,7 +37,12 @@ class Ebook extends Model
 
     public static function generateSlug(string $title, ?self $ignore = null): string
     {
-        $baseSlug = now()->format('dmYHi') . '-' . Str::slug($title);
+        $baseSlug = Str::slug($title);
+
+        if ($baseSlug === '') {
+            $baseSlug = 'ebook';
+        }
+
         $slug = $baseSlug;
         $counter = 2;
 

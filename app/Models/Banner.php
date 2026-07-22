@@ -7,7 +7,9 @@ use Database\Factories\BannerFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 #[Fillable([
@@ -25,7 +27,16 @@ class Banner extends Model
 
     public function getRouteKeyName(): string
     {
-        return 'slug';
+        return $this->usesSlugRouteKey() ? 'slug' : $this->getKeyName();
+    }
+
+    public function getRouteKey(): mixed
+    {
+        if ($this->usesSlugRouteKey() && filled($this->slug)) {
+            return $this->slug;
+        }
+
+        return $this->getKey();
     }
 
     public static function generateSlug(string $title, ?self $ignore = null): string
@@ -48,6 +59,25 @@ class Banner extends Model
         }
 
         return $slug;
+    }
+
+    public function resolveRouteBindingQuery($query, $value, $field = null): Builder
+    {
+        if ($field !== null) {
+            return parent::resolveRouteBindingQuery($query, $value, $field);
+        }
+
+        if (! $this->usesSlugRouteKey()) {
+            return $query->whereKey($value);
+        }
+
+        return $query->where(function (Builder $builder) use ($value): void {
+            $builder->where('slug', $value);
+
+            if (is_numeric($value)) {
+                $builder->orWhereKey($value);
+            }
+        });
     }
 
     protected function casts(): array
@@ -75,5 +105,10 @@ class Banner extends Model
                 return asset('storage/'.ltrim((string) ImagePath::normalize($image), '/'));
             },
         );
+    }
+
+    private function usesSlugRouteKey(): bool
+    {
+        return Schema::hasColumn($this->getTable(), 'slug');
     }
 }

@@ -4,93 +4,180 @@
 
 @section('content')
     <section class="space-y-6">
-        @include('components.molecules.page-header', [
-            'eyebrow' => 'Legal management',
-            'title' => 'Legalitas',
-            'description' => 'Kelola data legalitas perusahaan beserta title, nomor, dan deskripsi singkatnya.',
-            'action' => [
-                'href' => route('legalitas.create'),
-                'label' => 'Tambah Legalitas',
-                'icon' => 'fa-solid fa-plus text-xs',
-                'class' =>
-                    'inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-medium text-obsidian transition-colors hover:bg-slate-200',
-            ],
-        ])
 
-        <div class="rounded-2xl border border-white/8 bg-white/4 p-6">
-            <form action="{{ route('legalitas.index') }}" method="GET" class="grid gap-4 lg:grid-cols-[1fr_180px]">
-                <label class="block">
-                    <span class="mb-2 block text-sm font-medium text-white">Cari legalitas</span>
-                    <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="Title, nomor, desc, atau slug"
-                        class="w-full rounded-lg border border-white/8 bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke focus:border-gold/30 focus:outline-none focus:ring-2 focus:ring-gold/15">
-                </label>
+        {{-- ══════════════════════════════════════════════
+             HERO HEADER
+        ══════════════════════════════════════════════ --}}
+        <div class="relative overflow-hidden rounded-[28px] border border-white/8 bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(199,161,90,0.15),transparent),linear-gradient(160deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.01)_100%)] px-7 py-6 shadow-[0_24px_60px_rgba(0,0,0,0.3)] motion-safe:motion-preset-slide-down-sm lg:px-9 lg:py-8">
+            <div class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gold/8 blur-[64px]"></div>
+            <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/35 to-transparent"></div>
 
-                <div class="flex items-end gap-3">
+            <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                <div class="space-y-3 motion-safe:motion-preset-slide-right-sm motion-safe:motion-delay-[60ms]">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-gold/20 bg-gold/8 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-soft/90">
+                        <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-gold"></span>
+                        Legal Management
+                    </span>
+                    <div>
+                        <h1 class="text-2xl font-semibold tracking-[-0.04em] text-white lg:text-3xl">
+                            Legalitas
+                            <span class="bg-gradient-to-r from-gold-soft to-champagne bg-clip-text text-transparent">Perusahaan</span>
+                        </h1>
+                        <p class="mt-2 max-w-xl text-sm leading-6 text-smoke">
+                            Kelola berkas legalitas resmi, nomor izin usaha, dan landasan hukum operasional perusahaan.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 motion-safe:motion-preset-slide-left-sm motion-safe:motion-delay-[100ms]">
+                    @if (!$legalitasItems->isEmpty())
+                        <span class="rounded-xl border border-white/8 bg-white/5 px-4 py-2.5 text-sm text-smoke">
+                            {{ $legalitasItems->total() }} dokumen
+                        </span>
+                    @endif
+                    <a href="{{ route('legalitas.create') }}"
+                        class="inline-flex items-center gap-2 rounded-xl bg-gold px-5 py-2.5 text-sm font-semibold text-obsidian shadow-[0_4px_18px_rgba(199,161,90,0.28)] transition-all duration-200 hover:bg-gold-soft hover:shadow-[0_6px_24px_rgba(199,161,90,0.4)]">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                        Tambah Legalitas
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {{-- ══════════════════════════════════════════════
+             SEARCH & FILTER
+        ══════════════════════════════════════════════ --}}
+        <div class="rounded-2xl border border-white/8 bg-white/3 px-5 py-4 motion-safe:motion-preset-fade-lg motion-safe:motion-delay-[80ms]">
+            <form action="{{ route('legalitas.index') }}" method="GET"
+                class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                {{-- Search input with icon --}}
+                <div class="relative flex-1">
+                    <div class="pointer-events-none absolute inset-y-0 left-3.5 flex items-center">
+                        <i class="fa-solid fa-magnifying-glass text-xs text-smoke/60"></i>
+                    </div>
+                    <input type="text" name="search" id="search" value="{{ request('search') }}"
+                        placeholder="Cari judul, nomor izin, atau deskripsi legalitas..."
+                        class="w-full rounded-xl border border-white/8 bg-onyx py-2.5 pl-9 pr-4 text-sm text-champagne placeholder:text-smoke/50 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors">
+                </div>
+
+                <div class="flex gap-2">
                     <button type="submit"
-                        class="inline-flex flex-1 items-center justify-center rounded-lg border border-white/8 bg-white/6 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10">
+                        class="inline-flex items-center gap-1.5 rounded-xl border border-gold/25 bg-gold/10 px-4 py-2.5 text-sm font-medium text-gold-soft transition-all duration-200 hover:border-gold/40 hover:bg-gold/18">
+                        <i class="fa-solid fa-filter text-[10px]"></i>
                         Filter
                     </button>
                     <a href="{{ route('legalitas.index') }}"
-                        class="inline-flex items-center justify-center rounded-lg border border-white/8 bg-transparent px-4 py-3 text-sm font-medium text-smoke transition-colors hover:border-white/12 hover:text-white">
+                        class="inline-flex items-center gap-1.5 rounded-xl border border-white/8 bg-transparent px-4 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-white/15 hover:text-white">
+                        <i class="fa-solid fa-xmark text-[10px]"></i>
                         Reset
                     </a>
                 </div>
             </form>
         </div>
 
-        <div class="overflow-hidden rounded-2xl border border-white/8 bg-white/4">
+        {{-- ══════════════════════════════════════════════
+             TABLE / EMPTY STATE
+        ══════════════════════════════════════════════ --}}
+        <div class="overflow-hidden rounded-2xl border border-white/8 bg-white/3 motion-safe:motion-preset-slide-up-sm motion-safe:motion-delay-[120ms]">
             @if ($legalitasItems->isEmpty())
-                <div class="px-6 py-16 text-center">
-                    <div
-                        class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-white/8 bg-white/5 text-gold-soft">
-                        <i class="fa-solid fa-building-columns text-xl"></i>
+                {{-- Empty state --}}
+                <div class="flex flex-col items-center px-6 py-20 text-center">
+                    <div class="relative">
+                        <div class="absolute inset-0 rounded-3xl bg-gold/8 blur-xl"></div>
+                        <div class="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-gold/20 bg-gold/10 text-gold-soft">
+                            <i class="fa-solid fa-building-columns text-2xl"></i>
+                        </div>
                     </div>
-                    <h3 class="mt-5 text-2xl font-semibold text-white">Belum ada legalitas</h3>
-                    <p class="mt-2 text-sm text-smoke">Mulai dengan menambahkan data legalitas pertama.</p>
+                    <h3 class="mt-6 text-xl font-semibold text-white">Belum ada data legalitas</h3>
+                    <p class="mt-2 max-w-sm text-sm leading-6 text-smoke">
+                        @if (request('search'))
+                            Tidak ditemukan data untuk pencarian "<span class="text-champagne/80">{{ request('search') }}</span>".
+                        @else
+                            Mulai dengan menambahkan berkas legalitas resmi pertama.
+                        @endif
+                    </p>
+                    @if (!request('search'))
+                        <a href="{{ route('legalitas.create') }}"
+                            class="mt-6 inline-flex items-center gap-2 rounded-xl bg-gold px-5 py-2.5 text-sm font-semibold text-obsidian shadow-[0_4px_18px_rgba(199,161,90,0.28)] transition-all duration-200 hover:bg-gold-soft">
+                            <i class="fa-solid fa-plus text-xs"></i>
+                            Tambah Legalitas
+                        </a>
+                    @endif
                 </div>
             @else
+                {{-- Table --}}
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-white/8">
-                        <thead class="bg-noir/70">
-                            <tr class="text-left text-xs uppercase tracking-[0.18em] text-smoke">
-                                <th class="px-6 py-4 font-medium">Title</th>
-                                <th class="px-6 py-4 font-medium">Nomor</th>
-                                <th class="px-6 py-4 font-medium">Desc</th>
-                                <th class="px-6 py-4 font-medium">Created At</th>
-                                <th class="px-6 py-4 text-right font-medium">Aksi</th>
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="border-b border-white/6 bg-noir/50 text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/70">
+                                <th class="px-6 py-3.5">Dokumen Legalitas</th>
+                                <th class="px-4 py-3.5">Nomor Izin / SK</th>
+                                <th class="hidden px-4 py-3.5 md:table-cell">Deskripsi</th>
+                                <th class="hidden px-4 py-3.5 lg:table-cell">Dibuat</th>
+                                <th class="px-4 py-3.5 text-right">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-white/6">
+                        <tbody class="divide-y divide-white/5">
                             @foreach ($legalitasItems as $item)
-                                <tr class="align-top transition-colors hover:bg-white/4">
-                                    <td class="px-6 py-5">
-                                        <p class="font-medium text-white">{{ $item->title }}</p>
+                                <tr class="group align-top transition-colors duration-150 hover:bg-white/3">
+                                    {{-- Title --}}
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold/20 bg-gold/10 text-gold-soft">
+                                                <i class="fa-solid fa-file-contract text-xs"></i>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold text-white transition-colors group-hover:text-gold-soft">{{ $item->title }}</p>
+                                                <p class="mt-0.5 text-xs text-smoke/70 md:hidden">
+                                                    {{ \Illuminate\Support\Str::limit(strip_tags($item->description), 80) }}
+                                                </p>
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-5 text-sm text-champagne">
-                                        {{ $item->nomor }}
+
+                                    {{-- Nomor Pill --}}
+                                    <td class="px-4 py-4">
+                                        <span class="inline-flex items-center gap-1.5 rounded-lg border border-gold/25 bg-gold/10 px-3 py-1 font-mono text-xs font-medium text-gold-soft">
+                                            <i class="fa-solid fa-hashtag text-[9px] text-gold/60"></i>
+                                            {{ $item->nomor }}
+                                        </span>
                                     </td>
-                                    <td class="px-6 py-5">
-                                        <p class="max-w-xl text-sm leading-7 text-smoke">
-                                            {{ \Illuminate\Support\Str::limit(strip_tags($item->description), 140) }}
+
+                                    {{-- Description --}}
+                                    <td class="hidden px-4 py-4 md:table-cell">
+                                        <p class="line-clamp-2 max-w-md text-xs leading-5 text-smoke">
+                                            {{ \Illuminate\Support\Str::limit(strip_tags($item->description), 130) }}
                                         </p>
                                     </td>
-                                    <td class="px-6 py-5 text-sm text-smoke">
-                                        {{ $item->created_at?->format('d M Y, H:i') ?? '-' }}
+
+                                    {{-- Created At --}}
+                                    <td class="hidden px-4 py-4 lg:table-cell">
+                                        <p class="text-xs font-medium text-champagne/80">{{ $item->created_at?->format('d M Y') ?? '-' }}</p>
+                                        <p class="mt-0.5 text-[10px] text-smoke/60">{{ $item->created_at?->format('H:i') ?? '' }}</p>
                                     </td>
-                                    <td class="px-6 py-5">
-                                        <div class="flex justify-end gap-2">
+
+                                    {{-- Actions --}}
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center justify-end gap-1.5">
                                             <a href="{{ route('legalitas.edit', $item) }}"
-                                                class="inline-flex items-center rounded-lg border border-white/8 bg-white/5 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10">
+                                                class="inline-flex items-center gap-1.5 rounded-lg border border-gold/20 bg-gold/8 px-3 py-1.5 text-xs font-medium text-gold-soft transition-all duration-150 hover:border-gold/35 hover:bg-gold/15"
+                                                title="Edit legalitas">
+                                                <i class="fa-solid fa-pen text-[10px]"></i>
                                                 Edit
                                             </a>
-                                            <form action="{{ route('legalitas.destroy', $item) }}" method="POST"
-                                                onsubmit="return confirm('Hapus legalitas ini? Tindakan ini tidak bisa dibatalkan.');">
+                                            <form action="{{ route('legalitas.destroy', $item) }}" method="POST" class="inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
-                                                    class="inline-flex items-center rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm font-medium text-red-200 transition-colors hover:bg-red-500/20">
-                                                    Delete
+                                                    data-confirm-submit
+                                                    data-confirm-intent="delete"
+                                                    data-confirm-title="Hapus legalitas ini?"
+                                                    data-confirm-message="Legalitas {{ $item->title }} akan dihapus permanen. Tindakan ini tidak bisa dibatalkan."
+                                                    data-confirm-action-label="Ya, hapus"
+                                                    class="inline-flex items-center gap-1.5 rounded-lg border border-red-400/25 bg-red-500/8 px-3 py-1.5 text-xs font-medium text-red-300/80 transition-all duration-150 hover:border-red-400/40 hover:bg-red-500/16 hover:text-red-200"
+                                                    title="Hapus legalitas">
+                                                    <i class="fa-solid fa-trash text-[10px]"></i>
+                                                    Hapus
                                                 </button>
                                             </form>
                                         </div>
@@ -101,10 +188,19 @@
                     </table>
                 </div>
 
-                <div class="border-t border-white/8 px-6 py-4">
-                    {{ $legalitasItems->links() }}
+                {{-- Footer: count + pagination --}}
+                <div class="flex flex-col items-start justify-between gap-3 border-t border-white/6 bg-noir/30 px-6 py-4 sm:flex-row sm:items-center">
+                    <p class="text-xs text-smoke">
+                        Menampilkan
+                        <span class="font-medium text-champagne/80">{{ $legalitasItems->firstItem() }}–{{ $legalitasItems->lastItem() }}</span>
+                        dari <span class="font-medium text-champagne/80">{{ $legalitasItems->total() }}</span> dokumen legalitas
+                    </p>
+                    <div class="text-sm">
+                        {{ $legalitasItems->appends(request()->query())->links() }}
+                    </div>
                 </div>
             @endif
         </div>
+
     </section>
 @endsection

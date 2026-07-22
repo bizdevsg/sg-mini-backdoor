@@ -2,95 +2,135 @@ import { createIcons } from "lucide";
 
 createIcons();
 
-const confirmModal = document.querySelector('[data-confirm-modal]');
-const autoDismissElements = document.querySelectorAll('[data-auto-dismiss]');
+const initializeAutoDismiss = () => {
+    const autoDismissElements = document.querySelectorAll('[data-auto-dismiss]');
 
-autoDismissElements.forEach((element) => {
-    if (!(element instanceof HTMLElement)) {
-        return;
-    }
-
-    const delay = Number.parseInt(element.dataset.autoDismissDelay ?? '4000', 10);
-
-    window.setTimeout(() => {
-        element.classList.add('pointer-events-none', 'translate-y-1', 'opacity-0');
-
-        window.setTimeout(() => {
-            element.remove();
-        }, 300);
-    }, Number.isNaN(delay) ? 4000 : delay);
-});
-
-if (confirmModal instanceof HTMLDialogElement) {
-    const titleElement = confirmModal.querySelector('[data-confirm-modal-title]');
-    const messageElement = confirmModal.querySelector('[data-confirm-modal-message]');
-    const cancelButton = confirmModal.querySelector('[data-confirm-cancel]');
-    const acceptButton = confirmModal.querySelector('[data-confirm-accept]');
-    let activeForm = null;
-
-    const closeModal = () => {
-        activeForm = null;
-        confirmModal.close();
-    };
-
-    document.addEventListener('click', (event) => {
-        const trigger = event.target.closest('[data-confirm-submit]');
-
-        if (!(trigger instanceof HTMLElement)) {
+    autoDismissElements.forEach((element) => {
+        if (!(element instanceof HTMLElement) || element.dataset.autoDismissInitialized === 'true') {
             return;
         }
 
-        const form = trigger.closest('form');
+        element.dataset.autoDismissInitialized = 'true';
 
-        if (!(form instanceof HTMLFormElement)) {
+        const delay = Number.parseInt(element.dataset.autoDismissDelay ?? '4000', 10);
+        const duration = Number.isNaN(delay) ? 4000 : delay;
+        const closeButton = element.querySelector('[data-auto-dismiss-close]');
+        const progressBar = element.querySelector('[data-auto-dismiss-progress]');
+        let dismissed = false;
+
+        if (progressBar instanceof HTMLElement) {
+            progressBar.style.transition = `transform ${duration}ms linear`;
+
+            window.requestAnimationFrame(() => {
+                progressBar.style.transform = 'scaleX(0)';
+            });
+        }
+
+        const dismiss = () => {
+            if (dismissed) {
+                return;
+            }
+
+            dismissed = true;
+            element.classList.add('pointer-events-none', '-translate-y-2', 'opacity-0');
+
+            window.setTimeout(() => {
+                element.remove();
+            }, 320);
+        };
+
+        if (closeButton instanceof HTMLElement) {
+            closeButton.addEventListener('click', dismiss);
+        }
+
+        window.setTimeout(dismiss, duration);
+    });
+};
+
+const initializeCollapsibleDetails = () => {
+    const collapsibleElements = document.querySelectorAll('details[data-collapsible]');
+
+    collapsibleElements.forEach((element) => {
+        if (!(element instanceof HTMLDetailsElement) || element.dataset.collapsibleInitialized === 'true') {
             return;
         }
 
-        activeForm = form;
+        const trigger = element.querySelector('[data-collapsible-trigger]');
+        const content = element.querySelector('[data-collapsible-content]');
 
-        if (titleElement) {
-            titleElement.textContent = trigger.dataset.confirmTitle ?? 'Lanjutkan aksi ini?';
-        }
-
-        if (messageElement) {
-            messageElement.textContent =
-                trigger.dataset.confirmMessage ?? 'Pastikan tindakan ini memang ingin dilakukan.';
-        }
-
-        if (acceptButton instanceof HTMLButtonElement) {
-            acceptButton.textContent = trigger.dataset.confirmActionLabel ?? 'Ya, lanjutkan';
-            acceptButton.className =
-                trigger.dataset.confirmIntent === 'delete'
-                    ? 'inline-flex items-center justify-center rounded-lg bg-red-500 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-red-400'
-                    : 'inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-medium text-obsidian transition-colors hover:bg-slate-200';
-        }
-
-        confirmModal.showModal();
-    });
-
-    cancelButton?.addEventListener('click', closeModal);
-
-    acceptButton?.addEventListener('click', () => {
-        if (!(activeForm instanceof HTMLFormElement)) {
-            closeModal();
-
+        if (!(trigger instanceof HTMLElement) || !(content instanceof HTMLElement)) {
             return;
         }
 
-        const form = activeForm;
+        element.dataset.collapsibleInitialized = 'true';
 
-        closeModal();
-        form.requestSubmit();
-    });
+        const syncState = (isOpen) => {
+            element.dataset.state = isOpen ? 'open' : 'closed';
+        };
 
-    confirmModal.addEventListener('click', (event) => {
-        if (event.target === confirmModal) {
-            closeModal();
+        if (element.open) {
+            syncState(true);
+            content.style.height = 'auto';
+            content.style.opacity = '1';
+        } else {
+            syncState(false);
+            content.style.height = '0px';
+            content.style.opacity = '0';
         }
-    });
 
-    confirmModal.addEventListener('cancel', (event) => {
-        event.preventDefault();
-        closeModal();
+        trigger.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            if (element.dataset.collapsibleAnimating === 'true') {
+                return;
+            }
+
+            const shouldOpen = element.dataset.state !== 'open';
+            element.dataset.collapsibleAnimating = 'true';
+            syncState(shouldOpen);
+
+            if (shouldOpen) {
+                element.open = true;
+                content.style.height = '0px';
+                content.style.opacity = '0';
+
+                window.requestAnimationFrame(() => {
+                    content.style.height = `${content.scrollHeight}px`;
+                    content.style.opacity = '1';
+                });
+
+                return;
+            }
+
+            content.style.height = `${content.scrollHeight}px`;
+            content.style.opacity = '1';
+
+            window.requestAnimationFrame(() => {
+                content.style.height = '0px';
+                content.style.opacity = '0';
+            });
+        });
+
+        content.addEventListener('transitionend', (event) => {
+            if (event.target !== content || event.propertyName !== 'height') {
+                return;
+            }
+
+            const isOpen = element.dataset.state === 'open';
+
+            if (isOpen) {
+                content.style.height = 'auto';
+                content.style.opacity = '1';
+            } else {
+                element.open = false;
+                content.style.height = '0px';
+                content.style.opacity = '0';
+            }
+
+            element.dataset.collapsibleAnimating = 'false';
+        });
     });
-}
+};
+
+initializeAutoDismiss();
+initializeCollapsibleDetails();
