@@ -82,3 +82,34 @@ test('current user cannot delete their own account', function () {
 
     $this->assertModelExists($viewer);
 });
+
+test('admin users cannot access user management routes', function () {
+    $viewer = User::factory()->create([
+        'email' => 'admin@example.com',
+    ]);
+    $managedUser = User::factory()->superadmin()->create([
+        'email' => 'superadmin@example.com',
+    ]);
+
+    $this->actingAs($viewer)
+        ->get(route('user-management.index'))
+        ->assertForbidden();
+
+    $this->actingAs($viewer)
+        ->get(route('user-management.create'))
+        ->assertForbidden();
+
+    $this->actingAs($viewer)
+        ->get(route('user-management.edit', $managedUser))
+        ->assertForbidden();
+
+    $this->actingAs($viewer)
+        ->post(route('user-management.store'), [
+            'name' => 'Tidak Boleh',
+            'email' => 'tidakboleh@example.com',
+            'role' => UserRole::Admin->value,
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ])
+        ->assertForbidden();
+});

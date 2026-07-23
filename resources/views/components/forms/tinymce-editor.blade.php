@@ -33,8 +33,30 @@
                 box-shadow: 0 20px 45px rgb(0 0 0 / 0.2);
             }
 
+            html.sg-tinymce-fullscreen,
+            body.sg-tinymce-fullscreen,
+            html.tox-fullscreen,
+            body.tox-fullscreen {
+                overflow: hidden !important;
+            }
+
             .tox.tox-tinymce.tox-tinymce--disabled {
                 opacity: 0.7;
+            }
+
+            .tox.tox-tinymce.tox-fullscreen {
+                border-color: transparent;
+                border-radius: 0;
+                overflow: visible;
+                box-shadow: none;
+                z-index: 70;
+            }
+
+            .tox.tox-tinymce-aux,
+            .tox .tox-silver-sink,
+            .tox-tinymce-aux .tox-dialog-wrap,
+            .tox-tinymce-aux .tox-menu {
+                z-index: 80 !important;
             }
 
             .tox .tox-statusbar,
@@ -60,6 +82,17 @@
                 if (!textareas.length || typeof tinymce === 'undefined') {
                     return;
                 }
+
+                const syncFullscreenLayoutState = () => {
+                    const isFullscreen = document.querySelector('.tox.tox-tinymce.tox-fullscreen') !== null;
+
+                    document.documentElement.classList.toggle('sg-tinymce-fullscreen', isFullscreen);
+                    document.body.classList.toggle('sg-tinymce-fullscreen', isFullscreen);
+                };
+
+                const scheduleFullscreenLayoutStateSync = () => {
+                    window.requestAnimationFrame(syncFullscreenLayoutState);
+                };
 
                 const uploadImage = async (file, csrfToken, progressCallback = null) => {
                     const formData = new FormData();
@@ -251,6 +284,10 @@
                         setup: (editor) => {
                             editor.on('init change input undo redo setcontent', () => {
                                 setClientError(editor);
+                            });
+
+                            editor.on('init FullscreenStateChanged remove', () => {
+                                scheduleFullscreenLayoutStateSync();
                             });
                         },
                     });

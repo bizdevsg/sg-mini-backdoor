@@ -9,7 +9,9 @@ use App\Http\Controllers\EbookCategoryController;
 use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\LegalitasController;
 use App\Http\Controllers\PenghargaanController;
+use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\TermsAndConditionsController;
 use App\Http\Controllers\TinyMceImageController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
@@ -100,8 +102,21 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [CompanyProfileController::class, 'show'])->name('show');
             Route::put('/', [CompanyProfileController::class, 'update'])->name('update');
         });
+    Route::prefix('syarat-dan-ketentuan')
+        ->name('terms-and-conditions.')
+        ->group(function () {
+            Route::get('/', [TermsAndConditionsController::class, 'show'])->name('show');
+            Route::put('/', [TermsAndConditionsController::class, 'update'])->name('update');
+        });
+    Route::prefix('kebijakan-privasi')
+        ->name('privacy-policy.')
+        ->group(function () {
+            Route::get('/', [PrivacyPolicyController::class, 'show'])->name('show');
+            Route::put('/', [PrivacyPolicyController::class, 'update'])->name('update');
+        });
     Route::prefix('user-management')
         ->name('user-management.')
+        ->middleware('can:manage-user-management')
         ->group(function () {
             Route::get('/', [UserManagementController::class, 'index'])->name('index');
             Route::get('/create', [UserManagementController::class, 'create'])->name('create');

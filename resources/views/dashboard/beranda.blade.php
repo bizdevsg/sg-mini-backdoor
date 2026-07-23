@@ -4,6 +4,8 @@
 
 @section('content')
     @php
+        $canManageUserManagement = auth()->user()?->can('manage-user-management') ?? false;
+
         $statCards = [
             [
                 'icon' => 'fa-solid fa-box-archive',
@@ -93,13 +95,30 @@
                 'accent'      => 'white',
             ],
             [
+                'href'        => route('terms-and-conditions.show'),
+                'icon'        => 'fa-solid fa-scroll',
+                'label'       => 'Syarat dan Ketentuan',
+                'description' => 'Dokumen kebijakan utama',
+                'accent'      => 'white',
+            ],
+            [
+                'href'        => route('privacy-policy.show'),
+                'icon'        => 'fa-solid fa-shield-halved',
+                'label'       => 'Kebijakan Privasi',
+                'description' => 'Dokumen privasi perusahaan',
+                'accent'      => 'white',
+            ],
+        ];
+
+        if ($canManageUserManagement) {
+            $quickLinks[] = [
                 'href'        => route('user-management.index'),
                 'icon'        => 'fa-solid fa-users-gear',
                 'label'       => 'User Admin',
                 'description' => "{$userCount} pengguna",
                 'accent'      => 'white',
-            ],
-        ];
+            ];
+        }
     @endphp
 
     <section class="space-y-6">
@@ -148,11 +167,13 @@
                             <i class="fa-solid fa-layer-group text-xs"></i>
                             Kelola Produk
                         </a>
-                        <a href="{{ route('user-management.index') }}"
-                            class="inline-flex items-center gap-2 rounded-xl border border-white/12 bg-white/6 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-all duration-200 hover:border-white/20 hover:bg-white/10">
-                            <i class="fa-solid fa-users-gear text-xs text-smoke"></i>
-                            Kelola User
-                        </a>
+                        @if ($canManageUserManagement)
+                            <a href="{{ route('user-management.index') }}"
+                                class="inline-flex items-center gap-2 rounded-xl border border-white/12 bg-white/6 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-all duration-200 hover:border-white/20 hover:bg-white/10">
+                                <i class="fa-solid fa-users-gear text-xs text-smoke"></i>
+                                Kelola User
+                            </a>
+                        @endif
                     </div>
 
                     {{-- Inline mini-stats strip --}}

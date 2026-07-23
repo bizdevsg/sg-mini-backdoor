@@ -8,16 +8,20 @@ use App\Http\Resources\EbookResource;
 use App\Http\Resources\EbookCategoryResource;
 use App\Http\Resources\InformasiResource;
 use App\Http\Resources\LegalitasResource;
+use App\Http\Resources\PrivacyPolicyResource;
 use App\Http\Resources\PenghargaanResource;
 use App\Http\Resources\ProdukResource;
+use App\Http\Resources\TermsAndConditionResource;
 use App\Models\Banner;
 use App\Models\CompanyProfile;
 use App\Models\Ebook;
 use App\Models\EbookCategory;
 use App\Models\Informasi;
 use App\Models\Legalitas;
+use App\Models\PrivacyPolicy;
 use App\Models\Penghargaan;
 use App\Models\Produk;
+use App\Models\TermsAndCondition;
 use Illuminate\Support\Facades\File;
 
 class ApiJsonCacheService
@@ -92,6 +96,24 @@ class ApiJsonCacheService
         }
 
         $this->refreshCompanyProfile();
+    }
+
+    public function ensureTermsAndConditionsCache(): void
+    {
+        if ($this->cacheExists('terms-and-conditions')) {
+            return;
+        }
+
+        $this->refreshTermsAndConditions();
+    }
+
+    public function ensurePrivacyPolicyCache(): void
+    {
+        if ($this->cacheExists('privacy-policy')) {
+            return;
+        }
+
+        $this->refreshPrivacyPolicy();
     }
 
     public function refreshProduk(): void
@@ -195,6 +217,28 @@ class ApiJsonCacheService
         $this->write('company-profile', $items);
     }
 
+    public function refreshTermsAndConditions(): void
+    {
+        $terms = TermsAndCondition::query()->latest('id')->first();
+
+        $items = $terms
+            ? [(new TermsAndConditionResource($terms))->resolve()]
+            : [];
+
+        $this->write('terms-and-conditions', $items);
+    }
+
+    public function refreshPrivacyPolicy(): void
+    {
+        $policy = PrivacyPolicy::query()->latest('id')->first();
+
+        $items = $policy
+            ? [(new PrivacyPolicyResource($policy))->resolve()]
+            : [];
+
+        $this->write('privacy-policy', $items);
+    }
+
     /**
      * @return array<int, array<string, mixed>>
      */
@@ -263,6 +307,34 @@ class ApiJsonCacheService
     public function companyProfileItem(): ?array
     {
         $items = $this->readItems('company-profile');
+
+        if ($items === []) {
+            return null;
+        }
+
+        return is_array($items[0] ?? null) ? $items[0] : null;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function termsAndConditionsItem(): ?array
+    {
+        $items = $this->readItems('terms-and-conditions');
+
+        if ($items === []) {
+            return null;
+        }
+
+        return is_array($items[0] ?? null) ? $items[0] : null;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function privacyPolicyItem(): ?array
+    {
+        $items = $this->readItems('privacy-policy');
 
         if ($items === []) {
             return null;

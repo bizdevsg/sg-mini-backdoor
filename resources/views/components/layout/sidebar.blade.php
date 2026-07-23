@@ -1,5 +1,6 @@
 @php
     $user = auth()->user();
+    $canManageUserManagement = $user?->can('manage-user-management') ?? false;
     $produkSection = request()->route('section', 'spa');
 
     $navigationSections = [
@@ -72,9 +73,24 @@
                     'href' => route('company-profile.show'),
                     'active' => request()->routeIs('company-profile.*'),
                 ],
+                [
+                    'label' => 'Syarat dan Ketentuan',
+                    'icon' => 'fa-solid fa-scroll',
+                    'href' => route('terms-and-conditions.show'),
+                    'active' => request()->routeIs('terms-and-conditions.*'),
+                ],
+                [
+                    'label' => 'Kebijakan Privasi',
+                    'icon' => 'fa-solid fa-shield-halved',
+                    'href' => route('privacy-policy.show'),
+                    'active' => request()->routeIs('privacy-policy.*'),
+                ],
             ],
         ],
-        [
+    ];
+
+    if ($canManageUserManagement) {
+        $navigationSections[] = [
             'heading' => 'Sistem',
             'items' => [
                 [
@@ -84,8 +100,8 @@
                     'active' => request()->routeIs('user-management.*'),
                 ],
             ],
-        ],
-    ];
+        ];
+    }
 @endphp
 
 <aside

@@ -8,7 +8,9 @@ use App\Http\Controllers\Api\InformasiApiController;
 use App\Http\Controllers\Api\LegalitasApiController;
 use App\Http\Controllers\Api\MassageApiController;
 use App\Http\Controllers\Api\PenghargaanApiController;
+use App\Http\Controllers\Api\PrivacyPolicyApiController;
 use App\Http\Controllers\Api\ProdukApiController;
+use App\Http\Controllers\Api\TermsAndConditionsApiController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -49,6 +51,14 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('company-profile')->group(function () {
         Route::get('/', [CompanyProfileController::class, 'show']);
+    });
+
+    Route::prefix('terms-and-conditions')->group(function () {
+        Route::get('/', [TermsAndConditionsApiController::class, 'show']);
+    });
+
+    Route::prefix('privacy-policy')->group(function () {
+        Route::get('/', [PrivacyPolicyApiController::class, 'show']);
     });
 
     Route::prefix('massages')->group(function () {

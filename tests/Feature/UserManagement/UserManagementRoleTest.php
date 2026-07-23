@@ -53,3 +53,15 @@ test('user management can be filtered by role', function () {
         ->assertSee($superadmin->name)
         ->assertDontSee($admin->email);
 });
+
+test('admin dashboard does not show user management navigation', function () {
+    $viewer = User::factory()->create([
+        'email' => 'admin@example.com',
+    ]);
+
+    $this->actingAs($viewer)
+        ->get(route('dashboard'))
+        ->assertSuccessful()
+        ->assertDontSee('User Management')
+        ->assertDontSee('Kelola User');
+});
