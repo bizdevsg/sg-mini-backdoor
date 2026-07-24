@@ -1,4 +1,9 @@
+@php
+    $theme = auth()->user()?->roleTheme() ?? [
+        'btn_primary' => 'bg-gold text-obsidian hover:bg-gold-soft',
+    ];
+@endphp
 <a href="{{ $href }}"
-    class="{{ cn('rounded px-3 py-1 text-sm transition-all duration-300', 'bg-gold/50 hover:bg-gold-deep', $class ?? null) }}">
+    class="{{ cn('rounded px-3 py-1 text-sm font-semibold transition-all duration-300', $theme['btn_primary'], $class ?? null) }}">
     {{ $label }}
 </a>

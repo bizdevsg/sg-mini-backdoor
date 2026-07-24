@@ -53,6 +53,7 @@ class Informasi extends Model
 
         return $slug;
     }
+
     protected function imageUrl(): Attribute
     {
         return Attribute::make(
@@ -71,6 +72,7 @@ class Informasi extends Model
             },
         );
     }
+
 
     protected function contentForDisplay(): Attribute
     {

@@ -3,6 +3,8 @@
 namespace App\Support;
 
 use App\Http\Resources\BannerResource;
+use App\Http\Resources\BeritaCategoryResource;
+use App\Http\Resources\BeritaResource;
 use App\Http\Resources\CompanyProfileResource;
 use App\Http\Resources\EbookResource;
 use App\Http\Resources\EbookCategoryResource;
@@ -11,8 +13,12 @@ use App\Http\Resources\LegalitasResource;
 use App\Http\Resources\PrivacyPolicyResource;
 use App\Http\Resources\PenghargaanResource;
 use App\Http\Resources\ProdukResource;
+use App\Http\Resources\SignalCategoryResource;
+use App\Http\Resources\SignalResource;
 use App\Http\Resources\TermsAndConditionResource;
 use App\Models\Banner;
+use App\Models\Berita;
+use App\Models\BeritaCategory;
 use App\Models\CompanyProfile;
 use App\Models\Ebook;
 use App\Models\EbookCategory;
@@ -21,6 +27,8 @@ use App\Models\Legalitas;
 use App\Models\PrivacyPolicy;
 use App\Models\Penghargaan;
 use App\Models\Produk;
+use App\Models\Signal;
+use App\Models\SignalCategory;
 use App\Models\TermsAndCondition;
 use Illuminate\Support\Facades\File;
 
@@ -69,6 +77,42 @@ class ApiJsonCacheService
         }
 
         $this->refreshEbookCategories();
+    }
+
+    public function ensureSignalCache(): void
+    {
+        if ($this->cacheExists('signal')) {
+            return;
+        }
+
+        $this->refreshSignal();
+    }
+
+    public function ensureSignalCategoryCache(): void
+    {
+        if ($this->cacheExists('signal-categories')) {
+            return;
+        }
+
+        $this->refreshSignalCategories();
+    }
+
+    public function ensureBeritaCache(): void
+    {
+        if ($this->cacheExists('berita')) {
+            return;
+        }
+
+        $this->refreshBerita();
+    }
+
+    public function ensureBeritaCategoryCache(): void
+    {
+        if ($this->cacheExists('berita-categories')) {
+            return;
+        }
+
+        $this->refreshBeritaCategories();
     }
 
     public function ensurePenghargaanCache(): void
@@ -184,6 +228,54 @@ class ApiJsonCacheService
         $this->write('ebook-categories', $items);
     }
 
+    public function refreshSignal(): void
+    {
+        $items = Signal::query()
+            ->with('category')
+            ->orderForListing()
+            ->get()
+            ->map(fn (Signal $signal) => (new SignalResource($signal))->resolve())
+            ->all();
+
+        $this->write('signal', $items);
+    }
+
+    public function refreshSignalCategories(): void
+    {
+        $items = SignalCategory::query()
+            ->withCount('signals')
+            ->orderBy('name')
+            ->get()
+            ->map(fn (SignalCategory $category) => (new SignalCategoryResource($category))->resolve())
+            ->all();
+
+        $this->write('signal-categories', $items);
+    }
+
+    public function refreshBerita(): void
+    {
+        $items = Berita::query()
+            ->with('category')
+            ->orderForListing()
+            ->get()
+            ->map(fn (Berita $berita) => (new BeritaResource($berita))->resolve())
+            ->all();
+
+        $this->write('berita', $items);
+    }
+
+    public function refreshBeritaCategories(): void
+    {
+        $items = BeritaCategory::query()
+            ->withCount('beritas')
+            ->orderBy('name')
+            ->get()
+            ->map(fn (BeritaCategory $category) => (new BeritaCategoryResource($category))->resolve())
+            ->all();
+
+        $this->write('berita-categories', $items);
+    }
+
     public function refreshPenghargaan(): void
     {
         $items = Penghargaan::query()
@@ -283,6 +375,32 @@ class ApiJsonCacheService
     public function ebookCategoryItems(): array
     {
         return $this->readItems('ebook-categories');
+    }
+
+    public function signalItems(): array
+    {
+        return array_map(
+            fn (array $item) => $this->normalizeInformasiItem($item),
+            $this->readItems('signal')
+        );
+    }
+
+    public function signalCategoryItems(): array
+    {
+        return $this->readItems('signal-categories');
+    }
+
+    public function beritaItems(): array
+    {
+        return array_map(
+            fn (array $item) => $this->normalizeInformasiItem($item),
+            $this->readItems('berita')
+        );
+    }
+
+    public function beritaCategoryItems(): array
+    {
+        return $this->readItems('berita-categories');
     }
 
     /**

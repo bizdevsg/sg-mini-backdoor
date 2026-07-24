@@ -3,25 +3,39 @@
 @section('title', 'Penghargaan')
 
 @section('content')
+    @php
+        $theme = auth()->user()?->roleTheme() ?? [
+            'hero_bg' => 'bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(199,161,90,0.15),transparent),linear-gradient(160deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.01)_100%)]',
+            'hero_glow' => 'bg-gold/8',
+            'hero_shimmer' => 'via-gold/35',
+            'badge_border' => 'border-gold/20',
+            'badge_bg' => 'bg-gold/8',
+            'badge_text' => 'text-gold-soft/90',
+            'dot' => 'bg-gold',
+            'gradient_text' => 'from-gold-soft to-champagne',
+            'btn_primary' => 'bg-gold text-obsidian hover:bg-gold-soft shadow-[0_4px_18px_rgba(199,161,90,0.28)]',
+        ];
+    @endphp
+
     <section class="space-y-6">
 
         {{-- ══════════════════════════════════════════════
              HERO HEADER
         ══════════════════════════════════════════════ --}}
-        <div class="relative overflow-hidden rounded-[28px] border border-white/8 bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(199,161,90,0.15),transparent),linear-gradient(160deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.01)_100%)] px-7 py-6 shadow-[0_24px_60px_rgba(0,0,0,0.3)] motion-safe:motion-preset-slide-down-sm lg:px-9 lg:py-8">
-            <div class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gold/8 blur-[64px]"></div>
-            <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/35 to-transparent"></div>
+        <div class="relative overflow-hidden rounded-[28px] border border-white/8 {{ $theme['hero_bg'] }} px-7 py-6 shadow-[0_24px_60px_rgba(0,0,0,0.3)] motion-safe:motion-preset-slide-down-sm lg:px-9 lg:py-8">
+            <div class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full {{ $theme['hero_glow'] }} blur-[64px]"></div>
+            <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent {{ $theme['hero_shimmer'] }} to-transparent"></div>
 
             <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                 <div class="space-y-3 motion-safe:motion-preset-slide-right-sm motion-safe:motion-delay-[60ms]">
-                    <span class="inline-flex items-center gap-2 rounded-full border border-gold/20 bg-gold/8 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-soft/90">
-                        <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-gold"></span>
+                    <span class="inline-flex items-center gap-2 rounded-full border {{ $theme['badge_border'] }} {{ $theme['badge_bg'] }} px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] {{ $theme['badge_text'] }}">
+                        <span class="h-1.5 w-1.5 animate-pulse rounded-full {{ $theme['dot'] }}"></span>
                         Recognition Management
                     </span>
                     <div>
                         <h1 class="text-2xl font-semibold tracking-[-0.04em] text-white lg:text-3xl">
                             Penghargaan
-                            <span class="bg-gradient-to-r from-gold-soft to-champagne bg-clip-text text-transparent">Perusahaan</span>
+                            <span class="bg-gradient-to-r {{ $theme['gradient_text'] }} bg-clip-text text-transparent">Perusahaan</span>
                         </h1>
                         <p class="mt-2 max-w-xl text-sm leading-6 text-smoke">
                             Kelola dokumentasi prestasi, piala, dan penghargaan resmi perusahaan.
@@ -36,7 +50,7 @@
                         </span>
                     @endif
                     <a href="{{ route('penghargaan.create') }}"
-                        class="inline-flex items-center gap-2 rounded-xl bg-gold px-5 py-2.5 text-sm font-semibold text-obsidian shadow-[0_4px_18px_rgba(199,161,90,0.28)] transition-all duration-200 hover:bg-gold-soft hover:shadow-[0_6px_24px_rgba(199,161,90,0.4)]">
+                        class="inline-flex items-center gap-2 rounded-xl {{ $theme['btn_primary'] }} px-5 py-2.5 text-sm font-semibold transition-all duration-200">
                         <i class="fa-solid fa-plus text-xs"></i>
                         Tambah Penghargaan
                     </a>

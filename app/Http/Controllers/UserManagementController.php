@@ -35,6 +35,7 @@ class UserManagementController extends Controller
 
         return view('user-management.index', [
             'adminCount' => User::query()->where('role', UserRole::Admin->value)->count(),
+            'adminHostCount' => User::query()->where('role', UserRole::AdminHost->value)->count(),
             'superadminCount' => User::query()->where('role', UserRole::Superadmin->value)->count(),
             'availableRoles' => UserRole::cases(),
             'selectedRole' => $role,

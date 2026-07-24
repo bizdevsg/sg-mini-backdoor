@@ -11,6 +11,8 @@ class ImagePath
      */
     private const LEGACY_PREFIXES = [
         'banner-images/' => 'uploads/banner/',
+        'signal-images/' => 'uploads/signal/',
+        'berita-images/' => 'uploads/berita/',
         'ebook-images/' => 'uploads/ebook/',
         'produk-images/' => 'uploads/produk/',
         'penghargaan-images/' => 'uploads/penghargaan/',

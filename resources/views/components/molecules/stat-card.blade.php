@@ -1,8 +1,14 @@
+@php
+    $theme = auth()->user()?->roleTheme() ?? [
+        'badge_border' => 'border-gold/20',
+        'badge_bg' => 'bg-gold/16',
+    ];
+@endphp
 <div
     class="{{ cn(
         'flex items-center gap-4 rounded-2xl p-5 transition-transform duration-300 hover:-translate-y-1',
         $highlight ?? false
-            ? 'border border-gold/20 bg-gold/16 shadow-lg shadow-black/10 hover:shadow-[0_18px_40px_rgba(199,161,90,0.12)]'
+            ? cn('border shadow-lg shadow-black/10', $theme['badge_border'], $theme['badge_bg'])
             : 'border border-white/8 bg-white/4 hover:border-white/12 hover:bg-white/6',
         $class ?? null,
     ) }}">

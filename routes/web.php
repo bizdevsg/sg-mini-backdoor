@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\BeritaCategoryController;
+use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\CompanyProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EbookController;
@@ -11,16 +13,18 @@ use App\Http\Controllers\LegalitasController;
 use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\SignalCategoryController;
+use App\Http\Controllers\SignalController;
 use App\Http\Controllers\TermsAndConditionsController;
 use App\Http\Controllers\TinyMceImageController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return redirect()->route(auth()->user()?->adminLandingRouteName() ?? 'dashboard');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin.panel.access'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::prefix('banner')
         ->name('banner.')
@@ -65,6 +69,48 @@ Route::middleware('auth')->group(function () {
             Route::get('/{ebookCategory}/{ebook}/edit', [EbookController::class, 'edit'])->name('edit');
             Route::put('/{ebookCategory}/{ebook}', [EbookController::class, 'update'])->name('update');
             Route::delete('/{ebookCategory}/{ebook}', [EbookController::class, 'destroy'])->name('destroy');
+        });
+    Route::prefix('signal')
+        ->name('signal.')
+        ->group(function () {
+            Route::get('/{signalCategory}', [SignalController::class, 'index'])->name('index');
+            Route::get('/{signalCategory}/create', [SignalController::class, 'create'])->name('create');
+            Route::post('/{signalCategory}', [SignalController::class, 'store'])->name('store');
+            Route::get('/{signalCategory}/{signal}', [SignalController::class, 'show'])->name('show');
+            Route::get('/{signalCategory}/{signal}/edit', [SignalController::class, 'edit'])->name('edit');
+            Route::put('/{signalCategory}/{signal}', [SignalController::class, 'update'])->name('update');
+            Route::delete('/{signalCategory}/{signal}', [SignalController::class, 'destroy'])->name('destroy');
+        });
+    Route::prefix('kategori-signal')
+        ->name('signal-categories.')
+        ->group(function () {
+            Route::get('/', [SignalCategoryController::class, 'index'])->name('index');
+            Route::get('/create', [SignalCategoryController::class, 'create'])->name('create');
+            Route::post('/', [SignalCategoryController::class, 'store'])->name('store');
+            Route::get('/{signalCategory}/edit', [SignalCategoryController::class, 'edit'])->name('edit');
+            Route::put('/{signalCategory}', [SignalCategoryController::class, 'update'])->name('update');
+            Route::delete('/{signalCategory}', [SignalCategoryController::class, 'destroy'])->name('destroy');
+        });
+    Route::prefix('berita')
+        ->name('berita.')
+        ->group(function () {
+            Route::get('/{beritaCategory}', [BeritaController::class, 'index'])->name('index');
+            Route::get('/{beritaCategory}/create', [BeritaController::class, 'create'])->name('create');
+            Route::post('/{beritaCategory}', [BeritaController::class, 'store'])->name('store');
+            Route::get('/{beritaCategory}/{berita}', [BeritaController::class, 'show'])->name('show');
+            Route::get('/{beritaCategory}/{berita}/edit', [BeritaController::class, 'edit'])->name('edit');
+            Route::put('/{beritaCategory}/{berita}', [BeritaController::class, 'update'])->name('update');
+            Route::delete('/{beritaCategory}/{berita}', [BeritaController::class, 'destroy'])->name('destroy');
+        });
+    Route::prefix('kategori-berita')
+        ->name('berita-categories.')
+        ->group(function () {
+            Route::get('/', [BeritaCategoryController::class, 'index'])->name('index');
+            Route::get('/create', [BeritaCategoryController::class, 'create'])->name('create');
+            Route::post('/', [BeritaCategoryController::class, 'store'])->name('store');
+            Route::get('/{beritaCategory}/edit', [BeritaCategoryController::class, 'edit'])->name('edit');
+            Route::put('/{beritaCategory}', [BeritaCategoryController::class, 'update'])->name('update');
+            Route::delete('/{beritaCategory}', [BeritaCategoryController::class, 'destroy'])->name('destroy');
         });
     Route::prefix('kategori-ebook')
         ->name('ebook-categories.')

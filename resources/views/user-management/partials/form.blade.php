@@ -101,8 +101,9 @@
                     Konfirmasi Password {{ !$managedUser ? '*' : '' }}
                 </label>
                 <input type="password" id="password_confirmation" name="password_confirmation"
-                    class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 border-white/8 transition-colors"
+                    class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('password_confirmation') ? 'border-red-400/60' : 'border-white/8' }}"
                     placeholder="Ulangi password" @required(!$managedUser)>
+                <x-forms.field-error field="password_confirmation" />
             </div>
         </div>
 

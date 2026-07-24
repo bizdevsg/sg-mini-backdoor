@@ -19,13 +19,22 @@
     @stack('styles')
 </head>
 
-<body class="min-h-screen overflow-x-hidden bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,#2c2217_0%,#15110d_55%,#0d0a08_100%)] text-champagne antialiased selection:bg-gold selection:text-obsidian">
-    @php($user = auth()->user())
+<body
+    class="min-h-screen overflow-x-hidden bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,#2c2217_0%,#15110d_55%,#0d0a08_100%)] text-champagne antialiased selection:bg-gold selection:text-obsidian">
+    @php
+        $user = auth()->user();
+        $theme = $user?->roleTheme() ?? [
+            'bg_glow_1' => 'bg-gold/5',
+            'bg_glow_2' => 'bg-gold/4',
+        ];
+    @endphp
 
     {{-- Ambient Ambient Light Effects --}}
     <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div class="absolute -left-40 -top-40 h-[500px] w-[500px] rounded-full bg-gold/5 blur-[120px]"></div>
-        <div class="absolute -right-40 top-1/3 h-[600px] w-[600px] rounded-full bg-gold/4 blur-[140px]"></div>
+        <div class="absolute -left-40 -top-40 h-[500px] w-[500px] rounded-full {{ $theme['bg_glow_1'] }} blur-[120px]">
+        </div>
+        <div class="absolute -right-40 top-1/3 h-[600px] w-[600px] rounded-full {{ $theme['bg_glow_2'] }} blur-[140px]">
+        </div>
     </div>
 
     <div class="relative z-10 min-h-screen lg:pl-72">
@@ -38,44 +47,38 @@
                 <main class="px-4 pb-8 pt-32 lg:px-7 lg:pb-10 lg:pt-24">
                     {{-- Flash Notification Status --}}
                     @if (session('status'))
-                        <div
-                            data-auto-dismiss
-                            data-auto-dismiss-delay="5000"
-                            role="status"
-                            class="group relative mb-6 overflow-hidden rounded-2xl border border-emerald-400/25 bg-[linear-gradient(135deg,_rgba(16,70,52,0.95)_0%,_rgba(10,42,31,0.98)_100%)] text-emerald-50 shadow-[0_20px_50px_rgba(16,185,129,0.25)] backdrop-blur-md transition-all duration-300 motion-safe:motion-preset-slide-down-sm"
-                        >
+                        <div data-auto-dismiss data-auto-dismiss-delay="5000" role="status"
+                            class="group relative mb-6 overflow-hidden rounded-2xl border border-emerald-400/25 bg-[linear-gradient(135deg,_rgba(16,70,52,0.95)_0%,_rgba(10,42,31,0.98)_100%)] text-emerald-50 shadow-[0_20px_50px_rgba(16,185,129,0.25)] backdrop-blur-md transition-all duration-300 motion-safe:motion-preset-slide-down-sm">
                             <div class="flex items-center justify-between gap-4 px-5 py-4">
                                 <div class="flex items-center gap-3.5 min-w-0 flex-1">
-                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-300/30 bg-emerald-400/15 text-emerald-300 shadow-sm">
+                                    <div
+                                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-300/30 bg-emerald-400/15 text-emerald-300 shadow-sm">
                                         <i class="fa-solid fa-circle-check text-base"></i>
                                     </div>
 
                                     <div class="min-w-0 flex-1">
-                                        <p class="text-[10px] font-semibold uppercase tracking-[0.24em] text-emerald-300/80">
+                                        <p
+                                            class="text-[10px] font-semibold uppercase tracking-[0.24em] text-emerald-300/80">
                                             Berhasil
                                         </p>
-                                        <p class="mt-0.5 text-xs sm:text-sm font-medium leading-relaxed text-emerald-50">
+                                        <p
+                                            class="mt-0.5 text-xs sm:text-sm font-medium leading-relaxed text-emerald-50">
                                             {{ session('status') }}
                                         </p>
                                     </div>
                                 </div>
 
-                                <button
-                                    type="button"
-                                    data-auto-dismiss-close
+                                <button type="button" data-auto-dismiss-close
                                     class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-emerald-200/80 transition-all hover:border-white/20 hover:bg-white/12 hover:text-white focus:outline-none cursor-pointer"
-                                    aria-label="Tutup notifikasi"
-                                >
+                                    aria-label="Tutup notifikasi">
                                     <i class="fa-solid fa-xmark text-xs"></i>
                                 </button>
                             </div>
 
                             <div class="h-0.5 w-full bg-black/20">
-                                <div
-                                    data-auto-dismiss-progress
+                                <div data-auto-dismiss-progress
                                     class="h-full origin-left bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200"
-                                    style="transform: scaleX(1);"
-                                ></div>
+                                    style="transform: scaleX(1);"></div>
                             </div>
                         </div>
                     @endif
@@ -98,7 +101,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             const initializeAutoDismiss = () => {
                 document.querySelectorAll('[data-auto-dismiss]').forEach((element) => {
-                    if (!(element instanceof HTMLElement) || element.dataset.autoDismissInitialized === 'true') {
+                    if (!(element instanceof HTMLElement) || element.dataset.autoDismissInitialized ===
+                        'true') {
                         return;
                     }
 
@@ -141,7 +145,8 @@
 
             const initializeCollapsibleDetails = () => {
                 document.querySelectorAll('details[data-collapsible]').forEach((element) => {
-                    if (!(element instanceof HTMLDetailsElement) || element.dataset.collapsibleInitialized === 'true') {
+                    if (!(element instanceof HTMLDetailsElement) || element.dataset
+                        .collapsibleInitialized === 'true') {
                         return;
                     }
 

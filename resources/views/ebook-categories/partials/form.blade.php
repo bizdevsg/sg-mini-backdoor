@@ -24,9 +24,7 @@
             class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/15 transition-colors {{ $errors->has('name') ? 'border-red-400/60' : 'border-white/8' }}"
             placeholder="Contoh: Analisis Pasar & Keuangan" required>
         <p class="mt-2 text-[11px] text-smoke/70">Wajib diisi. Slug URL akan diperbarui otomatis berdasarkan nama kategori ini.</p>
-        @error('name')
-            <p class="mt-1.5 text-xs font-medium text-red-300">{{ $message }}</p>
-        @enderror
+        <x-forms.field-error field="name" />
     </div>
 </div>
 

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\BannerApiController;
+use App\Http\Controllers\Api\BeritaApiController;
+use App\Http\Controllers\Api\BeritaCategoryApiController;
 use App\Http\Controllers\Api\CompanyProfileController;
 use App\Http\Controllers\Api\EbookApiController;
 use App\Http\Controllers\Api\EbookCategoryApiController;
@@ -10,6 +12,8 @@ use App\Http\Controllers\Api\MassageApiController;
 use App\Http\Controllers\Api\PenghargaanApiController;
 use App\Http\Controllers\Api\PrivacyPolicyApiController;
 use App\Http\Controllers\Api\ProdukApiController;
+use App\Http\Controllers\Api\SignalApiController;
+use App\Http\Controllers\Api\SignalCategoryApiController;
 use App\Http\Controllers\Api\TermsAndConditionsApiController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +41,22 @@ Route::prefix('v1')->group(function () {
         Route::get('/categories/{slug}/detail', [EbookCategoryApiController::class, 'detail']);
         Route::get('/', [EbookApiController::class, 'index']);
         Route::get('/{slug}', [EbookApiController::class, 'show']);
+    });
+
+    Route::prefix('signal')->group(function () {
+        Route::get('/categories', [SignalCategoryApiController::class, 'index']);
+        Route::get('/categories/{slug}', [SignalCategoryApiController::class, 'show']);
+        Route::get('/categories/{slug}/detail', [SignalCategoryApiController::class, 'detail']);
+        Route::get('/', [SignalApiController::class, 'index']);
+        Route::get('/{slug}', [SignalApiController::class, 'show']);
+    });
+
+    Route::prefix('berita')->group(function () {
+        Route::get('/categories', [BeritaCategoryApiController::class, 'index']);
+        Route::get('/categories/{slug}', [BeritaCategoryApiController::class, 'show']);
+        Route::get('/categories/{slug}/detail', [BeritaCategoryApiController::class, 'detail']);
+        Route::get('/', [BeritaApiController::class, 'index']);
+        Route::get('/{slug}', [BeritaApiController::class, 'show']);
     });
 
     Route::prefix('penghargaan')->group(function () {
