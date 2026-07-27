@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\SystemActivityLog;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
@@ -23,6 +24,9 @@ test('users can log in with valid credentials', function () {
         ->assertRedirect(route('dashboard'));
 
     $this->assertAuthenticatedAs($user);
+
+    expect(SystemActivityLog::query()->where('category', 'login')->count())
+        ->toBe(1);
 });
 
 test('users cannot log in with invalid credentials', function () {

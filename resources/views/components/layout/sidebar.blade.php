@@ -157,6 +157,31 @@
                     'active' => request()->routeIs('client-area.*'),
                 ],
                 [
+                    'label' => 'Monitoring Log',
+                    'icon' => 'fa-solid fa-chart-line',
+                    'open' => request()->routeIs('system-logs.*'),
+                    'children' => [
+                        [
+                            'label' => 'Login',
+                            'icon' => 'fa-solid fa-right-to-bracket',
+                            'href' => route('system-logs.show', ['category' => 'login']),
+                            'active' => request()->routeIs('system-logs.*') && request()->route('category') === 'login',
+                        ],
+                        [
+                            'label' => 'API',
+                            'icon' => 'fa-solid fa-plug',
+                            'href' => route('system-logs.show', ['category' => 'api']),
+                            'active' => request()->routeIs('system-logs.*') && request()->route('category') === 'api',
+                        ],
+                        [
+                            'label' => 'Data',
+                            'icon' => 'fa-solid fa-database',
+                            'href' => route('system-logs.show', ['category' => 'data']),
+                            'active' => request()->routeIs('system-logs.*') && request()->route('category') === 'data',
+                        ],
+                    ],
+                ],
+                [
                     'label' => 'Dokumentasi API',
                     'icon' => 'fa-solid fa-book-open-reader',
                     'href' => route('api-documentation.show'),

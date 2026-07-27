@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\ClientAreaSetting;
+use App\Models\SystemActivityLog;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
@@ -19,7 +20,8 @@ test('superadmin can access client area setting page', function () {
         ->assertSuccessful()
         ->assertSee('Client Area')
         ->assertSee('Development')
-        ->assertSee('Production');
+        ->assertSee('Production')
+        ->assertDontSee('System Log');
 });
 
 test('superadmin can toggle client area statuses independently', function () {
@@ -46,9 +48,12 @@ test('superadmin can toggle client area statuses independently', function () {
         ->assertSee('Client Area Nonaktif');
 
     $settings = ClientAreaSetting::query()->firstOrFail();
+    $log = SystemActivityLog::query()->where('category', 'data')->latest()->first();
 
     expect($settings->client_area_dev)->toBeTrue()
-        ->and($settings->client_area_prod)->toBeFalse();
+        ->and($settings->client_area_prod)->toBeFalse()
+        ->and($log?->event)->toBe('client_area_toggle')
+        ->and($log?->context['target'] ?? null)->toBe('prod');
 });
 
 test('admin users cannot access client area setting page', function () {

@@ -19,7 +19,6 @@
         $clientAreaDev = (bool) ($settings['client_area_dev'] ?? false);
         $clientAreaProd = (bool) ($settings['client_area_prod'] ?? false);
         $activeCount = ($clientAreaDev ? 1 : 0) + ($clientAreaProd ? 1 : 0);
-
         $cards = [
             [
                 'key' => 'dev',
@@ -339,6 +338,7 @@
                 </div>
             </div>
         </div>
+
     </section>
 
     @push('scripts')

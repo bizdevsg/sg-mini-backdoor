@@ -17,6 +17,7 @@ use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SignalCategoryController;
 use App\Http\Controllers\SignalController;
+use App\Http\Controllers\SystemLogController;
 use App\Http\Controllers\TermsAndConditionsController;
 use App\Http\Controllers\TinyMceImageController;
 use App\Http\Controllers\UserManagementController;
@@ -185,6 +186,14 @@ Route::middleware(['auth', 'admin.panel.access'])->group(function () {
         ->group(function () {
             Route::get('/', [ClientAreaSettingController::class, 'show'])->name('show');
             Route::put('/', [ClientAreaSettingController::class, 'update'])->name('update');
+        });
+    Route::prefix('system-logs')
+        ->name('system-logs.')
+        ->middleware('can:manage-user-management')
+        ->group(function () {
+            Route::get('/{category}', [SystemLogController::class, 'show'])
+                ->whereIn('category', ['login', 'api', 'data'])
+                ->name('show');
         });
     Route::post('/tinymce/images', TinyMceImageController::class)->name('tinymce.images.store');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');

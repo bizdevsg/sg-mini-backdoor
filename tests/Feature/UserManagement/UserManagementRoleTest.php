@@ -63,5 +63,6 @@ test('admin dashboard does not show user management navigation', function () {
         ->get(route('dashboard'))
         ->assertSuccessful()
         ->assertDontSee('User Management')
-        ->assertDontSee('Kelola User');
+        ->assertDontSee('Kelola User')
+        ->assertDontSee('Monitoring Log');
 });

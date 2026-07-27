@@ -24,11 +24,14 @@
         <div class="space-y-0.5">
             <div class="flex items-center gap-2">
                 <span class="h-1.5 w-1.5 rounded-full {{ $theme['topbar_dot'] }} animate-pulse"></span>
-                <span class="text-[10px] font-semibold uppercase tracking-[0.2em] {{ $theme['topbar_text'] }}">Portal Admin</span>
-                <span class="ml-1 inline-flex items-center rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider {{ $theme['role_badge_bg'] }}">
+                <span class="text-[10px] font-semibold uppercase tracking-[0.2em] {{ $theme['topbar_text'] }}">Portal
+                    Admin</span>
+                <span
+                    class="ml-1 inline-flex items-center rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider {{ $theme['role_badge_bg'] }}">
                     {{ $theme['role_label'] }}
                 </span>
             </div>
+
             <h1 class="text-lg font-semibold tracking-tight text-white lg:text-xl">
                 @yield('title', 'SG Admin')
             </h1>
@@ -40,8 +43,7 @@
             <div class="flex items-center gap-2.5">
                 {{-- Server Time --}}
                 <div class="flex items-center gap-2.5 rounded-xl border border-white/8 bg-white/4 px-3 py-1.5 text-xs">
-                    <div
-                        class="flex h-6 w-6 items-center justify-center rounded-lg border {{ $theme['topbar_box'] }}">
+                    <div class="flex h-6 w-6 items-center justify-center rounded-lg border {{ $theme['topbar_box'] }}">
                         <i class="fa-regular fa-clock"></i>
                     </div>
                     <div class="leading-tight">
