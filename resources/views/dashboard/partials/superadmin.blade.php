@@ -22,6 +22,13 @@
             'accent' => 'gold',
         ],
         [
+            'href' => route('api-documentation.show'),
+            'icon' => 'fa-solid fa-book-open-reader',
+            'label' => 'Dokumentasi API',
+            'description' => 'Header, endpoint, dan contoh request',
+            'accent' => 'gold',
+        ],
+        [
             'href' => route('banner.index'),
             'icon' => 'fa-solid fa-image',
             'label' => 'Banner',

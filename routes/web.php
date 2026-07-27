@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ApiDocumentationController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BeritaCategoryController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\ClientAreaSettingController;
 use App\Http\Controllers\CompanyProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EbookController;
@@ -170,6 +172,19 @@ Route::middleware(['auth', 'admin.panel.access'])->group(function () {
             Route::get('/{user}/edit', [UserManagementController::class, 'edit'])->name('edit');
             Route::put('/{user}', [UserManagementController::class, 'update'])->name('update');
             Route::delete('/{user}', [UserManagementController::class, 'destroy'])->name('destroy');
+        });
+    Route::prefix('dokumentasi-api')
+        ->name('api-documentation.')
+        ->middleware('can:manage-user-management')
+        ->group(function () {
+            Route::get('/', [ApiDocumentationController::class, 'show'])->name('show');
+        });
+    Route::prefix('client-area')
+        ->name('client-area.')
+        ->middleware('can:manage-user-management')
+        ->group(function () {
+            Route::get('/', [ClientAreaSettingController::class, 'show'])->name('show');
+            Route::put('/', [ClientAreaSettingController::class, 'update'])->name('update');
         });
     Route::post('/tinymce/images', TinyMceImageController::class)->name('tinymce.images.store');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');

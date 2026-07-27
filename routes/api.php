@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\BannerApiController;
 use App\Http\Controllers\Api\BeritaApiController;
 use App\Http\Controllers\Api\BeritaCategoryApiController;
+use App\Http\Controllers\Api\ClientAreaApiController;
 use App\Http\Controllers\Api\CompanyProfileController;
 use App\Http\Controllers\Api\EbookApiController;
 use App\Http\Controllers\Api\EbookCategoryApiController;
@@ -18,6 +19,10 @@ use App\Http\Controllers\Api\TermsAndConditionsApiController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->middleware('api.key')->group(function () {
+    Route::prefix('client-area')->group(function () {
+        Route::get('/', [ClientAreaApiController::class, 'show']);
+    });
+
     Route::prefix('banner')->group(function () {
         Route::get('/', [BannerApiController::class, 'index']);
         Route::get('/{slug}', [BannerApiController::class, 'show']);

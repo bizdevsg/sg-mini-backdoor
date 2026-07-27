@@ -151,6 +151,18 @@
             'heading' => 'Sistem',
             'items' => [
                 [
+                    'label' => 'Client Area',
+                    'icon' => 'fa-solid fa-toggle-on',
+                    'href' => route('client-area.show'),
+                    'active' => request()->routeIs('client-area.*'),
+                ],
+                [
+                    'label' => 'Dokumentasi API',
+                    'icon' => 'fa-solid fa-book-open-reader',
+                    'href' => route('api-documentation.show'),
+                    'active' => request()->routeIs('api-documentation.*'),
+                ],
+                [
                     'label' => 'User Management',
                     'icon' => 'fa-solid fa-users-gear',
                     'href' => route('user-management.index'),
