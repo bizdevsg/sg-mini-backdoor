@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AuthenticateApiWithKey;
 use App\Http\Middleware\EnsureAdminPanelAccess;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -18,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin.panel.access' => EnsureAdminPanelAccess::class,
+            'api.key' => AuthenticateApiWithKey::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

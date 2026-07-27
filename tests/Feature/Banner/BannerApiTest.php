@@ -22,7 +22,7 @@ test('banner api only returns active banners ordered by sort order', function ()
 
     app(ApiJsonCacheService::class)->refreshBanner();
 
-    $response = $this->getJson('/api/banner');
+    $response = $this->getJson('/api/v1/banner', apiKeyHeaders());
 
     $response->assertSuccessful()
         ->assertJsonPath('meta.total', 2)
@@ -37,7 +37,7 @@ test('banner api can show single active banner by id', function () {
 
     app(ApiJsonCacheService::class)->refreshBanner();
 
-    $this->getJson('/api/banner/'.$banner->id)
+    $this->getJson('/api/v1/banner/'.$banner->slug, apiKeyHeaders())
         ->assertSuccessful()
         ->assertJsonPath('data.id', $banner->id)
         ->assertJsonPath('data.image', $banner->image);

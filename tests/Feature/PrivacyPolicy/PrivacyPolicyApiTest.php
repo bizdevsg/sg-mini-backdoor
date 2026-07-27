@@ -14,7 +14,7 @@ test('privacy policy api returns singleton document', function () {
 
     app(ApiJsonCacheService::class)->refreshPrivacyPolicy();
 
-    $this->getJson('/api/v1/privacy-policy')
+    $this->getJson('/api/v1/privacy-policy', apiKeyHeaders())
         ->assertSuccessful()
         ->assertJsonPath('data.id', $policy->id)
         ->assertJsonPath('data.content', '<p>Dokumen privasi utama.</p>')
@@ -22,6 +22,6 @@ test('privacy policy api returns singleton document', function () {
 });
 
 test('privacy policy api returns not found when document is unavailable', function () {
-    $this->getJson('/api/v1/privacy-policy')
+    $this->getJson('/api/v1/privacy-policy', apiKeyHeaders())
         ->assertNotFound();
 });

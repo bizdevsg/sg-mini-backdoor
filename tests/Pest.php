@@ -48,3 +48,18 @@ function something()
 {
     // ..
 }
+
+function apiKeyHeaders(array $headers = []): array
+{
+    $configuredKey = (string) config('api-auth.key', '');
+    $headerName = (string) config('api-auth.header', 'X-API-Key');
+
+    if ($configuredKey === '') {
+        $configuredKey = 'test-api-key';
+        config()->set('api-auth.key', $configuredKey);
+    }
+
+    return array_merge([
+        $headerName => $configuredKey,
+    ], $headers);
+}

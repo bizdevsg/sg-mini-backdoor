@@ -17,7 +17,7 @@ use App\Http\Controllers\Api\SignalCategoryApiController;
 use App\Http\Controllers\Api\TermsAndConditionsApiController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('v1')->group(function () {
+Route::prefix('v1')->middleware('api.key')->group(function () {
     Route::prefix('banner')->group(function () {
         Route::get('/', [BannerApiController::class, 'index']);
         Route::get('/{slug}', [BannerApiController::class, 'show']);

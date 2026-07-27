@@ -14,7 +14,7 @@ test('terms and conditions api returns singleton document', function () {
 
     app(ApiJsonCacheService::class)->refreshTermsAndConditions();
 
-    $this->getJson('/api/v1/terms-and-conditions')
+    $this->getJson('/api/v1/terms-and-conditions', apiKeyHeaders())
         ->assertSuccessful()
         ->assertJsonPath('data.id', $terms->id)
         ->assertJsonPath('data.content', '<p>Dokumen syarat utama.</p>')
@@ -22,6 +22,6 @@ test('terms and conditions api returns singleton document', function () {
 });
 
 test('terms and conditions api returns not found when document is unavailable', function () {
-    $this->getJson('/api/v1/terms-and-conditions')
+    $this->getJson('/api/v1/terms-and-conditions', apiKeyHeaders())
         ->assertNotFound();
 });

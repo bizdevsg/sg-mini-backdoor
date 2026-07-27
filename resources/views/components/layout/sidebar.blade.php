@@ -67,7 +67,7 @@
             ],
             [
                 'label' => 'Signal',
-                'icon' => 'fa-solid fa-image',
+                'icon' => 'fa-solid fa-signal',
                 'href' => route('signal-categories.index'),
                 'active' => request()->routeIs('signal.*') || request()->routeIs('signal-categories.*'),
             ],
@@ -237,15 +237,17 @@
             class="flex items-center gap-3 rounded-xl border border-white/8 bg-white/3 p-3 transition-colors hover:bg-white/5">
             <div
                 class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border {{ $theme['avatar_border'] }} {{ $theme['avatar_bg'] }} font-bold text-xs {{ $theme['avatar_text'] }}">
-                {{ mb_strtoupper(mb_substr($user->name ?? 'A', 0, 1)) }}
+                @if ($theme['role_label'] === 'Superadmin')
+                    <i class="fa-solid fa-crown"></i>
+                @elseif ($theme['role_label'] === 'Admin')
+                    <i class="fa-solid fa-shield-halved"></i>
+                @else
+                    <i class="fa-solid fa-headset"></i>
+                @endif
             </div>
             <div class="min-w-0 flex-1">
                 <div class="flex items-center justify-between gap-1">
                     <p class="truncate text-xs font-semibold text-white">{{ $user->name ?? 'Admin User' }}</p>
-                    <span
-                        class="inline-flex items-center rounded-full border px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider {{ $theme['role_badge_bg'] }}">
-                        {{ $theme['role_label'] }}
-                    </span>
                 </div>
                 <p class="truncate text-[10px] text-smoke/70">{{ $user->email ?? 'admin@sg.com' }}</p>
             </div>
