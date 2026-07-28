@@ -59,6 +59,20 @@ test('client area api rejects missing origin when allowed origins are configured
         ->assertJsonPath('message', 'Header Origin wajib dikirim untuk API ini.');
 });
 
+test('client area api rejects requests when allowed origin frontend is not configured', function () {
+    config()->set('api-auth.key', 'test-api-key');
+
+    ClientAreaSetting::query()->create([
+        'api_enabled' => true,
+        'allowed_origin_frontend' => null,
+    ]);
+
+    $this->withServerVariables(['REMOTE_ADDR' => '127.0.0.16'])
+        ->getJson('/api/v1/client-area', apiKeyHeaders())
+        ->assertForbidden()
+        ->assertJsonPath('message', 'Allowed Origin Frontend belum dikonfigurasi.');
+});
+
 test('client area api returns 503 when public api is disabled', function () {
     config()->set('api-auth.key', 'test-api-key');
 

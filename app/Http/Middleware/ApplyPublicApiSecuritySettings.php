@@ -24,9 +24,13 @@ class ApplyPublicApiSecuritySettings
             return $this->jsonError('Public API sedang dinonaktifkan.', 503);
         }
 
+        if ($allowedOrigins === []) {
+            return $this->jsonError('Allowed Origin Frontend belum dikonfigurasi.', 403);
+        }
+
         $origin = trim((string) $request->headers->get('Origin', ''));
 
-        if ($allowedOrigins !== [] && $origin === '') {
+        if ($origin === '') {
             return $this->jsonError('Header Origin wajib dikirim untuk API ini.', 403);
         }
 

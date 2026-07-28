@@ -96,6 +96,22 @@ test('superadmin can update api security settings', function () {
         ->and($log?->event)->toBe('api_security_update');
 });
 
+test('superadmin can save api security settings with empty allowed origin frontend', function () {
+    $user = User::factory()->superadmin()->create();
+
+    $this->actingAs($user)
+        ->put(route('client-area.update-api-security'), [
+            'api_enabled' => true,
+            'api_key_rotation_notice' => 'Rotasi API key dijadwalkan 15 Agustus 2026.',
+            'allowed_origin_frontend' => '',
+        ])
+        ->assertRedirect(route('client-area.show'));
+
+    $settings = ClientAreaSetting::query()->firstOrFail();
+
+    expect($settings->allowed_origin_frontend)->toBeNull();
+});
+
 test('admin users cannot access client area setting page', function () {
     $user = User::factory()->create();
 

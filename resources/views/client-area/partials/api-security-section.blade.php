@@ -39,7 +39,7 @@
                 <textarea id="allowed_origin_frontend" name="allowed_origin_frontend" rows="5"
                     class="w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-sm text-white outline-none transition placeholder:text-smoke/35 focus:border-gold/40"
                     placeholder="https://frontend-dev.test&#10;https://frontend-prod.com">{{ old('allowed_origin_frontend', $settings['allowed_origin_frontend']) }}</textarea>
-                <p class="text-xs text-smoke/50">Pisahkan dengan baris baru atau koma. Jika diisi, request wajib mengirim header `Origin` yang sesuai.</p>
+                <p class="text-xs text-smoke/50">Boleh kosong di backdoor. Kalau belum diisi, API akan menolak request dan mengembalikan notif konfigurasi origin belum ada.</p>
             </div>
 
             <div class="space-y-5">
@@ -58,8 +58,8 @@
 
         @if ($errors->hasAny(['api_enabled', 'allowed_origin_frontend', 'api_key_rotation_notice']))
             <div class="rounded-lg border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-xs text-rose-200">
-                @foreach ($errors->only(['api_enabled', 'allowed_origin_frontend', 'api_key_rotation_notice']) as $messages)
-                    @foreach ($messages as $message)
+                @foreach (['api_enabled', 'allowed_origin_frontend', 'api_key_rotation_notice'] as $field)
+                    @foreach ($errors->get($field) as $message)
                         <p>{{ $message }}</p>
                     @endforeach
                 @endforeach
