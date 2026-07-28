@@ -66,21 +66,21 @@
                             </div>
                         </div>
 
-                        @if ($activeCategory === 'api')
+                        @if (in_array($activeCategory, ['api', 'data'], true))
                             <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
                                 <span class="shrink-0 font-bold text-neutral-600">--grep-module:</span>
-                                <a href="{{ route('system-logs.show', ['category' => 'api']) }}"
+                                <a href="{{ route('system-logs.show', ['category' => $activeCategory]) }}"
                                     class="inline-flex items-center gap-1 rounded border px-2 py-0.5 transition-all active:scale-95 {{ $activeModule === '' ? 'border-sky-500/40 bg-sky-500/10 font-bold text-sky-300' : 'border-neutral-800 text-neutral-500 hover:border-neutral-700 hover:text-neutral-300' }}">
                                     *all
                                 </a>
-                                @foreach ($apiModuleMeta as $module => $label)
+                                @foreach ($moduleMeta as $module => $label)
                                     @php
-                                        $moduleCount = (int) ($apiModuleCounts[$module] ?? 0);
+                                        $moduleCount = (int) ($moduleCounts[$module] ?? 0);
                                     @endphp
                                     @if ($moduleCount > 0)
-                                        <a href="{{ route('system-logs.show', ['category' => 'api', 'module' => $module]) }}"
+                                        <a href="{{ route('system-logs.show', ['category' => $activeCategory, 'module' => $module]) }}"
                                             class="inline-flex items-center gap-1 rounded border px-2 py-0.5 transition-all active:scale-95 {{ $activeModule === $module ? 'border-sky-500/40 bg-sky-500/10 font-bold text-sky-300' : 'border-neutral-800 text-neutral-500 hover:border-neutral-700 hover:text-neutral-300' }}">
-                                            {{ $module }}
+                                            {{ $label }}
                                             <span class="text-[9px] text-neutral-700">({{ $moduleCount }})</span>
                                         </a>
                                     @endif
@@ -166,7 +166,7 @@
                             $statusCode = null;
                             $statusColor = 'text-[#28c840]';
 
-                            if ($activeCategory === 'api' && is_array($log->context)) {
+                            if (in_array($activeCategory, ['api', 'data'], true) && is_array($log->context)) {
                                 $moduleKey = (string) ($log->subject ?? ($log->context['module'] ?? 'unknown'));
                                 $statusCode = (int) ($log->context['status_code'] ?? 200);
 
@@ -198,7 +198,7 @@
                                             <span class="text-[10px] text-neutral-700">{{ $log->created_at?->format('H:i:s') }}</span>
                                             <span
                                                 class="inline-flex items-center rounded border px-1.5 py-px text-[10px] font-bold uppercase leading-tight tracking-widest {{ $evColor }}">{{ $log->event }}</span>
-                                            @if ($activeCategory === 'api' && $statusCode !== null)
+                                            @if (in_array($activeCategory, ['api', 'data'], true) && $statusCode !== null)
                                                 <span class="font-mono text-[11px] font-bold {{ $statusColor }}">HTTP {{ $statusCode }}</span>
                                             @endif
                                         </div>
@@ -224,17 +224,43 @@
                                                 class="inline-flex flex-wrap items-center gap-x-3 gap-y-0.5 rounded border border-neutral-800/80 bg-neutral-900/50 px-3 py-1 text-[10px]">
                                                 <span class="font-semibold uppercase tracking-wider text-neutral-600">ctx</span>
                                                 <span class="select-none text-neutral-700">|</span>
-                                                <span>target: <strong
-                                                        class="text-[#febc2e]">{{ strtoupper((string) ($log->context['target'] ?? '-')) }}</strong></span>
-                                                <span class="select-none text-neutral-700">|</span>
-                                                <span>
-                                                    status:
-                                                    <strong
-                                                        class="text-[#ff5f57]">{{ $log->context['previous_status'] ?? false ? 'aktif' : 'nonaktif' }}</strong>
-                                                    <span class="mx-0.5 text-neutral-600">&rarr;</span>
-                                                    <strong
-                                                        class="text-[#28c840]">{{ $log->context['new_status'] ?? false ? 'aktif' : 'nonaktif' }}</strong>
-                                                </span>
+                                                <span>module: <strong
+                                                        class="text-[#57b6f9]">{{ $moduleMeta[$moduleKey] ?? $moduleKey }}</strong></span>
+                                                @if (isset($log->context['action_label']))
+                                                    <span class="select-none text-neutral-700">|</span>
+                                                    <span>action: <strong
+                                                            class="text-sky-400">{{ strtoupper((string) $log->context['action_label']) }}</strong></span>
+                                                @endif
+                                                @if (isset($log->context['path']))
+                                                    <span class="select-none text-neutral-700">|</span>
+                                                    <span>path: <strong
+                                                            class="text-[#febc2e]">{{ $log->context['path'] }}</strong></span>
+                                                @endif
+                                                @if (isset($log->context['duration_ms']))
+                                                    <span class="select-none text-neutral-700">|</span>
+                                                    <span>latency:
+                                                        <strong
+                                                            class="{{ (int) $log->context['duration_ms'] > 500 ? 'text-[#ff5f57]' : 'text-[#28c840]' }}">
+                                                            {{ $log->context['duration_ms'] }}ms
+                                                        </strong>
+                                                    </span>
+                                                @endif
+                                                @if (isset($log->context['target']))
+                                                    <span class="select-none text-neutral-700">|</span>
+                                                    <span>target: <strong
+                                                            class="text-[#febc2e]">{{ strtoupper((string) $log->context['target']) }}</strong></span>
+                                                @endif
+                                                @if (array_key_exists('previous_status', $log->context) && array_key_exists('new_status', $log->context))
+                                                    <span class="select-none text-neutral-700">|</span>
+                                                    <span>
+                                                        status:
+                                                        <strong
+                                                            class="text-[#ff5f57]">{{ $log->context['previous_status'] ?? false ? 'aktif' : 'nonaktif' }}</strong>
+                                                        <span class="mx-0.5 text-neutral-600">&rarr;</span>
+                                                        <strong
+                                                            class="text-[#28c840]">{{ $log->context['new_status'] ?? false ? 'aktif' : 'nonaktif' }}</strong>
+                                                    </span>
+                                                @endif
                                             </div>
                                         @endif
 
@@ -244,7 +270,7 @@
                                                 <span class="font-semibold uppercase tracking-wider text-neutral-600">ctx</span>
                                                 <span class="select-none text-neutral-700">|</span>
                                                 <span>module: <strong
-                                                        class="text-[#57b6f9]">{{ $apiModuleMeta[$moduleKey] ?? $moduleKey }}</strong></span>
+                                                        class="text-[#57b6f9]">{{ $moduleMeta[$moduleKey] ?? $moduleKey }}</strong></span>
                                                 @if (isset($log->context['method']))
                                                     <span class="select-none text-neutral-700">|</span>
                                                     <span>method: <strong

@@ -27,9 +27,12 @@
                 <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">Kategori
                     Berita</span>
                 <div
-                    class="inline-flex w-full items-center gap-2 rounded-xl border border-gold/25 bg-gold/10 px-4 py-2.5 text-sm font-semibold text-gold-soft">
-                    <i class="fa-solid fa-folder-open text-xs"></i>
-                    {{ $beritaCategory?->name ?? '-' }}
+                    class="inline-flex w-full items-center gap-3 rounded-xl border border-gold/25 bg-gold/10 px-2.5 py-2.5 text-sm font-semibold text-gold-soft">
+                    <div class="bg-gold/30 p-1 h-7 w-7 text-center rounded-full aspect-square">
+                        <i class="fa-solid fa-folder-open text-xs"></i>
+                    </div>
+
+                    <span class="capitalize">{{ $beritaCategory?->name ?? '-' }}</span>
                 </div>
             </div>
 
@@ -94,7 +97,7 @@
                 <label for="content_id" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
                     Konten ID <span class="text-gold-soft">*</span>
                 </label>
-                <x-forms.tinymce-editor id="content_id" name="content_id" :value="old('content_id', $berita?->content_id)" :height="340"
+                <x-forms.tinymce-editor id="content_id" name="content_id" :value="old('content_id', $berita?->content_id)" :height="540"
                     placeholder="Tuliskan materi berita versi Indonesia..." required
                     helper="Gunakan editor untuk menyusun konten berita versi Indonesia." />
             </div>
@@ -103,7 +106,7 @@
                 <label for="content_en" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
                     Konten EN <span class="text-gold-soft">*</span>
                 </label>
-                <x-forms.tinymce-editor id="content_en" name="content_en" :value="old('content_en', $berita?->content_en)" :height="340"
+                <x-forms.tinymce-editor id="content_en" name="content_en" :value="old('content_en', $berita?->content_en)" :height="540"
                     placeholder="Write the English news content..." required
                     helper="Use the editor for the English version of the news content." />
             </div>

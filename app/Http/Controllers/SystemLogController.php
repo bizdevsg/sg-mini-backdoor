@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SystemActivityLog;
+use App\Support\SystemActivitySubjectCatalog;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -11,26 +12,14 @@ class SystemLogController extends Controller
     public function show(Request $request, string $category): View
     {
         $allowedCategories = ['login', 'api', 'data'];
-        $apiModuleMeta = [
-            'client-area' => 'Client Area',
-            'banner' => 'Banner',
-            'produk' => 'Produk',
-            'pengumuman' => 'Pengumuman',
-            'ebook' => 'Ebook',
-            'signal' => 'Signal',
-            'berita' => 'Berita',
-            'penghargaan' => 'Penghargaan',
-            'legalitas' => 'Legalitas',
-            'company-profile' => 'Profil Perusahaan',
-            'terms-and-conditions' => 'Syarat dan Ketentuan',
-            'privacy-policy' => 'Kebijakan Privasi',
-            'massages' => 'Massages',
-            'unknown' => 'Unknown',
+        $subjectMeta = [
+            'api' => SystemActivitySubjectCatalog::api(),
+            'data' => SystemActivitySubjectCatalog::data(),
         ];
 
         abort_unless(in_array($category, $allowedCategories, true), 404);
 
-        $activeModule = $category === 'api'
+        $activeModule = in_array($category, ['api', 'data'], true)
             ? (string) $request->query('module', '')
             : '';
 
@@ -40,9 +29,9 @@ class SystemLogController extends Controller
             ->latest();
 
         if (
-            $category === 'api'
+            in_array($category, ['api', 'data'], true)
             && $activeModule !== ''
-            && array_key_exists($activeModule, $apiModuleMeta)
+            && array_key_exists($activeModule, $subjectMeta[$category])
         ) {
             $logsQuery->where('subject', $activeModule);
         }
@@ -65,7 +54,7 @@ class SystemLogController extends Controller
             'data' => [
                 'label' => 'Data',
                 'icon' => 'fa-database',
-                'description' => 'Perubahan status toggle client area dan setting terkait.',
+                'description' => 'Aktivitas CRUD dan perubahan data dari semua menu backdoor admin.',
                 'accent' => 'emerald',
             ],
         ];
@@ -76,9 +65,9 @@ class SystemLogController extends Controller
             'data' => SystemActivityLog::query()->where('category', 'data')->count(),
         ];
 
-        $apiModuleCounts = $category === 'api'
+        $moduleCounts = in_array($category, ['api', 'data'], true)
             ? SystemActivityLog::query()
-                ->where('category', 'api')
+                ->where('category', $category)
                 ->whereNotNull('subject')
                 ->selectRaw('subject, COUNT(*) as aggregate')
                 ->groupBy('subject')
@@ -90,11 +79,11 @@ class SystemLogController extends Controller
             'activeCategory' => $category,
             'activeModule' => $activeModule,
             'activeMeta' => $categoryMeta[$category],
-            'apiModuleCounts' => $apiModuleCounts,
-            'apiModuleMeta' => $apiModuleMeta,
             'categoryMeta' => $categoryMeta,
             'counts' => $counts,
             'logs' => $logs,
+            'moduleCounts' => $moduleCounts,
+            'moduleMeta' => $subjectMeta[$category] ?? [],
         ]);
     }
 }

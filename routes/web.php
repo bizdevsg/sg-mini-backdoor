@@ -27,7 +27,7 @@ Route::get('/', function () {
     return redirect()->route(auth()->user()?->adminLandingRouteName() ?? 'dashboard');
 });
 
-Route::middleware(['auth', 'admin.panel.access'])->group(function () {
+Route::middleware(['auth', 'admin.panel.access', 'admin.data.log'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::prefix('banner')
         ->name('banner.')
@@ -186,6 +186,7 @@ Route::middleware(['auth', 'admin.panel.access'])->group(function () {
         ->group(function () {
             Route::get('/', [ClientAreaSettingController::class, 'show'])->name('show');
             Route::put('/', [ClientAreaSettingController::class, 'update'])->name('update');
+            Route::put('/api-security', [ClientAreaSettingController::class, 'updateApiSecurity'])->name('update-api-security');
         });
     Route::prefix('system-logs')
         ->name('system-logs.')

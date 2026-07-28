@@ -3,9 +3,8 @@
 namespace App\Http\Requests\ClientArea;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateClientAreaSettingRequest extends FormRequest
+class UpdateApiSecuritySettingRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -18,8 +17,9 @@ class UpdateClientAreaSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'target' => ['required', 'string', Rule::in(['dev', 'prod', 'tawk_to_dev', 'tawk_to_prod'])],
-            'enabled' => ['required', 'boolean'],
+            'api_enabled' => ['required', 'boolean'],
+            'api_key_rotation_notice' => ['nullable', 'string', 'max:255'],
+            'allowed_origin_frontend' => ['nullable', 'string', 'max:2000'],
         ];
     }
 }

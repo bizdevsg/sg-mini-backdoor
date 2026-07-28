@@ -44,7 +44,7 @@
             <div>
                 @include('components.layout.topbar')
 
-                <main class="px-4 pb-8 pt-32 lg:px-7 lg:pb-10 lg:pt-24">
+                <main class="px-4 pb-8 pt-32 lg:px-7 lg:pb-10 lg:pt-32">
                     {{-- Flash Notification Status --}}
                     @if (session('status'))
                         <div data-auto-dismiss data-auto-dismiss-delay="5000" role="status"

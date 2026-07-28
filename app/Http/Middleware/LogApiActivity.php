@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Support\SystemActivityLogger;
+use App\Support\SystemActivitySubjectCatalog;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,23 +12,6 @@ use Throwable;
 
 class LogApiActivity
 {
-    private const MODULE_LABELS = [
-        'client-area' => 'Client Area',
-        'banner' => 'Banner',
-        'produk' => 'Produk',
-        'pengumuman' => 'Pengumuman',
-        'ebook' => 'Ebook',
-        'signal' => 'Signal',
-        'berita' => 'Berita',
-        'penghargaan' => 'Penghargaan',
-        'legalitas' => 'Legalitas',
-        'company-profile' => 'Profil Perusahaan',
-        'terms-and-conditions' => 'Syarat dan Ketentuan',
-        'privacy-policy' => 'Kebijakan Privasi',
-        'massages' => 'Massages',
-        'unknown' => 'Unknown',
-    ];
-
     public function __construct(
         private readonly SystemActivityLogger $systemActivityLogger,
     ) {
@@ -57,7 +41,7 @@ class LogApiActivity
     private function logRequest(Request $request, int $statusCode, float $startedAt): void
     {
         $module = $this->resolveModule($request);
-        $moduleLabel = self::MODULE_LABELS[$module] ?? self::MODULE_LABELS['unknown'];
+        $moduleLabel = SystemActivitySubjectCatalog::api()[$module] ?? 'Unknown';
 
         $this->systemActivityLogger->log(
             category: 'api',
@@ -80,7 +64,7 @@ class LogApiActivity
     {
         $module = (string) $request->segment(3);
 
-        return array_key_exists($module, self::MODULE_LABELS)
+        return array_key_exists($module, SystemActivitySubjectCatalog::api())
             ? $module
             : 'unknown';
     }

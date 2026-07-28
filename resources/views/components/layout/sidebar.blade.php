@@ -151,7 +151,7 @@
             'heading' => 'Sistem',
             'items' => [
                 [
-                    'label' => 'Client Area',
+                    'label' => 'System Settings',
                     'icon' => 'fa-solid fa-toggle-on',
                     'href' => route('client-area.show'),
                     'active' => request()->routeIs('client-area.*'),

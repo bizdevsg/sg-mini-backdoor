@@ -12,12 +12,15 @@
 
 @php
     $fieldName = $error ?: $name;
-    $baseClasses = 'w-full rounded-lg border bg-onyx px-4 py-3 text-champagne placeholder:text-smoke focus:border-gold/30 focus:outline-none focus:ring-2 focus:ring-gold/15';
+    $baseClasses =
+        'w-full rounded-lg border bg-onyx px-4 py-3 text-champagne placeholder:text-smoke focus:border-gold/30 focus:outline-none focus:ring-2 focus:ring-gold/15';
     $stateClasses = $errors->has($fieldName) ? 'border-red-400/60' : 'border-white/8';
     $helperId = $helper ? $id . '-help' : null;
     $clientErrorId = $required ? $id . '-client-error' : null;
     $errorId = $errors->has($fieldName) ? $id . '-error' : null;
-    $describedBy = trim(implode(' ', array_filter([$helperId, $clientErrorId, $errorId, $attributes->get('aria-describedby')])));
+    $describedBy = trim(
+        implode(' ', array_filter([$helperId, $clientErrorId, $errorId, $attributes->get('aria-describedby')])),
+    );
 @endphp
 
 @once
@@ -111,9 +114,9 @@
                     const payload = await response.json().catch(() => ({}));
 
                     if (!response.ok || typeof payload.location !== 'string') {
-                        const message = payload?.errors?.image?.[0]
-                            || payload?.message
-                            || 'Upload gambar gagal.';
+                        const message = payload?.errors?.image?.[0] ||
+                            payload?.message ||
+                            'Upload gambar gagal.';
 
                         throw new Error(message);
                     }
@@ -216,7 +219,8 @@
                                         alt: file.name,
                                     });
                                 } catch (error) {
-                                    const message = error instanceof Error ? error.message : 'Upload gambar gagal.';
+                                    const message = error instanceof Error ? error
+                                        .message : 'Upload gambar gagal.';
                                     tinymce.activeEditor?.windowManager.alert(message);
                                 }
                             });
@@ -301,7 +305,8 @@
 
                         tinymce.triggerSave();
 
-                        const requiredEditors = form.querySelectorAll('textarea[data-tinymce-editor][data-tinymce-required="true"]');
+                        const requiredEditors = form.querySelectorAll(
+                            'textarea[data-tinymce-editor][data-tinymce-required="true"]');
 
                         for (const textarea of requiredEditors) {
                             const editor = tinymce.get(textarea.id);
@@ -310,14 +315,21 @@
                                 continue;
                             }
 
-                            const html = editor.getContent({format: 'html'}).trim();
-                            const text = editor.getContent({format: 'text'}).replace(/\u00a0/g, ' ').trim();
-                            const hasRichContent = /<(img|table|video|iframe|embed|object|audio)\b/i.test(html);
-                            const clientErrorElement = document.getElementById(`${textarea.id}-client-error`);
+                            const html = editor.getContent({
+                                format: 'html'
+                            }).trim();
+                            const text = editor.getContent({
+                                format: 'text'
+                            }).replace(/\u00a0/g, ' ').trim();
+                            const hasRichContent = /<(img|table|video|iframe|embed|object|audio)\b/i
+                                .test(html);
+                            const clientErrorElement = document.getElementById(
+                                `${textarea.id}-client-error`);
                             const isEmpty = text === '' && !hasRichContent;
 
                             if (clientErrorElement) {
-                                clientErrorElement.textContent = isEmpty ? 'Field ini wajib diisi.' : '';
+                                clientErrorElement.textContent = isEmpty ? 'Field ini wajib diisi.' :
+                                '';
                                 clientErrorElement.classList.toggle('hidden', !isEmpty);
                             }
 

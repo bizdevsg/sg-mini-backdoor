@@ -32,9 +32,11 @@ test('superadmin can access login api and data log pages', function () {
     SystemActivityLog::query()->create([
         'user_id' => $user->id,
         'category' => 'data',
+        'subject' => 'client-area',
         'event' => 'client_area_toggle',
         'description' => 'Client Area Development diaktifkan.',
         'context' => [
+            'module' => 'client-area',
             'target' => 'dev',
             'previous_status' => false,
             'new_status' => true,
@@ -58,7 +60,8 @@ test('superadmin can access login api and data log pages', function () {
         ->get(route('system-logs.show', ['category' => 'data']))
         ->assertSuccessful()
         ->assertSee('Data')
-        ->assertSee('Client Area Development diaktifkan.');
+        ->assertSee('Client Area Development diaktifkan.')
+        ->assertSee('System Settings');
 });
 
 test('superadmin can filter api logs by module category', function () {
@@ -107,4 +110,44 @@ test('admin users cannot access system log pages', function () {
     $this->actingAs($user)
         ->get(route('system-logs.show', ['category' => 'login']))
         ->assertForbidden();
+});
+
+test('superadmin can filter data logs by module category', function () {
+    $user = User::factory()->superadmin()->create();
+
+    SystemActivityLog::query()->create([
+        'user_id' => $user->id,
+        'category' => 'data',
+        'subject' => 'banner',
+        'event' => 'data_create',
+        'description' => 'Aksi tambah pada Banner dari backdoor.',
+        'context' => [
+            'module' => 'banner',
+            'action' => 'create',
+            'action_label' => 'tambah',
+            'path' => '/banner',
+            'status_code' => 302,
+        ],
+    ]);
+
+    SystemActivityLog::query()->create([
+        'user_id' => $user->id,
+        'category' => 'data',
+        'subject' => 'user-management',
+        'event' => 'data_update',
+        'description' => 'Aksi ubah pada User Management dari backdoor.',
+        'context' => [
+            'module' => 'user-management',
+            'action' => 'update',
+            'action_label' => 'ubah',
+            'path' => '/user-management/1',
+            'status_code' => 302,
+        ],
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('system-logs.show', ['category' => 'data', 'module' => 'banner']))
+        ->assertSuccessful()
+        ->assertSee('/banner')
+        ->assertDontSee('/user-management/1');
 });

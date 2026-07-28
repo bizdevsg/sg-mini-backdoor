@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Middleware\AuthenticateApiWithKey;
+use App\Http\Middleware\ApplyPublicApiSecuritySettings;
 use App\Http\Middleware\EnsureAdminPanelAccess;
+use App\Http\Middleware\LogAdminDataActivity;
 use App\Http\Middleware\LogApiActivity;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -20,7 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin.panel.access' => EnsureAdminPanelAccess::class,
+            'admin.data.log' => LogAdminDataActivity::class,
             'api.activity.log' => LogApiActivity::class,
+            'api.settings' => ApplyPublicApiSecuritySettings::class,
             'api.key' => AuthenticateApiWithKey::class,
         ]);
     })

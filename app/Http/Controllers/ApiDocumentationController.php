@@ -14,10 +14,10 @@ class ApiDocumentationController extends Controller
 
         $endpointGroups = [
             [
-                'title' => 'Client Area',
-                'description' => 'List API Client Area',
+                'title' => 'System Settings',
+                'description' => 'List API System Settings',
                 'endpoints' => [
-                    ['method' => 'GET', 'path' => '/client-area', 'notes' => 'Status client area untuk environment development dan production.'],
+                    ['method' => 'GET', 'path' => '/client-area', 'notes' => 'Status client area dan Tawk.to untuk development dan production.'],
                 ],
             ],
             [
@@ -124,7 +124,7 @@ class ApiDocumentationController extends Controller
                 'command' => "curl --request GET \"{$apiBaseUrl}/banner\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyValue}\"",
             ],
             [
-                'label' => 'Client Area Status',
+                'label' => 'System Settings Status',
                 'command' => "curl --request GET \"{$apiBaseUrl}/client-area\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyValue}\"",
             ],
             [

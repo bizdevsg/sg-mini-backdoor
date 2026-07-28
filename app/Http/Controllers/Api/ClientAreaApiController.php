@@ -21,6 +21,8 @@ class ClientAreaApiController extends Controller
             'data' => [
                 'dev' => $settings['client_area_dev'],
                 'prod' => $settings['client_area_prod'],
+                'tawk_to_dev' => $settings['tawk_to_dev'],
+                'tawk_to_prod' => $settings['tawk_to_prod'],
             ],
         ]);
     }

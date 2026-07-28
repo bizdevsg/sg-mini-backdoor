@@ -18,7 +18,7 @@ use App\Http\Controllers\Api\SignalCategoryApiController;
 use App\Http\Controllers\Api\TermsAndConditionsApiController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('v1')->middleware(['api.activity.log', 'api.key'])->group(function () {
+Route::prefix('v1')->middleware(['api.activity.log', 'api.settings', 'api.key'])->group(function () {
     Route::prefix('client-area')->group(function () {
         Route::get('/', [ClientAreaApiController::class, 'show']);
     });
