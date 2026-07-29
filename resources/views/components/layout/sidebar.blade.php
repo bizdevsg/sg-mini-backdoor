@@ -184,7 +184,7 @@
                 [
                     'label' => 'Dokumentasi API',
                     'icon' => 'fa-solid fa-book-open-reader',
-                    'href' => route('api-documentation.show'),
+                    'href' => route('api-documentation.section', ['section' => 'getting-started']),
                     'active' => request()->routeIs('api-documentation.*'),
                 ],
                 [

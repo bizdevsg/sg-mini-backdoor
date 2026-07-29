@@ -3,21 +3,119 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ApiDocumentationController extends Controller
 {
-    public function show(): View
+    public function show(): RedirectResponse
     {
+        return redirect()->route('api-documentation.section', [
+            'section' => 'getting-started',
+        ]);
+    }
+
+    public function section(string $section): View
+    {
+        return view('api-documentation.show', $this->sectionDocumentationData($section));
+    }
+
+    public function pdf(): View
+    {
+        return view('api-documentation.pdf', $this->allDocumentationData());
+    }
+
+    /**
+     * @return array<string, array{key: string, label: string, short_label: string, partial: string, dot_class: string}>
+     */
+    private function sections(): array
+    {
+        return [
+            'getting-started' => [
+                'key' => 'getting-started',
+                'label' => 'Getting Started',
+                'short_label' => 'Getting Started',
+                'partial' => 'api-documentation.partials.getting-started',
+                'dot_class' => 'bg-emerald-400',
+            ],
+            'authentication' => [
+                'key' => 'authentication',
+                'label' => 'Authentication',
+                'short_label' => 'Authentication',
+                'partial' => 'api-documentation.partials.authentication',
+                'dot_class' => 'bg-gold',
+            ],
+            'endpoints' => [
+                'key' => 'endpoints',
+                'label' => 'Endpoints',
+                'short_label' => 'Endpoints',
+                'partial' => 'api-documentation.partials.endpoints',
+                'dot_class' => 'bg-blue-400',
+            ],
+            'query-params' => [
+                'key' => 'query-params',
+                'label' => 'Query Params',
+                'short_label' => 'Query Params',
+                'partial' => 'api-documentation.partials.query-params',
+                'dot_class' => 'bg-purple-400',
+            ],
+            'examples' => [
+                'key' => 'examples',
+                'label' => 'cURL Examples',
+                'short_label' => 'cURL Examples',
+                'partial' => 'api-documentation.partials.examples',
+                'dot_class' => 'bg-orange-400',
+            ],
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function sectionDocumentationData(string $section): array
+    {
+        $sections = $this->sections();
+        abort_unless(array_key_exists($section, $sections), 404);
+
+        return [
+            ...$this->sharedDocumentationData(),
+            'docSections' => array_values($sections),
+            'currentDocSection' => $sections[$section],
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function allDocumentationData(): array
+    {
+        $sections = $this->sections();
+
+        return [
+            ...$this->sharedDocumentationData(),
+            'docSections' => array_values($sections),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function sharedDocumentationData(): array
+    {
+        $sections = $this->sections();
+
         $apiBaseUrl = url('/api/v1');
         $apiKeyHeader = (string) config('api-auth.header', 'X-API-Key');
         $apiKeyValue = (string) config('api-auth.key', '');
+        $mobileClientHeader = 'X-Client-Type';
+        $mobileClientValue = 'mobile-app';
+        $webOriginExample = 'https://frontend-prod.test';
 
         $endpointGroups = [
             [
                 'title' => 'System Settings',
                 'description' => 'List API System Settings',
                 'endpoints' => [
-                    ['method' => 'GET', 'path' => '/client-area', 'notes' => 'Status client area dan Tawk.to untuk development dan production.'],
+                    ['method' => 'GET', 'path' => '/client-area', 'notes' => 'Status client area dan Tawk.to. Web wajib kirim Origin yang terdaftar. Mobile app wajib kirim X-Client-Type: mobile-app.'],
                 ],
             ],
             [
@@ -120,25 +218,29 @@ class ApiDocumentationController extends Controller
 
         $requestExamples = [
             [
-                'label' => 'Banner List',
-                'command' => "curl --request GET \"{$apiBaseUrl}/banner\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyValue}\"",
+                'label' => 'Banner List - Web Client',
+                'command' => "curl --request GET \"{$apiBaseUrl}/banner\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyValue}\" \\\n  --header \"Origin: {$webOriginExample}\"",
             ],
             [
-                'label' => 'System Settings Status',
-                'command' => "curl --request GET \"{$apiBaseUrl}/client-area\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyValue}\"",
+                'label' => 'System Settings - Mobile App',
+                'command' => "curl --request GET \"{$apiBaseUrl}/client-area\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyValue}\" \\\n  --header \"X-Client-Type: mobile-app\"",
             ],
             [
                 'label' => 'Privacy Policy',
-                'command' => "curl --request GET \"{$apiBaseUrl}/privacy-policy\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyValue}\"",
+                'command' => "curl --request GET \"{$apiBaseUrl}/privacy-policy\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyValue}\" \\\n  --header \"Origin: {$webOriginExample}\"",
             ],
         ];
 
-        return view('api-documentation.show', compact(
-            'apiBaseUrl',
-            'apiKeyHeader',
-            'apiKeyValue',
-            'endpointGroups',
-            'requestExamples',
-        ));
+        return [
+            'apiBaseUrl' => $apiBaseUrl,
+            'apiKeyHeader' => $apiKeyHeader,
+            'apiKeyValue' => $apiKeyValue,
+            'mobileClientHeader' => $mobileClientHeader,
+            'mobileClientValue' => $mobileClientValue,
+            'webOriginExample' => $webOriginExample,
+            'endpointGroups' => $endpointGroups,
+            'requestExamples' => $requestExamples,
+            'docSections' => array_values($sections),
+        ];
     }
 }

@@ -73,6 +73,25 @@ test('client area api rejects requests when allowed origin frontend is not confi
         ->assertJsonPath('message', 'Allowed Origin Frontend belum dikonfigurasi.');
 });
 
+test('client area api allows trusted mobile app requests without origin header', function () {
+    config()->set('api-auth.key', 'test-api-key');
+
+    ClientAreaSetting::query()->create([
+        'api_enabled' => true,
+        'allowed_origin_frontend' => null,
+    ]);
+
+    $this->withServerVariables(['REMOTE_ADDR' => '127.0.0.17'])
+        ->withHeaders([
+            ...apiKeyHeaders(),
+            'X-Client-Type' => 'mobile-app',
+        ])
+        ->getJson('/api/v1/client-area')
+        ->assertSuccessful()
+        ->assertJsonPath('data.dev', false)
+        ->assertJsonPath('data.prod', false);
+});
+
 test('client area api returns 503 when public api is disabled', function () {
     config()->set('api-auth.key', 'test-api-key');
 

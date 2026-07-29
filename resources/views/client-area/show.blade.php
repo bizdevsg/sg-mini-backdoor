@@ -69,6 +69,7 @@
         );
 
         $curlExample = "curl -X GET \"{$apiBaseUrl}\" \\\n  -H \"{$apiKeyHeader}: {YOUR_API_KEY}\"";
+        $mobileCurlExample = "curl -X GET \"{$apiBaseUrl}\" \\\n  -H \"{$apiKeyHeader}: {YOUR_API_KEY}\" \\\n  -H \"X-Client-Type: mobile-app\"";
     @endphp
 
     <section class="mx-auto space-y-8">
@@ -96,6 +97,7 @@
                     'apiKeyHeader' => $apiKeyHeader,
                     'payloadPreview' => $payloadPreview,
                     'curlExample' => $curlExample,
+                    'mobileCurlExample' => $mobileCurlExample,
                 ])
             </div>
         </div>

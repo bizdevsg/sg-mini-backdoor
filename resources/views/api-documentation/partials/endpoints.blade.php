@@ -1,4 +1,35 @@
-<div id="endpoints" class="scroll-mt-6">
+<div>
+    <div class="mb-5 overflow-hidden rounded-2xl border border-white/8 bg-white/3">
+        <div class="border-b border-white/6 px-5 py-4">
+            <p class="text-sm font-semibold text-white">Struktur Endpoint</p>
+            <p class="mt-1 text-xs leading-5 text-smoke">
+                Semua endpoint di bawah ini berada dalam namespace
+                <span class="font-mono text-champagne">{{ $apiBaseUrl }}</span>. Pengelompokan dibuat berdasarkan menu
+                data agar tim frontend lebih cepat mencari resource yang dibutuhkan.
+            </p>
+        </div>
+        <div class="grid gap-0 divide-y divide-white/6 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            <div class="px-5 py-4">
+                <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/50">List Endpoint</p>
+                <p class="mt-2 text-xs leading-5 text-smoke">
+                    Digunakan untuk mengambil kumpulan data, biasanya mendukung pagination, search, atau filter.
+                </p>
+            </div>
+            <div class="px-5 py-4">
+                <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/50">Detail Endpoint</p>
+                <p class="mt-2 text-xs leading-5 text-smoke">
+                    Digunakan untuk mengambil satu data spesifik berdasarkan slug atau identifier lain.
+                </p>
+            </div>
+            <div class="px-5 py-4">
+                <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/50">Kategori Endpoint</p>
+                <p class="mt-2 text-xs leading-5 text-smoke">
+                    Dipakai ketika resource memiliki pengelompokan seperti kategori berita, signal, atau ebook.
+                </p>
+            </div>
+        </div>
+    </div>
+
     <div class="mb-4 flex items-center gap-3">
         <div
             class="flex h-7 w-7 items-center justify-center rounded-lg border border-blue-500/25 bg-blue-500/15 text-xs font-bold text-blue-300">
@@ -52,5 +83,27 @@
                 </div>
             </div>
         @endforeach
+    </div>
+
+    <div class="mt-5 grid gap-4 lg:grid-cols-2">
+        <div class="rounded-2xl border border-white/8 bg-white/3 px-5 py-4">
+            <p class="text-sm font-semibold text-white">Konvensi yang Dipakai</p>
+            <div class="mt-3 space-y-3 text-xs leading-5 text-smoke">
+                <p>Path tanpa parameter biasanya dipakai untuk list data.</p>
+                <p>Path dengan <span class="font-mono text-champagne">{slug}</span> dipakai untuk detail data.</p>
+                <p>Mayoritas endpoint public pada dokumentasi ini bersifat <span class="font-mono text-champagne">GET</span>.</p>
+                <p>Response dibaca oleh frontend terpisah, jadi struktur data harus dianggap sebagai kontrak integrasi.</p>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-white/8 bg-white/3 px-5 py-4">
+            <p class="text-sm font-semibold text-white">Catatan Integrasi</p>
+            <div class="mt-3 space-y-3 text-xs leading-5 text-smoke">
+                <p>Mulai dari endpoint list dulu sebelum memakai endpoint detail.</p>
+                <p>Pastikan slug yang dipakai di endpoint detail berasal dari data list yang valid.</p>
+                <p>Kalau frontend memerlukan cache, simpan hasil endpoint list yang sering dipakai.</p>
+                <p>Jika ada penambahan menu baru di backdoor, sebaiknya section endpoint di dokumentasi ikut diperbarui.</p>
+            </div>
+        </div>
     </div>
 </div>

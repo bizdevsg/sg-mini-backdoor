@@ -4,7 +4,7 @@
             class="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-sm font-semibold text-white">
             <span>
                 API Access
-                <span class="ml-2 text-xs font-normal text-smoke/50">Untuk konsumsi status toggle dari frontend</span>
+                <span class="ml-2 text-xs font-normal text-smoke/50">Untuk frontend web dan mobile app</span>
             </span>
             <i class="fa-solid fa-chevron-down text-xs text-smoke/50 transition-transform group-open:rotate-180"></i>
         </summary>
@@ -47,7 +47,7 @@
 
             <div>
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-medium uppercase tracking-wide text-smoke/50">cURL Example</span>
+                    <span class="text-xs font-medium uppercase tracking-wide text-smoke/50">Web cURL Example</span>
                     <button type="button" data-copy-text="{{ $curlExample }}" class="text-xs text-smoke/60 hover:text-white">
                         <i class="fa-regular fa-copy mr-1"></i><span data-copy-label>Salin</span>
                     </button>
@@ -56,8 +56,20 @@
                     class="mt-1 overflow-x-auto whitespace-pre-wrap break-all rounded-md bg-black/30 px-3 py-2 font-mono text-xs text-smoke/80">{{ $curlExample }}</pre>
             </div>
 
+            <div>
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-medium uppercase tracking-wide text-smoke/50">Mobile App Example</span>
+                    <button type="button" data-copy-text="{{ $mobileCurlExample }}" class="text-xs text-smoke/60 hover:text-white">
+                        <i class="fa-regular fa-copy mr-1"></i><span data-copy-label>Salin</span>
+                    </button>
+                </div>
+                <pre
+                    class="mt-1 overflow-x-auto whitespace-pre-wrap break-all rounded-md bg-black/30 px-3 py-2 font-mono text-xs text-smoke/80">{{ $mobileCurlExample }}</pre>
+            </div>
+
             <div class="rounded-md border border-white/8 bg-black/20 px-3 py-3 text-xs text-smoke/65">
-                <p>Header tambahan `X-API-Key-Rotation-Notice` akan muncul jika notice rotasi API key diisi pada section `API &amp; Security`.</p>
+                <p>`Allowed Origin Frontend` dipakai untuk web. Untuk mobile app tanpa `Origin`, kirim header `X-Client-Type: mobile-app` bersama API key.</p>
+                <p class="mt-2">Header tambahan `X-API-Key-Rotation-Notice` akan muncul jika notice rotasi API key diisi pada section `API &amp; Security`.</p>
             </div>
         </div>
     </details>

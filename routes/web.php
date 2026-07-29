@@ -179,6 +179,8 @@ Route::middleware(['auth', 'admin.panel.access', 'admin.data.log'])->group(funct
         ->middleware('can:manage-user-management')
         ->group(function () {
             Route::get('/', [ApiDocumentationController::class, 'show'])->name('show');
+            Route::get('/pdf', [ApiDocumentationController::class, 'pdf'])->name('pdf');
+            Route::get('/{section}', [ApiDocumentationController::class, 'section'])->name('section');
         });
     Route::prefix('client-area')
         ->name('client-area.')

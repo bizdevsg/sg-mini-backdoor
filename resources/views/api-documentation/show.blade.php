@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dokumentasi API')
+@section('title', 'Dokumentasi API - ' . ($currentDocSection['label'] ?? 'Overview'))
 
 @section('content')
     @php
@@ -23,27 +23,32 @@
             @include('api-documentation.partials.sidebar-nav')
 
             <div class="min-w-0 space-y-8">
-                @include('api-documentation.partials.getting-started', [
+                <div class="flex flex-col gap-4 border-b border-white/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <p class="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-soft/70">Dokumentasi API</p>
+                        <h1 class="mt-2 text-2xl font-semibold text-white">{{ $currentDocSection['label'] }}</h1>
+                        <p class="mt-1 text-sm text-smoke/70">
+                            Halaman dokumentasi terpisah untuk {{ strtolower($currentDocSection['label']) }}.
+                        </p>
+                    </div>
+
+                    <a href="{{ route('api-documentation.pdf') }}" target="_blank"
+                        rel="noopener"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl border border-gold/25 bg-gold/10 px-4 py-2.5 text-sm font-medium text-gold-soft transition-colors hover:border-gold/40 hover:bg-gold/16 hover:text-white">
+                        <i class="fa-solid fa-file-arrow-down text-xs"></i>
+                        Download PDF Lengkap
+                    </a>
+                </div>
+
+                @include($currentDocSection['partial'], [
                     'apiBaseUrl' => $apiBaseUrl,
                     'apiKeyHeader' => $apiKeyHeader,
                     'apiKeyValue' => $apiKeyValue,
-                ])
-
-                @include('api-documentation.partials.authentication', [
-                    'apiKeyHeader' => $apiKeyHeader,
-                    'apiKeyValue' => $apiKeyValue,
                     'headerExample' => $headerExample,
-                ])
-
-                @include('api-documentation.partials.endpoints', [
+                    'mobileClientHeader' => $mobileClientHeader,
+                    'mobileClientValue' => $mobileClientValue,
+                    'webOriginExample' => $webOriginExample,
                     'endpointGroups' => $endpointGroups,
-                ])
-
-                @include('api-documentation.partials.query-params', [
-                    'apiKeyHeader' => $apiKeyHeader,
-                ])
-
-                @include('api-documentation.partials.examples', [
                     'requestExamples' => $requestExamples,
                 ])
             </div>
@@ -126,25 +131,6 @@
                 });
             });
 
-            const sections = document.querySelectorAll('[id]');
-            const navLinks = document.querySelectorAll('.doc-nav-link');
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        navLinks.forEach((link) => {
-                            const active = link.getAttribute('href') === '#' + entry.target.id;
-                            link.classList.toggle('bg-white/5', active);
-                            link.classList.toggle('text-white', active);
-                            link.classList.toggle('text-smoke/70', !active);
-                        });
-                    }
-                });
-            }, {
-                threshold: 0.4
-            });
-
-            sections.forEach((section) => observer.observe(section));
         });
     </script>
 @endPushOnce

@@ -22,7 +22,7 @@
             'accent' => 'gold',
         ],
         [
-            'href' => route('api-documentation.show'),
+            'href' => route('api-documentation.section', ['section' => 'getting-started']),
             'icon' => 'fa-solid fa-book-open-reader',
             'label' => 'Dokumentasi API',
             'description' => 'Header, endpoint, dan contoh request',

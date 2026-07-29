@@ -10,6 +10,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApplyPublicApiSecuritySettings
 {
+    private const MOBILE_CLIENT_HEADER = 'X-Client-Type';
+
+    private const MOBILE_CLIENT_VALUE = 'mobile-app';
+
     public function __construct(
         private readonly ClientAreaSettingStore $clientAreaSettingStore,
     ) {
@@ -24,14 +28,19 @@ class ApplyPublicApiSecuritySettings
             return $this->jsonError('Public API sedang dinonaktifkan.', 503);
         }
 
-        if ($allowedOrigins === []) {
+        $origin = trim((string) $request->headers->get('Origin', ''));
+        $isTrustedMobileClient = $this->isTrustedMobileClient($request);
+
+        if ($origin === '' && ! $isTrustedMobileClient && $allowedOrigins === []) {
             return $this->jsonError('Allowed Origin Frontend belum dikonfigurasi.', 403);
         }
 
-        $origin = trim((string) $request->headers->get('Origin', ''));
-
-        if ($origin === '') {
+        if ($origin === '' && ! $isTrustedMobileClient) {
             return $this->jsonError('Header Origin wajib dikirim untuk API ini.', 403);
+        }
+
+        if ($origin !== '' && $allowedOrigins === []) {
+            return $this->jsonError('Allowed Origin Frontend belum dikonfigurasi.', 403);
         }
 
         if ($origin !== '' && ! $this->isOriginAllowed($origin, $allowedOrigins)) {
@@ -94,5 +103,10 @@ class ApplyPublicApiSecuritySettings
         return response()->json([
             'message' => $message,
         ], $status);
+    }
+
+    private function isTrustedMobileClient(Request $request): bool
+    {
+        return strtolower(trim((string) $request->headers->get(self::MOBILE_CLIENT_HEADER, ''))) === self::MOBILE_CLIENT_VALUE;
     }
 }

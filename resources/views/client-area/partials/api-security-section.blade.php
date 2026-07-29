@@ -39,7 +39,7 @@
                 <textarea id="allowed_origin_frontend" name="allowed_origin_frontend" rows="5"
                     class="w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-sm text-white outline-none transition placeholder:text-smoke/35 focus:border-gold/40"
                     placeholder="https://frontend-dev.test&#10;https://frontend-prod.com">{{ old('allowed_origin_frontend', $settings['allowed_origin_frontend']) }}</textarea>
-                <p class="text-xs text-smoke/50">Boleh kosong di backdoor. Kalau belum diisi, API akan menolak request dan mengembalikan notif konfigurasi origin belum ada.</p>
+                <p class="text-xs text-smoke/50">Dipakai untuk client web/browser. Boleh kosong di backdoor, tapi request web akan ditolak sampai origin frontend diisi. Mobile app bisa memakai header `X-Client-Type: mobile-app`.</p>
             </div>
 
             <div class="space-y-5">
