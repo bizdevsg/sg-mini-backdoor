@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ApiDocumentation\DownloadApiDocumentationRequest;
+use App\Support\SystemActivityLogger;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class ApiDocumentationController extends Controller
 {
+    public function __construct(
+        private readonly SystemActivityLogger $systemActivityLogger,
+    ) {
+    }
+
     public function show(): RedirectResponse
     {
         return redirect()->route('api-documentation.section', [
@@ -19,9 +26,31 @@ class ApiDocumentationController extends Controller
         return view('api-documentation.show', $this->sectionDocumentationData($section));
     }
 
-    public function pdf(): View
+    public function pdf(DownloadApiDocumentationRequest $request): View
     {
-        return view('api-documentation.pdf', $this->allDocumentationData());
+        $validated = $request->validated();
+        $requestedAt = now('Asia/Jakarta');
+
+        $this->systemActivityLogger->log(
+            category: 'data',
+            event: 'data_download',
+            description: "Download dokumentasi API (PDF) untuk keperluan \"{$validated['purpose']}\", diberikan kepada {$validated['recipient']}.",
+            subject: 'api-documentation',
+            user: $request->user(),
+            request: $request,
+            context: [
+                'purpose' => $validated['purpose'],
+                'recipient' => $validated['recipient'],
+            ],
+        );
+
+        return view('api-documentation.pdf', [
+            ...$this->allDocumentationData(),
+            'requestedPurpose' => $validated['purpose'],
+            'requestedRecipient' => $validated['recipient'],
+            'requestedByName' => $request->user()?->name ?? 'Unknown',
+            'requestedAt' => $requestedAt,
+        ]);
     }
 
     /**

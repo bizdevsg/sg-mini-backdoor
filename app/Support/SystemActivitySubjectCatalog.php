@@ -50,6 +50,7 @@ class SystemActivitySubjectCatalog
             'user-management' => 'User Management',
             'client-area' => 'System Settings',
             'tinymce-images' => 'Media Editor',
+            'api-documentation' => 'Dokumentasi API',
             'unknown' => 'Unknown',
         ];
     }

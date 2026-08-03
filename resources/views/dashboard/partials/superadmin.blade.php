@@ -155,20 +155,14 @@
 @endphp
 
 <section class="space-y-6">
-
-    {{-- =========================================================
-         HERO CARD — Royal / Full Control (Pure Gold)
-         ========================================================= --}}
     <div
         class="relative overflow-hidden rounded-[32px] border border-white/8 bg-[radial-gradient(ellipse_70%_70%_at_0%_0%,rgba(199,161,90,0.25),transparent),radial-gradient(ellipse_50%_60%_at_100%_80%,rgba(199,161,90,0.1),transparent),linear-gradient(160deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.01)_100%)] shadow-[0_32px_80px_rgba(0,0,0,0.4)]">
 
         {{-- Ambient glows --}}
-        <div
-            class="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-gold/10 blur-[90px]">
+        <div class="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-gold/10 blur-[90px]">
         </div>
         <div class="pointer-events-none absolute -bottom-12 left-1/4 h-56 w-56 rounded-full bg-gold/8 blur-[70px]"></div>
-        <div
-            class="pointer-events-none absolute bottom-0 right-1/4 h-40 w-40 rounded-full bg-gold-soft/6 blur-[50px]">
+        <div class="pointer-events-none absolute bottom-0 right-1/4 h-40 w-40 rounded-full bg-gold-soft/6 blur-[50px]">
         </div>
 
         {{-- Top shimmer line — pure gold --}}
@@ -268,10 +262,8 @@
                 </div>
 
                 {{-- User count indicator --}}
-                <div
-                    class="flex items-center gap-2 rounded-2xl border border-gold/20 bg-gold/6 px-4 py-2.5">
-                    <div
-                        class="flex h-7 w-7 items-center justify-center rounded-lg bg-gold/15 text-gold-soft">
+                <div class="flex items-center gap-2 rounded-2xl border border-gold/20 bg-gold/6 px-4 py-2.5">
+                    <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-gold/15 text-gold-soft">
                         <i class="fa-solid fa-users text-xs"></i>
                     </div>
                     <div>
@@ -284,9 +276,6 @@
         </div>
     </div>
 
-    {{-- =========================================================
-         USER BREAKDOWN — Unik untuk Superadmin
-         ========================================================= --}}
     <div
         class="overflow-hidden rounded-2xl border border-gold/20 bg-[radial-gradient(ellipse_80%_80%_at_0%_0%,rgba(199,161,90,0.08),transparent)]">
         <div class="flex flex-col gap-6 px-6 py-5 sm:flex-row sm:items-center sm:gap-8">
@@ -294,8 +283,8 @@
                 <p class="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-soft/60">Manajemen
                     Akses</p>
                 <p class="text-lg font-semibold text-white">Distribusi User Admin</p>
-                <p class="text-sm text-smoke">Total <span
-                        class="font-medium text-gold-soft">{{ $userCount }}</span> akun terdaftar.</p>
+                <p class="text-sm text-smoke">Total <span class="font-medium text-gold-soft">{{ $userCount }}</span>
+                    akun terdaftar.</p>
             </div>
 
             <div class="flex-1 space-y-3">
@@ -332,25 +321,24 @@
         </div>
     </div>
 
-    {{-- =========================================================
-         QUICK LINKS
-         ========================================================= --}}
     <div>
         <p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-smoke/60">Akses cepat</p>
-        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
             @foreach ($quickLinks as $link)
                 @php $isGold = $link['accent'] === 'gold'; @endphp
                 <a href="{{ $link['href'] }}"
                     class="{{ $isGold
                         ? 'group relative flex flex-col gap-3 overflow-hidden rounded-2xl border border-gold/25 bg-gold/10 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold/40 hover:bg-gold/16'
                         : 'group relative flex flex-col gap-3 overflow-hidden rounded-2xl border border-white/8 bg-white/4 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-white/14 hover:bg-white/7' }}">
-                    <div class="{{ $isGold
-                        ? 'flex h-9 w-9 items-center justify-center rounded-xl border border-gold/30 bg-gold/18 text-sm text-gold-soft'
-                        : 'flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/6 text-sm text-smoke group-hover:text-champagne' }}">
+                    <div
+                        class="{{ $isGold
+                            ? 'flex h-9 w-9 items-center justify-center rounded-xl border border-gold/30 bg-gold/18 text-sm text-gold-soft'
+                            : 'flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/6 text-sm text-smoke group-hover:text-champagne' }}">
                         <i class="{{ $link['icon'] }}"></i>
                     </div>
                     <div>
-                        <p class="{{ $isGold ? 'text-sm font-medium leading-tight text-champagne' : 'text-sm font-medium leading-tight text-white/80 group-hover:text-white' }}">
+                        <p
+                            class="{{ $isGold ? 'text-sm font-medium leading-tight text-champagne' : 'text-sm font-medium leading-tight text-white/80 group-hover:text-white' }}">
                             {{ $link['label'] }}
                         </p>
                         <p class="mt-0.5 text-xs text-smoke">{{ $link['description'] }}</p>
@@ -360,9 +348,6 @@
         </div>
     </div>
 
-    {{-- =========================================================
-         STATS + BAR CHART
-         ========================================================= --}}
     <div class="space-y-3">
         <div
             class="flex flex-col gap-4 overflow-hidden rounded-2xl border border-white/8 bg-white/3 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
@@ -386,8 +371,7 @@
                 <div class="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
                     @foreach ($barSegments as $segment)
                         <div class="flex items-center gap-1.5">
-                            <span
-                                class="{{ $segment['color'] }} h-1.5 w-1.5 rounded-full ring-1 ring-white/10"></span>
+                            <span class="{{ $segment['color'] }} h-1.5 w-1.5 rounded-full ring-1 ring-white/10"></span>
                             <span class="text-[10px] text-smoke">{{ $segment['label'] }}</span>
                             <span class="text-[10px] font-medium text-champagne/70">{{ $segment['value'] }}</span>
                         </div>
@@ -399,19 +383,22 @@
         <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             @foreach ($stats as $stat)
                 @php $isGoldTone = $stat['tone'] === 'gold'; @endphp
-                <article class="{{ $isGoldTone
-                    ? 'rounded-2xl border border-gold/25 bg-gold/10 p-5'
-                    : 'rounded-2xl border border-white/8 bg-white/3 p-5' }}">
+                <article
+                    class="{{ $isGoldTone
+                        ? 'rounded-2xl border border-gold/25 bg-gold/10 p-5'
+                        : 'rounded-2xl border border-white/8 bg-white/3 p-5' }}">
                     <div class="flex items-center justify-between gap-3">
                         <div>
-                            <p class="text-[10px] font-semibold uppercase tracking-[0.18em] {{ $isGoldTone ? 'text-gold-soft/80' : 'text-smoke/70' }}">
+                            <p
+                                class="text-[10px] font-semibold uppercase tracking-[0.18em] {{ $isGoldTone ? 'text-gold-soft/80' : 'text-smoke/70' }}">
                                 {{ $stat['title'] }}
                             </p>
                             <p class="mt-1 text-3xl font-semibold text-white">{{ $stat['value'] }}</p>
                         </div>
-                        <div class="{{ $isGoldTone
-                            ? 'flex h-12 w-12 items-center justify-center rounded-2xl border border-gold/30 bg-gold/18 text-gold-soft'
-                            : 'flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/6 text-smoke' }}">
+                        <div
+                            class="{{ $isGoldTone
+                                ? 'flex h-12 w-12 items-center justify-center rounded-2xl border border-gold/30 bg-gold/18 text-gold-soft'
+                                : 'flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/6 text-smoke' }}">
                             <i class="{{ $stat['icon'] }} text-lg"></i>
                         </div>
                     </div>
@@ -421,9 +408,6 @@
         </div>
     </div>
 
-    {{-- =========================================================
-         RECENT PRODUCTS TABLE
-         ========================================================= --}}
     <div class="overflow-hidden rounded-2xl border border-white/8 bg-white/3">
         <div
             class="flex flex-col gap-4 border-b border-white/6 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">

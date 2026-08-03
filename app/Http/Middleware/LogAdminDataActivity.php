@@ -19,6 +19,7 @@ class LogAdminDataActivity
         'logout',
         'client-area.update',
         'client-area.update-api-security',
+        'api-documentation.pdf',
     ];
 
     public function __construct(

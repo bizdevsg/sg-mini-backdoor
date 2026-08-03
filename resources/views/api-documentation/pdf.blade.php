@@ -110,7 +110,7 @@
 
         .kicker {
             display: inline-block;
-            margin-top: 56px;
+            margin-top: 10px;
             text-transform: uppercase;
             letter-spacing: .22em;
             font-size: 10px;
@@ -155,6 +155,48 @@
             margin: 5px 0 0;
             font-family: "Courier New", Courier, monospace;
             font-size: 12px;
+            color: var(--ink);
+            word-break: break-word;
+        }
+
+        .distribution-box {
+            margin-top: 24px;
+            border: 1px solid var(--accent-line);
+            border-radius: 8px;
+            background: var(--accent-soft);
+            padding: 14px 16px;
+        }
+
+        .distribution-box-title {
+            text-transform: uppercase;
+            letter-spacing: .14em;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .distribution-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 24px;
+        }
+
+        .distribution-meta-full {
+            grid-column: 1 / -1;
+        }
+
+        .distribution-meta dt {
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            font-size: 8.5px;
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        .distribution-meta dd {
+            margin: 4px 0 0;
+            font-size: 11px;
             color: var(--ink);
             word-break: break-word;
         }
@@ -615,7 +657,7 @@
 <body>
     @php
         $headerExample = $apiKeyHeader . ': ' . (filled($apiKeyValue) ? $apiKeyValue : 'isi-api-key-di-env');
-        $printedAt = now('Asia/Jakarta')->format('d F Y, H:i') . ' WIB';
+        $printedAt = ($requestedAt ?? now('Asia/Jakarta'))->format('d F Y, H:i') . ' WIB';
         $tocDescriptions = [
             'getting-started' => 'Alur dasar memakai public API dari nol.',
             'authentication' => 'Cara kerja API key untuk client website dan mobile app.',
@@ -632,8 +674,7 @@
 
         <section class="cover">
             <div class="cover-brand">
-                <img src="{{ asset('assets/logo-utama.png') }}" alt="SGB Admin">
-                <span class="app-name">SGB Admin</span>
+                <img src="{{ asset('assets/logo-utama-black.png') }}" alt="SGB Admin">
             </div>
 
             <span class="kicker">Dokumentasi Teknis &middot; Public API</span>
@@ -663,6 +704,26 @@
                 </div>
             </dl>
 
+            @if (isset($requestedPurpose, $requestedRecipient))
+                <div class="distribution-box">
+                    <div class="distribution-box-title">Info Distribusi Dokumen</div>
+                    <dl class="distribution-meta">
+                        <div>
+                            <dt>Diunduh Oleh</dt>
+                            <dd>{{ $requestedByName }}</dd>
+                        </div>
+                        <div>
+                            <dt>Diberikan Kepada</dt>
+                            <dd>{{ $requestedRecipient }}</dd>
+                        </div>
+                        <div class="distribution-meta-full">
+                            <dt>Tujuan / Kebutuhan</dt>
+                            <dd>{{ $requestedPurpose }}</dd>
+                        </div>
+                    </dl>
+                </div>
+            @endif
+
             <div class="cover-footer-note">
                 <span>Dokumen internal &mdash; untuk kebutuhan integrasi resmi, jangan disebarluaskan.</span>
                 <span>SGB Admin &middot; Public API</span>
@@ -676,7 +737,7 @@
             <ol class="toc-list">
                 @foreach ($docSections as $section)
                     <li class="toc-item">
-                        <span class="toc-num">{{ str_pad((string) ($loop->iteration), 2, '0', STR_PAD_LEFT) }}</span>
+                        <span class="toc-num">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         <span class="toc-label">{{ $section['label'] }}</span>
                         <span class="toc-desc">
                             {{ $tocDescriptions[$section['key']] ?? 'Bagian dokumentasi API.' }}
@@ -689,7 +750,7 @@
         @foreach ($docSections as $section)
             <section class="doc-section">
                 <div class="section-heading">
-                    <span class="section-number">{{ str_pad((string) ($loop->iteration), 2, '0', STR_PAD_LEFT) }}</span>
+                    <span class="section-number">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                     <h2>{{ $section['label'] }}</h2>
                 </div>
 
@@ -704,17 +765,20 @@
                         <div class="card">
                             <div class="card-eyebrow">Base URL</div>
                             <div class="card-value">{{ $apiBaseUrl }}</div>
-                            <p class="card-desc">Semua endpoint public API memakai base URL ini sebagai titik awal request.</p>
+                            <p class="card-desc">Semua endpoint public API memakai base URL ini sebagai titik awal
+                                request.</p>
                         </div>
                         <div class="card">
                             <div class="card-eyebrow">Authentication</div>
                             <div class="card-value">{{ $apiKeyHeader }}</div>
-                            <p class="card-desc">Header ini wajib ikut di semua request, baik dari website maupun aplikasi mobile.</p>
+                            <p class="card-desc">Header ini wajib ikut di semua request, baik dari website maupun
+                                aplikasi mobile.</p>
                         </div>
                         <div class="card">
                             <div class="card-eyebrow">Response</div>
                             <div class="card-value">application/json</div>
-                            <p class="card-desc">Response dikembalikan dalam format JSON agar mudah dipakai frontend terpisah.</p>
+                            <p class="card-desc">Response dikembalikan dalam format JSON agar mudah dipakai frontend
+                                terpisah.</p>
                         </div>
                     </div>
 
@@ -755,7 +819,8 @@
                     @else
                         <div class="callout warning">
                             <span class="dot"></span>
-                            <div>API key belum dikonfigurasi di environment server. Public API tidak akan bisa dipakai sebelum value ini diisi.</div>
+                            <div>API key belum dikonfigurasi di environment server. Public API tidak akan bisa dipakai
+                                sebelum value ini diisi.</div>
                         </div>
                     @endif
 
@@ -806,7 +871,8 @@
                     <h3 class="block-title">Website</h3>
                     <div class="kv-box">
                         <div class="kv-label">Header Wajib</div>
-                        <div class="kv-row">{{ $apiKeyHeader }}: {{ filled($apiKeyValue) ? $apiKeyValue : 'your-api-key' }}</div>
+                        <div class="kv-row">{{ $apiKeyHeader }}:
+                            {{ filled($apiKeyValue) ? $apiKeyValue : 'your-api-key' }}</div>
                         <div class="kv-row">Origin: {{ $webOriginExample }}</div>
                     </div>
                     <div class="panel" style="margin-bottom: 16px;">
@@ -821,7 +887,8 @@
                     <h3 class="block-title">Mobile App</h3>
                     <div class="kv-box">
                         <div class="kv-label">Header Wajib</div>
-                        <div class="kv-row">{{ $apiKeyHeader }}: {{ filled($apiKeyValue) ? $apiKeyValue : 'your-api-key' }}</div>
+                        <div class="kv-row">{{ $apiKeyHeader }}:
+                            {{ filled($apiKeyValue) ? $apiKeyValue : 'your-api-key' }}</div>
                         <div class="kv-row">{{ $mobileClientHeader }}: {{ $mobileClientValue }}</div>
                     </div>
                     <div class="panel" style="margin-bottom: 16px;">
@@ -902,7 +969,8 @@
                                         @endphp
                                         <tr>
                                             <td>
-                                                <span class="badge-method {{ $methodClass }}">{{ $endpoint['method'] }}</span>
+                                                <span
+                                                    class="badge-method {{ $methodClass }}">{{ $endpoint['method'] }}</span>
                                             </td>
                                             <td class="endpoint-path">{{ $endpoint['path'] }}</td>
                                             <td>{{ $endpoint['notes'] }}</td>
@@ -921,28 +989,34 @@
 
                     <div class="kv-box">
                         <div class="kv-label">Contoh Gabungan</div>
-                        <div class="kv-row">{{ $apiBaseUrl }}/ebook?page=1&amp;per_page=10&amp;search=trading&amp;category=edukasi</div>
+                        <div class="kv-row">
+                            {{ $apiBaseUrl }}/ebook?page=1&amp;per_page=10&amp;search=trading&amp;category=edukasi
+                        </div>
                     </div>
 
                     <div class="card-grid" style="margin-top: 16px;">
                         <div class="card">
                             <div class="card-value">?page=1&amp;per_page=10</div>
-                            <p class="card-desc"><strong>Pagination</strong> &mdash; halaman dan jumlah item per halaman. Dipakai saat endpoint menampilkan banyak data.</p>
+                            <p class="card-desc"><strong>Pagination</strong> &mdash; halaman dan jumlah item per
+                                halaman. Dipakai saat endpoint menampilkan banyak data.</p>
                         </div>
                         <div class="card">
                             <div class="card-value">?search=keyword</div>
-                            <p class="card-desc"><strong>Pencarian</strong> full-text pada list resource, umum dipakai untuk fitur search bar.</p>
+                            <p class="card-desc"><strong>Pencarian</strong> full-text pada list resource, umum dipakai
+                                untuk fitur search bar.</p>
                         </div>
                         <div class="card">
                             <div class="card-value">?category={slug}</div>
-                            <p class="card-desc"><strong>Filter</strong> berdasarkan kategori. Gunakan slug kategori yang valid dari data master.</p>
+                            <p class="card-desc"><strong>Filter</strong> berdasarkan kategori. Gunakan slug kategori
+                                yang valid dari data master.</p>
                         </div>
                     </div>
 
                     <div class="panel" style="margin-bottom: 16px;">
                         <h4>Menggunakan Postman</h4>
                         <p style="margin: 0; font-size: 10.5px; line-height: 1.6; color: var(--body-text);">
-                            Isi header <code class="kbd">{{ $apiKeyHeader }}</code> dengan API key aktif. Untuk web tambahkan
+                            Isi header <code class="kbd">{{ $apiKeyHeader }}</code> dengan API key aktif. Untuk web
+                            tambahkan
                             <code class="kbd">Origin: {{ $webOriginExample }}</code>. Untuk mobile app tambahkan
                             <code class="kbd">{{ $mobileClientHeader }}: {{ $mobileClientValue }}</code>.
                             Query params bisa diisi di tab <strong>Params</strong>.
@@ -1018,7 +1092,8 @@
                             <ul>
                                 <li>Salin salah satu command lalu jalankan apa adanya di terminal.</li>
                                 <li>Ganti domain, endpoint, atau header bila environment yang dipakai berbeda.</li>
-                                <li>Perhatikan response body dan status code untuk memastikan authentication sudah benar.</li>
+                                <li>Perhatikan response body dan status code untuk memastikan authentication sudah
+                                    benar.</li>
                                 <li>Kalau response gagal, cocokkan error dengan daftar status di atas.</li>
                             </ul>
                         </div>
@@ -1026,9 +1101,11 @@
                             <h4>Cara Ubah ke Postman</h4>
                             <ul>
                                 <li>Ambil method dan URL dari command cURL.</li>
-                                <li>Pindahkan setiap <code class="kbd">--header</code> ke tab Headers di Postman.</li>
+                                <li>Pindahkan setiap <code class="kbd">--header</code> ke tab Headers di Postman.
+                                </li>
                                 <li>Untuk web, pastikan header <code class="kbd">Origin</code> ikut dimasukkan.</li>
-                                <li>Untuk mobile app, pastikan header <code class="kbd">{{ $mobileClientHeader }}</code> ikut dimasukkan.</li>
+                                <li>Untuk mobile app, pastikan header <code
+                                        class="kbd">{{ $mobileClientHeader }}</code> ikut dimasukkan.</li>
                             </ul>
                         </div>
                     </div>
@@ -1038,8 +1115,15 @@
     </div>
 
     <div class="doc-footer">
-        <span><strong>SGB Admin</strong> &middot; Dokumentasi API Lengkap</span>
-        <span>Dicetak {{ $printedAt }} &middot; Dokumen Internal</span>
+        <span>
+            <strong>SGB Admin</strong> &middot; Dokumentasi API Lengkap
+            @if (isset($requestedRecipient))
+                &middot; Diberikan kepada: <strong>{{ $requestedRecipient }}</strong>
+            @endif
+        </span>
+        <span>
+            Diunduh oleh {{ $requestedByName ?? 'system' }} &middot; {{ $printedAt }}
+        </span>
     </div>
 
     <script>

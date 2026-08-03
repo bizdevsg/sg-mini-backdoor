@@ -261,6 +261,16 @@
                                                             class="text-[#28c840]">{{ $log->context['new_status'] ?? false ? 'aktif' : 'nonaktif' }}</strong>
                                                     </span>
                                                 @endif
+                                                @if (isset($log->context['purpose']))
+                                                    <span class="select-none text-neutral-700">|</span>
+                                                    <span>tujuan: <strong
+                                                            class="text-[#e2c78f]">{{ $log->context['purpose'] }}</strong></span>
+                                                @endif
+                                                @if (isset($log->context['recipient']))
+                                                    <span class="select-none text-neutral-700">|</span>
+                                                    <span>diberikan ke: <strong
+                                                            class="text-[#e2c78f]">{{ $log->context['recipient'] }}</strong></span>
+                                                @endif
                                             </div>
                                         @endif
 

@@ -32,12 +32,11 @@
                         </p>
                     </div>
 
-                    <a href="{{ route('api-documentation.pdf') }}" target="_blank"
-                        rel="noopener"
+                    <button type="button" data-open-doc-download-modal
                         class="inline-flex items-center justify-center gap-2 rounded-xl border border-gold/25 bg-gold/10 px-4 py-2.5 text-sm font-medium text-gold-soft transition-colors hover:border-gold/40 hover:bg-gold/16 hover:text-white">
                         <i class="fa-solid fa-file-arrow-down text-xs"></i>
                         Download PDF Lengkap
-                    </a>
+                    </button>
                 </div>
 
                 @include($currentDocSection['partial'], [
@@ -54,6 +53,68 @@
             </div>
         </div>
     </section>
+
+    <div data-doc-download-modal
+        @class(['fixed inset-0 z-[120] items-center justify-center p-4', 'hidden' => !$errors->any(), 'flex' => $errors->any()])
+        aria-hidden="{{ $errors->any() ? 'false' : 'true' }}">
+        <div data-doc-download-backdrop class="absolute inset-0 bg-black/75 backdrop-blur-sm"></div>
+
+        <div
+            class="relative w-full max-w-lg overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(180deg,_rgba(37,28,21,0.98)_0%,_rgba(22,17,13,0.98)_100%)] text-champagne shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
+            <div class="border-b border-white/8 px-6 py-5">
+                <p class="text-xs font-medium uppercase tracking-[0.22em] text-gold-soft/75">Sebelum download</p>
+                <h3 class="mt-2 text-xl font-semibold tracking-[-0.03em] text-white">
+                    Konfirmasi Kebutuhan Dokumen
+                </h3>
+                <p class="mt-2 text-sm leading-6 text-smoke/70">
+                    Isi tujuan dan penerima dokumen ini. Data ini dicatat di System Logs untuk membantu penelusuran
+                    jika file dokumentasi bocor ke publik.
+                </p>
+            </div>
+
+            <form method="POST" action="{{ route('api-documentation.pdf') }}" target="_blank"
+                class="space-y-5 px-6 py-6">
+                @csrf
+
+                <div>
+                    <label for="doc-download-purpose" class="text-xs font-medium uppercase tracking-[0.14em] text-gold-soft/70">
+                        Tujuan / Kebutuhan
+                    </label>
+                    <textarea id="doc-download-purpose" name="purpose" rows="3" required maxlength="500"
+                        placeholder="Contoh: Integrasi API untuk aplikasi mobile versi 2.0"
+                        class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-smoke/40 focus:border-gold/40 focus:outline-none focus:ring-1 focus:ring-gold/30">{{ old('purpose') }}</textarea>
+                    @error('purpose')
+                        <p class="mt-1.5 text-xs text-red-300">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="doc-download-recipient" class="text-xs font-medium uppercase tracking-[0.14em] text-gold-soft/70">
+                        Diberikan Kepada
+                    </label>
+                    <input type="text" id="doc-download-recipient" name="recipient" required maxlength="255"
+                        value="{{ old('recipient') }}"
+                        placeholder="Nama, email, atau tim/vendor penerima dokumen"
+                        class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-smoke/40 focus:border-gold/40 focus:outline-none focus:ring-1 focus:ring-gold/30">
+                    @error('recipient')
+                        <p class="mt-1.5 text-xs text-red-300">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="flex flex-col gap-3 pt-1 sm:flex-row sm:justify-end">
+                    <button type="button" data-doc-download-cancel
+                        class="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-medium text-obsidian transition-colors hover:bg-slate-200">
+                        <i class="fa-solid fa-file-arrow-down text-xs"></i>
+                        Download PDF
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
 @pushOnce('scripts')
@@ -134,3 +195,44 @@
         });
     </script>
 @endPushOnce
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.querySelector('[data-doc-download-modal]');
+            const trigger = document.querySelector('[data-open-doc-download-modal]');
+            const cancelButton = document.querySelector('[data-doc-download-cancel]');
+            const backdrop = document.querySelector('[data-doc-download-backdrop]');
+
+            if (!(modal instanceof HTMLElement)) {
+                return;
+            }
+
+            const openModal = () => {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('overflow-hidden');
+            };
+
+            const closeModal = () => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('overflow-hidden');
+            };
+
+            trigger?.addEventListener('click', openModal);
+            cancelButton?.addEventListener('click', closeModal);
+            backdrop?.addEventListener('click', closeModal);
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key !== 'Escape' || modal.classList.contains('hidden')) {
+                    return;
+                }
+
+                closeModal();
+            });
+        });
+    </script>
+@endpush
