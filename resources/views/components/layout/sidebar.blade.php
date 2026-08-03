@@ -157,6 +157,12 @@
                     'active' => request()->routeIs('client-area.*'),
                 ],
                 [
+                    'label' => 'Kode TradingView',
+                    'icon' => 'fa-solid fa-chart-line',
+                    'href' => route('tradingview.index'),
+                    'active' => request()->routeIs('tradingview.*'),
+                ],
+                [
                     'label' => 'Monitoring Log',
                     'icon' => 'fa-solid fa-chart-line',
                     'open' => request()->routeIs('system-logs.*'),

@@ -20,6 +20,7 @@ use App\Http\Controllers\SignalController;
 use App\Http\Controllers\SystemLogController;
 use App\Http\Controllers\TermsAndConditionsController;
 use App\Http\Controllers\TinyMceImageController;
+use App\Http\Controllers\TradingviewSymbolController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
@@ -144,6 +145,17 @@ Route::middleware(['auth', 'admin.panel.access', 'admin.data.log'])->group(funct
             Route::get('/{legalitas}/edit', [LegalitasController::class, 'edit'])->name('edit');
             Route::put('/{legalitas}', [LegalitasController::class, 'update'])->name('update');
             Route::delete('/{legalitas}', [LegalitasController::class, 'destroy'])->name('destroy');
+        });
+    Route::prefix('kode-tradingview')
+        ->name('tradingview.')
+        ->middleware('can:manage-user-management')
+        ->group(function () {
+            Route::get('/', [TradingviewSymbolController::class, 'index'])->name('index');
+            Route::get('/create', [TradingviewSymbolController::class, 'create'])->name('create');
+            Route::post('/', [TradingviewSymbolController::class, 'store'])->name('store');
+            Route::get('/{tradingviewSymbol}/edit', [TradingviewSymbolController::class, 'edit'])->name('edit');
+            Route::put('/{tradingviewSymbol}', [TradingviewSymbolController::class, 'update'])->name('update');
+            Route::delete('/{tradingviewSymbol}', [TradingviewSymbolController::class, 'destroy'])->name('destroy');
         });
     Route::prefix('profil-perusahaan')
         ->name('company-profile.')

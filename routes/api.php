@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\ProdukApiController;
 use App\Http\Controllers\Api\SignalApiController;
 use App\Http\Controllers\Api\SignalCategoryApiController;
 use App\Http\Controllers\Api\TermsAndConditionsApiController;
+use App\Http\Controllers\Api\TradingviewSymbolApiController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->middleware(['api.activity.log', 'api.settings', 'api.key'])->group(function () {
@@ -84,6 +85,11 @@ Route::prefix('v1')->middleware(['api.activity.log', 'api.settings', 'api.key'])
 
     Route::prefix('privacy-policy')->group(function () {
         Route::get('/', [PrivacyPolicyApiController::class, 'show']);
+    });
+
+    Route::prefix('tradingview-symbol')->group(function () {
+        Route::get('/', [TradingviewSymbolApiController::class, 'index']);
+        Route::get('/{symbolWs}', [TradingviewSymbolApiController::class, 'show']);
     });
 
     Route::prefix('massages')->group(function () {

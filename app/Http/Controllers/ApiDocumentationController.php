@@ -223,6 +223,14 @@ class ApiDocumentationController extends Controller
                 ],
             ],
             [
+                'title' => 'Kode TradingView',
+                'description' => 'List API Kode TradingView',
+                'endpoints' => [
+                    ['method' => 'GET', 'path' => '/tradingview-symbol', 'notes' => 'List pemetaan simbol, dukung `search` dan pagination.'],
+                    ['method' => 'GET', 'path' => '/tradingview-symbol/{symbol_ws}', 'notes' => 'Detail pemetaan simbol berdasarkan symbol_ws.'],
+                ],
+            ],
+            [
                 'title' => 'Profil Perusahaan',
                 'description' => 'List API Profil Perusahaan',
                 'endpoints' => [

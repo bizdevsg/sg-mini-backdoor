@@ -22,6 +22,7 @@ class SystemActivitySubjectCatalog
             'company-profile' => 'Profil Perusahaan',
             'terms-and-conditions' => 'Syarat dan Ketentuan',
             'privacy-policy' => 'Kebijakan Privasi',
+            'tradingview-symbol' => 'Kode TradingView',
             'massages' => 'Massages',
             'unknown' => 'Unknown',
         ];
@@ -47,6 +48,7 @@ class SystemActivitySubjectCatalog
             'company-profile' => 'Profil Perusahaan',
             'terms-and-conditions' => 'Syarat dan Ketentuan',
             'privacy-policy' => 'Kebijakan Privasi',
+            'tradingview' => 'Kode TradingView',
             'user-management' => 'User Management',
             'client-area' => 'System Settings',
             'tinymce-images' => 'Media Editor',

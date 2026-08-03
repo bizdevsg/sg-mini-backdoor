@@ -29,7 +29,9 @@ use App\Models\Penghargaan;
 use App\Models\Produk;
 use App\Models\Signal;
 use App\Models\SignalCategory;
+use App\Http\Resources\TradingviewSymbolResource;
 use App\Models\TermsAndCondition;
+use App\Models\TradingviewSymbol;
 use Illuminate\Support\Facades\File;
 
 class ApiJsonCacheService
@@ -158,6 +160,15 @@ class ApiJsonCacheService
         }
 
         $this->refreshPrivacyPolicy();
+    }
+
+    public function ensureTradingviewSymbolCache(): void
+    {
+        if ($this->cacheExists('tradingview-symbol')) {
+            return;
+        }
+
+        $this->refreshTradingviewSymbol();
     }
 
     public function refreshProduk(): void
@@ -331,6 +342,17 @@ class ApiJsonCacheService
         $this->write('privacy-policy', $items);
     }
 
+    public function refreshTradingviewSymbol(): void
+    {
+        $items = TradingviewSymbol::query()
+            ->latest()
+            ->get()
+            ->map(fn (TradingviewSymbol $symbol) => (new TradingviewSymbolResource($symbol))->resolve())
+            ->all();
+
+        $this->write('tradingview-symbol', $items);
+    }
+
     /**
      * @return array<int, array<string, mixed>>
      */
@@ -462,6 +484,14 @@ class ApiJsonCacheService
     }
 
     /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function tradingviewSymbolItems(): array
+    {
+        return $this->readItems('tradingview-symbol');
+    }
+
+    /**
      * @param  array<int, array<string, mixed>>  $items
      * @param  array<int, string>  $fields
      * @return array<int, array<string, mixed>>
@@ -524,6 +554,21 @@ class ApiJsonCacheService
     {
         foreach ($items as $item) {
             if (($item['slug'] ?? null) === $slug) {
+                return $item;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  array<int, array<string, mixed>>  $items
+     * @return array<string, mixed>|null
+     */
+    public function findBySymbolWs(array $items, string $symbolWs): ?array
+    {
+        foreach ($items as $item) {
+            if (($item['symbol_ws'] ?? null) === $symbolWs) {
                 return $item;
             }
         }
