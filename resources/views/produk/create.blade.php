@@ -39,6 +39,9 @@
             @csrf
             @include('produk.partials.form', [
                 'sectionLabel' => $sectionLabel,
+                'confirmTitle' => 'Simpan produk baru?',
+                'confirmMessage' => 'Pastikan nama, deskripsi, spesifikasi, dan gambar produk sudah benar.',
+                'confirmActionLabel' => 'Ya, simpan',
                 'submitLabel' => 'Simpan Produk',
                 'cancelUrl' => route('produk.index', ['section' => $section]),
             ])

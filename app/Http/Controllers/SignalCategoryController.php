@@ -6,7 +6,9 @@ use App\Http\Requests\SignalCategory\StoreSignalCategoryRequest;
 use App\Http\Requests\SignalCategory\UpdateSignalCategoryRequest;
 use App\Models\SignalCategory;
 use App\Support\ApiJsonCacheService;
+use App\Support\DuplicateEntryGuard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -46,7 +48,15 @@ class SignalCategoryController extends Controller
 
     public function store(StoreSignalCategoryRequest $request): RedirectResponse
     {
-        SignalCategory::create($request->validated());
+        try {
+            SignalCategory::create($request->validated());
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'name',
+                'Kategori dengan nama ini baru saja dibuat. Silakan gunakan nama yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshSignalCategories();
 
@@ -64,7 +74,15 @@ class SignalCategoryController extends Controller
 
     public function update(UpdateSignalCategoryRequest $request, SignalCategory $signalCategory): RedirectResponse
     {
-        $signalCategory->update($request->validated());
+        try {
+            $signalCategory->update($request->validated());
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'name',
+                'Kategori dengan nama ini baru saja dibuat. Silakan gunakan nama yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshSignalCategories();
         $this->apiJsonCacheService->refreshSignal();

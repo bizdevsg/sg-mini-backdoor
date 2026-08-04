@@ -37,6 +37,9 @@
         <form action="{{ route('tradingview.store') }}" method="POST" class="space-y-6">
             @csrf
             @include('tradingview-symbol.partials.form', [
+                'confirmTitle' => 'Simpan kode TradingView baru?',
+                'confirmMessage' => 'Pastikan Name, symbol_ws, dan symbol_tv sudah benar. Data ini langsung dipakai oleh API publik setelah disimpan.',
+                'confirmActionLabel' => 'Ya, simpan',
                 'submitLabel' => 'Simpan Kode',
                 'cancelUrl' => route('tradingview.index'),
             ])

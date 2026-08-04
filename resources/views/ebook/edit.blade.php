@@ -41,6 +41,9 @@
             @include('ebook.partials.form', [
                 'ebook' => $ebook,
                 'ebookCategory' => $ebookCategory,
+                'confirmTitle' => 'Simpan perubahan ebook ini?',
+                'confirmMessage' => 'Perubahan akan langsung diterapkan setelah disimpan.',
+                'confirmActionLabel' => 'Ya, update',
                 'submitLabel' => 'Update Ebook',
                 'cancelUrl' => route('ebook.show', ['ebookCategory' => $ebookCategory, 'ebook' => $ebook]),
             ])

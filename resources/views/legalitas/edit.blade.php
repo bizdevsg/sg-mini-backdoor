@@ -39,6 +39,9 @@
             @method('PUT')
             @include('legalitas.partials.form', [
                 'legalitas' => $legalitas,
+                'confirmTitle' => 'Simpan perubahan legalitas ini?',
+                'confirmMessage' => 'Perubahan akan langsung diterapkan setelah disimpan.',
+                'confirmActionLabel' => 'Ya, update',
                 'submitLabel' => 'Update Legalitas',
                 'cancelUrl' => route('legalitas.index'),
             ])

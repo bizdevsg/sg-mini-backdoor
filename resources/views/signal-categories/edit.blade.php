@@ -14,6 +14,9 @@
             @method('PUT')
             @include('signal-categories.partials.form', [
                 'signalCategory' => $signalCategory,
+                'confirmTitle' => 'Simpan perubahan kategori ini?',
+                'confirmMessage' => 'Perubahan nama kategori akan langsung diterapkan.',
+                'confirmActionLabel' => 'Ya, update',
                 'submitLabel' => 'Simpan Perubahan',
                 'cancelUrl' => route('signal-categories.index'),
             ])

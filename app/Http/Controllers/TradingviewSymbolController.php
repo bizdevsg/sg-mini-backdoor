@@ -6,7 +6,9 @@ use App\Http\Requests\TradingviewSymbol\StoreTradingviewSymbolRequest;
 use App\Http\Requests\TradingviewSymbol\UpdateTradingviewSymbolRequest;
 use App\Models\TradingviewSymbol;
 use App\Support\ApiJsonCacheService;
+use App\Support\DuplicateEntryGuard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -47,7 +49,18 @@ class TradingviewSymbolController extends Controller
 
     public function store(StoreTradingviewSymbolRequest $request): RedirectResponse
     {
-        TradingviewSymbol::create($request->validated());
+        $validated = $request->validated();
+
+        try {
+            TradingviewSymbol::create($validated);
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'symbol_ws',
+                'symbol_ws ini baru saja dipakai oleh kode lain. Silakan gunakan kode yang berbeda.',
+            );
+        }
+
         $this->apiJsonCacheService->refreshTradingviewSymbol();
 
         return redirect()
@@ -64,7 +77,18 @@ class TradingviewSymbolController extends Controller
 
     public function update(UpdateTradingviewSymbolRequest $request, TradingviewSymbol $tradingviewSymbol): RedirectResponse
     {
-        $tradingviewSymbol->update($request->validated());
+        $validated = $request->validated();
+
+        try {
+            $tradingviewSymbol->update($validated);
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'symbol_ws',
+                'symbol_ws ini baru saja dipakai oleh kode lain. Silakan gunakan kode yang berbeda.',
+            );
+        }
+
         $this->apiJsonCacheService->refreshTradingviewSymbol();
 
         return redirect()

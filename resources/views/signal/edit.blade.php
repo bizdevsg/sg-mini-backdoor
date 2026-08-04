@@ -15,6 +15,9 @@
             @include('signal.partials.form', [
                 'signal' => $signal,
                 'signalCategory' => $signalCategory,
+                'confirmTitle' => 'Simpan perubahan signal ini?',
+                'confirmMessage' => 'Perubahan akan langsung diterapkan setelah disimpan.',
+                'confirmActionLabel' => 'Ya, update',
                 'submitLabel' => 'Simpan Perubahan',
                 'cancelUrl' => route('signal.index', $signalCategory),
             ])

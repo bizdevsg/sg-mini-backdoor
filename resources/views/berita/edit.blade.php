@@ -15,6 +15,9 @@
             @include('berita.partials.form', [
                 'berita' => $berita,
                 'beritaCategory' => $beritaCategory,
+                'confirmTitle' => 'Simpan perubahan berita ini?',
+                'confirmMessage' => 'Perubahan akan langsung diterapkan setelah disimpan.',
+                'confirmActionLabel' => 'Ya, update',
                 'submitLabel' => 'Simpan Perubahan',
                 'cancelUrl' => route('berita.show', ['beritaCategory' => $beritaCategory, 'berita' => $berita]),
             ])

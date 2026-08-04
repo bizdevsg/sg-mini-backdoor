@@ -37,6 +37,9 @@
         <form action="{{ route('banner.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @include('banner.partials.form', [
+                'confirmTitle' => 'Simpan banner baru?',
+                'confirmMessage' => 'Pastikan gambar, urutan tampil, dan status aktif sudah benar sebelum disimpan.',
+                'confirmActionLabel' => 'Ya, simpan',
                 'submitLabel' => 'Simpan Banner',
                 'cancelUrl' => route('banner.index'),
             ])

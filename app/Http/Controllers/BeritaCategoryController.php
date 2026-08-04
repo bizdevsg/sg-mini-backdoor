@@ -6,7 +6,9 @@ use App\Http\Requests\BeritaCategory\StoreBeritaCategoryRequest;
 use App\Http\Requests\BeritaCategory\UpdateBeritaCategoryRequest;
 use App\Models\BeritaCategory;
 use App\Support\ApiJsonCacheService;
+use App\Support\DuplicateEntryGuard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -46,7 +48,15 @@ class BeritaCategoryController extends Controller
 
     public function store(StoreBeritaCategoryRequest $request): RedirectResponse
     {
-        BeritaCategory::create($request->validated());
+        try {
+            BeritaCategory::create($request->validated());
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'name',
+                'Kategori dengan nama ini baru saja dibuat. Silakan gunakan nama yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshBeritaCategories();
 
@@ -64,7 +74,15 @@ class BeritaCategoryController extends Controller
 
     public function update(UpdateBeritaCategoryRequest $request, BeritaCategory $beritaCategory): RedirectResponse
     {
-        $beritaCategory->update($request->validated());
+        try {
+            $beritaCategory->update($request->validated());
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'name',
+                'Kategori dengan nama ini baru saja dibuat. Silakan gunakan nama yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshBeritaCategories();
         $this->apiJsonCacheService->refreshBerita();

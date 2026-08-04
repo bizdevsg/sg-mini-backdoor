@@ -39,6 +39,9 @@
             @method('PUT')
             @include('ebook-categories.partials.form', [
                 'ebookCategory' => $ebookCategory,
+                'confirmTitle' => 'Simpan perubahan kategori ini?',
+                'confirmMessage' => 'Perubahan nama kategori akan langsung diterapkan.',
+                'confirmActionLabel' => 'Ya, update',
                 'submitLabel' => 'Update Kategori Ebook',
                 'cancelUrl' => route('ebook-categories.index'),
             ])

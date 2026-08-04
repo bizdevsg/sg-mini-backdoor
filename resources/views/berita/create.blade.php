@@ -13,6 +13,9 @@
             @csrf
             @include('berita.partials.form', [
                 'beritaCategory' => $beritaCategory,
+                'confirmTitle' => 'Simpan berita baru?',
+                'confirmMessage' => 'Pastikan metadata dan konten bilingual sudah benar sebelum disimpan.',
+                'confirmActionLabel' => 'Ya, simpan',
                 'submitLabel' => 'Simpan Berita',
                 'cancelUrl' => route('berita.index', $beritaCategory),
             ])

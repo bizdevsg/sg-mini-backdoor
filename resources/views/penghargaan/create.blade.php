@@ -37,6 +37,9 @@
         <form action="{{ route('penghargaan.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @include('penghargaan.partials.form', [
+                'confirmTitle' => 'Simpan penghargaan baru?',
+                'confirmMessage' => 'Pastikan judul, subtitle, dan foto penghargaan sudah benar.',
+                'confirmActionLabel' => 'Ya, simpan',
                 'submitLabel' => 'Simpan Penghargaan',
                 'cancelUrl' => route('penghargaan.index'),
             ])

@@ -40,6 +40,9 @@
             @method('PUT')
             @include('pengumuman.partials.form', [
                 'informasi' => $informasi,
+                'confirmTitle' => 'Simpan perubahan pengumuman ini?',
+                'confirmMessage' => 'Perubahan akan langsung diterapkan setelah disimpan.',
+                'confirmActionLabel' => 'Ya, update',
                 'submitLabel' => 'Update Pengumuman',
                 'cancelUrl' => route('pengumuman.show', $informasi),
             ])

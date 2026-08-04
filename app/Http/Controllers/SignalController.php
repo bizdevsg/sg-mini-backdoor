@@ -7,8 +7,10 @@ use App\Http\Requests\Signal\UpdateSignalRequest;
 use App\Models\Signal;
 use App\Models\SignalCategory;
 use App\Support\ApiJsonCacheService;
+use App\Support\DuplicateEntryGuard;
 use App\Support\OptimizedImageStorage;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -61,11 +63,19 @@ class SignalController extends Controller
             }
         }
 
-        Signal::create(Signal::prepareForPersistence([
-            ...$validated,
-            'signal_category_id' => $signalCategory->id,
-            'image' => $imagePath,
-        ]));
+        try {
+            Signal::create(Signal::prepareForPersistence([
+                ...$validated,
+                'signal_category_id' => $signalCategory->id,
+                'image' => $imagePath,
+            ]));
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'title_id',
+                'Signal dengan judul ini baru saja dibuat. Silakan gunakan judul yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshSignal();
         $this->apiJsonCacheService->refreshSignalCategories();
@@ -115,11 +125,19 @@ class SignalController extends Controller
             $this->optimizedImageStorage->delete($signal->image);
         }
 
-        $signal->update(Signal::prepareForPersistence([
-            ...$validated,
-            'signal_category_id' => $signalCategory->id,
-            'image' => $imagePath,
-        ]));
+        try {
+            $signal->update(Signal::prepareForPersistence([
+                ...$validated,
+                'signal_category_id' => $signalCategory->id,
+                'image' => $imagePath,
+            ]));
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'title_id',
+                'Signal dengan judul ini baru saja dibuat. Silakan gunakan judul yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshSignal();
         $this->apiJsonCacheService->refreshSignalCategories();

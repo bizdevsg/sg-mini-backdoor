@@ -40,6 +40,9 @@
             @method('PUT')
             @include('penghargaan.partials.form', [
                 'penghargaan' => $penghargaan,
+                'confirmTitle' => 'Simpan perubahan penghargaan ini?',
+                'confirmMessage' => 'Perubahan akan langsung diterapkan setelah disimpan.',
+                'confirmActionLabel' => 'Ya, update',
                 'submitLabel' => 'Update Penghargaan',
                 'cancelUrl' => route('penghargaan.index'),
             ])

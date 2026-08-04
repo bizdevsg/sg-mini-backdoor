@@ -12,6 +12,9 @@
         <form action="{{ route('berita-categories.store') }}" method="POST" class="space-y-6">
             @csrf
             @include('berita-categories.partials.form', [
+                'confirmTitle' => 'Simpan kategori baru?',
+                'confirmMessage' => 'Pastikan nama kategori sudah benar sebelum disimpan.',
+                'confirmActionLabel' => 'Ya, simpan',
                 'submitLabel' => 'Simpan Kategori',
                 'cancelUrl' => route('berita-categories.index'),
             ])

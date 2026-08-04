@@ -37,6 +37,9 @@
         <form action="{{ route('ebook-categories.store') }}" method="POST" class="space-y-6">
             @csrf
             @include('ebook-categories.partials.form', [
+                'confirmTitle' => 'Simpan kategori baru?',
+                'confirmMessage' => 'Pastikan nama kategori sudah benar sebelum disimpan.',
+                'confirmActionLabel' => 'Ya, simpan',
                 'submitLabel' => 'Simpan Kategori Ebook',
                 'cancelUrl' => route('ebook-categories.index'),
             ])

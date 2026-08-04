@@ -118,3 +118,24 @@
         closeModal();
     });
 })();
+
+(() => {
+    // Disable every submit control inside a form the instant it actually
+    // submits (native 'submit' only fires after constraint validation
+    // passes), so a rapid double-click or an impatient extra click on the
+    // confirm-modal accept button can never fire the same save/delete
+    // twice.
+    document.addEventListener('submit', (event) => {
+        const form = event.target;
+
+        if (!(form instanceof HTMLFormElement)) {
+            return;
+        }
+
+        form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach((control) => {
+            if (control instanceof HTMLButtonElement || control instanceof HTMLInputElement) {
+                control.disabled = true;
+            }
+        });
+    });
+})();

@@ -7,8 +7,10 @@ use App\Http\Requests\Berita\UpdateBeritaRequest;
 use App\Models\Berita;
 use App\Models\BeritaCategory;
 use App\Support\ApiJsonCacheService;
+use App\Support\DuplicateEntryGuard;
 use App\Support\OptimizedImageStorage;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -61,11 +63,19 @@ class BeritaController extends Controller
             }
         }
 
-        Berita::create(Berita::prepareForPersistence([
-            ...$validated,
-            'berita_category_id' => $beritaCategory->id,
-            'image' => $imagePath,
-        ]));
+        try {
+            Berita::create(Berita::prepareForPersistence([
+                ...$validated,
+                'berita_category_id' => $beritaCategory->id,
+                'image' => $imagePath,
+            ]));
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'title_id',
+                'Berita dengan judul ini baru saja dibuat. Silakan gunakan judul yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshBerita();
         $this->apiJsonCacheService->refreshBeritaCategories();
@@ -115,11 +125,19 @@ class BeritaController extends Controller
             $this->optimizedImageStorage->delete($berita->image);
         }
 
-        $berita->update(Berita::prepareForPersistence([
-            ...$validated,
-            'berita_category_id' => $beritaCategory->id,
-            'image' => $imagePath,
-        ]));
+        try {
+            $berita->update(Berita::prepareForPersistence([
+                ...$validated,
+                'berita_category_id' => $beritaCategory->id,
+                'image' => $imagePath,
+            ]));
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'title_id',
+                'Berita dengan judul ini baru saja dibuat. Silakan gunakan judul yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshBerita();
         $this->apiJsonCacheService->refreshBeritaCategories();

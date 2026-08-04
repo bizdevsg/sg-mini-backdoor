@@ -41,6 +41,9 @@
             @include('produk.partials.form', [
                 'produk' => $produk,
                 'sectionLabel' => $sectionLabel,
+                'confirmTitle' => 'Simpan perubahan produk ini?',
+                'confirmMessage' => 'Perubahan akan langsung diterapkan di katalog produk setelah disimpan.',
+                'confirmActionLabel' => 'Ya, update',
                 'submitLabel' => 'Update Produk',
                 'cancelUrl' => route('produk.show', ['produk' => $produk, 'section' => $section]),
             ])

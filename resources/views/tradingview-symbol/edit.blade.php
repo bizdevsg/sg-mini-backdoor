@@ -39,6 +39,9 @@
             @method('PUT')
             @include('tradingview-symbol.partials.form', [
                 'tradingviewSymbol' => $tradingviewSymbol,
+                'confirmTitle' => 'Simpan perubahan kode ini?',
+                'confirmMessage' => 'Pastikan Name, symbol_ws, dan symbol_tv sudah benar. Data ini langsung dipakai oleh API publik setelah disimpan.',
+                'confirmActionLabel' => 'Ya, update',
                 'submitLabel' => 'Update Kode',
                 'cancelUrl' => route('tradingview.index'),
             ])

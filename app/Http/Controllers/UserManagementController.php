@@ -6,7 +6,9 @@ use App\Enums\UserRole;
 use App\Http\Requests\UserManagement\StoreUserRequest;
 use App\Http\Requests\UserManagement\UpdateUserRequest;
 use App\Models\User;
+use App\Support\DuplicateEntryGuard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -50,7 +52,15 @@ class UserManagementController extends Controller
 
     public function store(StoreUserRequest $request): RedirectResponse
     {
-        User::query()->create($request->validated());
+        try {
+            User::query()->create($request->validated());
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'email',
+                'Email ini baru saja dipakai user lain. Silakan gunakan email yang berbeda.',
+            );
+        }
 
         return redirect()
             ->route('user-management.index')
@@ -73,7 +83,15 @@ class UserManagementController extends Controller
             unset($validated['password']);
         }
 
-        $user->update($validated);
+        try {
+            $user->update($validated);
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'email',
+                'Email ini baru saja dipakai user lain. Silakan gunakan email yang berbeda.',
+            );
+        }
 
         return redirect()
             ->route('user-management.index')

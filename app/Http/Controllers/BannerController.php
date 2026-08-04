@@ -6,8 +6,10 @@ use App\Http\Requests\Banner\StoreBannerRequest;
 use App\Http\Requests\Banner\UpdateBannerRequest;
 use App\Models\Banner;
 use App\Support\ApiJsonCacheService;
+use App\Support\DuplicateEntryGuard;
 use App\Support\OptimizedImageStorage;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 
@@ -50,10 +52,18 @@ class BannerController extends Controller
             ]);
         }
 
-        Banner::create([
-            ...$validated,
-            'image' => $imagePath,
-        ]);
+        try {
+            Banner::create([
+                ...$validated,
+                'image' => $imagePath,
+            ]);
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'title',
+                'Banner dengan judul ini baru saja dibuat. Silakan gunakan judul yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshBanner();
 
@@ -86,10 +96,18 @@ class BannerController extends Controller
             $this->optimizedImageStorage->delete($banner->image);
         }
 
-        $banner->update([
-            ...$validated,
-            'image' => $imagePath,
-        ]);
+        try {
+            $banner->update([
+                ...$validated,
+                'image' => $imagePath,
+            ]);
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'title',
+                'Banner dengan judul ini baru saja dibuat. Silakan gunakan judul yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshBanner();
 

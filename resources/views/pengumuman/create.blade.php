@@ -37,6 +37,9 @@
         <form action="{{ route('pengumuman.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @include('pengumuman.partials.form', [
+                'confirmTitle' => 'Simpan pengumuman baru?',
+                'confirmMessage' => 'Pengumuman akan langsung dipublikasikan setelah disimpan.',
+                'confirmActionLabel' => 'Ya, simpan',
                 'submitLabel' => 'Simpan Pengumuman',
                 'cancelUrl' => route('pengumuman.index'),
             ])

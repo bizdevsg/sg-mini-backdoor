@@ -2,6 +2,9 @@
 @php($beritaCategory = $beritaCategory ?? $berita?->category)
 @php($currentImageUrl = $berita?->image_url)
 @php($authorInitials = ['MRV', 'ASD', 'YDS', 'ARL', 'CP', 'ALG', 'SRH', 'SNM'])
+@php($confirmTitle = $confirmTitle ?? 'Simpan data?')
+@php($confirmMessage = $confirmMessage ?? 'Pastikan data yang diisi sudah benar sebelum dilanjutkan.')
+@php($confirmActionLabel = $confirmActionLabel ?? 'Ya, simpan')
 
 @if ($errors->any())
     <div
@@ -144,6 +147,11 @@
         Batal
     </a>
     <button type="submit"
+        data-confirm-submit
+        data-confirm-intent="save"
+        data-confirm-title="{{ $confirmTitle }}"
+        data-confirm-message="{{ $confirmMessage }}"
+        data-confirm-action-label="{{ $confirmActionLabel }}"
         class="inline-flex items-center justify-center gap-2 rounded-xl bg-gold px-6 py-2.5 text-sm font-semibold text-obsidian shadow-[0_4px_18px_rgba(199,161,90,0.28)] transition-all duration-200 hover:bg-gold-soft hover:shadow-[0_6px_24px_rgba(199,161,90,0.4)]">
         <i class="fa-solid fa-check text-xs"></i>
         {{ $submitLabel }}

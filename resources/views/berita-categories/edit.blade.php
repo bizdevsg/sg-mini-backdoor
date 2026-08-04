@@ -14,6 +14,9 @@
             @method('PUT')
             @include('berita-categories.partials.form', [
                 'beritaCategory' => $beritaCategory,
+                'confirmTitle' => 'Simpan perubahan kategori ini?',
+                'confirmMessage' => 'Perubahan nama kategori akan langsung diterapkan.',
+                'confirmActionLabel' => 'Ya, update',
                 'submitLabel' => 'Simpan Perubahan',
                 'cancelUrl' => route('berita-categories.index'),
             ])

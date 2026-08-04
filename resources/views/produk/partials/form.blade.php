@@ -1,4 +1,7 @@
 @php($produk = $produk ?? null)
+@php($confirmTitle = $confirmTitle ?? 'Simpan data?')
+@php($confirmMessage = $confirmMessage ?? 'Pastikan data yang diisi sudah benar sebelum dilanjutkan.')
+@php($confirmActionLabel = $confirmActionLabel ?? 'Ya, simpan')
 @php($currentImageUrl = null)
 @if ($produk?->image)
     @php($currentImageUrl = $produk->image_url)
@@ -85,6 +88,11 @@
         Batal
     </a>
     <button type="submit"
+        data-confirm-submit
+        data-confirm-intent="save"
+        data-confirm-title="{{ $confirmTitle }}"
+        data-confirm-message="{{ $confirmMessage }}"
+        data-confirm-action-label="{{ $confirmActionLabel }}"
         class="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-medium text-obsidian transition-colors hover:bg-slate-200">
         {{ $submitLabel }}
     </button>

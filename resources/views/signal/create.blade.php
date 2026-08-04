@@ -13,6 +13,9 @@
             @csrf
             @include('signal.partials.form', [
                 'signalCategory' => $signalCategory,
+                'confirmTitle' => 'Simpan signal baru?',
+                'confirmMessage' => 'Pastikan metadata dan konten bilingual sudah benar sebelum disimpan.',
+                'confirmActionLabel' => 'Ya, simpan',
                 'submitLabel' => 'Simpan Signal',
                 'cancelUrl' => route('signal.index', $signalCategory),
             ])

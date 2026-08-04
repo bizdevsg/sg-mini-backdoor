@@ -12,6 +12,9 @@
         <form action="{{ route('signal-categories.store') }}" method="POST" class="space-y-6">
             @csrf
             @include('signal-categories.partials.form', [
+                'confirmTitle' => 'Simpan kategori baru?',
+                'confirmMessage' => 'Pastikan nama kategori sudah benar sebelum disimpan.',
+                'confirmActionLabel' => 'Ya, simpan',
                 'submitLabel' => 'Simpan Kategori',
                 'cancelUrl' => route('signal-categories.index'),
             ])

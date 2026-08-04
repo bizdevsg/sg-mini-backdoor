@@ -2,6 +2,9 @@
 @php($signalCategory = $signalCategory ?? $signal?->category)
 @php($currentImageUrl = $signal?->image_url)
 @php($authorInitials = ['MRV', 'ASD', 'YDS', 'ARL', 'CP', 'ALG', 'SRH', 'SNM'])
+@php($confirmTitle = $confirmTitle ?? 'Simpan data?')
+@php($confirmMessage = $confirmMessage ?? 'Pastikan data yang diisi sudah benar sebelum dilanjutkan.')
+@php($confirmActionLabel = $confirmActionLabel ?? 'Ya, simpan')
 
 @if ($errors->any())
     <div class="flex items-center gap-3 rounded-xl border border-red-500/30 bg-red-950/40 px-4 py-3 text-sm text-red-200 shadow-lg">
@@ -128,6 +131,11 @@
         Batal
     </a>
     <button type="submit"
+        data-confirm-submit
+        data-confirm-intent="save"
+        data-confirm-title="{{ $confirmTitle }}"
+        data-confirm-message="{{ $confirmMessage }}"
+        data-confirm-action-label="{{ $confirmActionLabel }}"
         class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-500 px-6 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-blue-600">
         <i class="fa-solid fa-check text-xs"></i>
         {{ $submitLabel }}

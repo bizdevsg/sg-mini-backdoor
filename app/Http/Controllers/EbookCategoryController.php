@@ -6,7 +6,9 @@ use App\Http\Requests\EbookCategory\StoreEbookCategoryRequest;
 use App\Http\Requests\EbookCategory\UpdateEbookCategoryRequest;
 use App\Models\EbookCategory;
 use App\Support\ApiJsonCacheService;
+use App\Support\DuplicateEntryGuard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -46,7 +48,15 @@ class EbookCategoryController extends Controller
 
     public function store(StoreEbookCategoryRequest $request): RedirectResponse
     {
-        EbookCategory::create($request->validated());
+        try {
+            EbookCategory::create($request->validated());
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'name',
+                'Kategori dengan nama ini baru saja dibuat. Silakan gunakan nama yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshEbookCategories();
 
@@ -64,7 +74,15 @@ class EbookCategoryController extends Controller
 
     public function update(UpdateEbookCategoryRequest $request, EbookCategory $ebookCategory): RedirectResponse
     {
-        $ebookCategory->update($request->validated());
+        try {
+            $ebookCategory->update($request->validated());
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'name',
+                'Kategori dengan nama ini baru saja dibuat. Silakan gunakan nama yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshEbookCategories();
         $this->apiJsonCacheService->refreshEbook();

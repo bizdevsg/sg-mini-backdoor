@@ -38,6 +38,9 @@
             @csrf
             @include('ebook.partials.form', [
                 'ebookCategory' => $ebookCategory,
+                'confirmTitle' => 'Simpan ebook baru?',
+                'confirmMessage' => 'Pastikan judul, deskripsi, cover, dan file PDF sudah benar.',
+                'confirmActionLabel' => 'Ya, simpan',
                 'submitLabel' => 'Simpan Ebook',
                 'cancelUrl' => route('ebook.index', $ebookCategory),
             ])

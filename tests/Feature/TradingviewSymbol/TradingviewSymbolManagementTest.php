@@ -91,3 +91,20 @@ test('creating a tradingview symbol requires unique symbol_ws', function () {
         ])
         ->assertInvalid(['symbol_ws']);
 });
+
+test('create and edit forms render a save confirmation prompt', function () {
+    $user = User::factory()->superadmin()->create();
+    $symbol = TradingviewSymbol::factory()->create();
+
+    $this->actingAs($user);
+
+    $this->get(route('tradingview.create'))
+        ->assertSuccessful()
+        ->assertSee('data-confirm-submit', false)
+        ->assertSee('Simpan kode TradingView baru?');
+
+    $this->get(route('tradingview.edit', $symbol))
+        ->assertSuccessful()
+        ->assertSee('data-confirm-submit', false)
+        ->assertSee('Simpan perubahan kode ini?');
+});

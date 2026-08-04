@@ -6,7 +6,9 @@ use App\Http\Requests\Legalitas\StoreLegalitasRequest;
 use App\Http\Requests\Legalitas\UpdateLegalitasRequest;
 use App\Models\Legalitas;
 use App\Support\ApiJsonCacheService;
+use App\Support\DuplicateEntryGuard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -48,7 +50,16 @@ class LegalitasController extends Controller
 
     public function store(StoreLegalitasRequest $request): RedirectResponse
     {
-        Legalitas::create($request->validated());
+        try {
+            Legalitas::create($request->validated());
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'title',
+                'Legalitas dengan judul ini baru saja dibuat. Silakan gunakan judul yang berbeda.',
+            );
+        }
+
         $this->apiJsonCacheService->refreshLegalitas();
 
         return redirect()
@@ -65,7 +76,16 @@ class LegalitasController extends Controller
 
     public function update(UpdateLegalitasRequest $request, Legalitas $legalitas): RedirectResponse
     {
-        $legalitas->update($request->validated());
+        try {
+            $legalitas->update($request->validated());
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'title',
+                'Legalitas dengan judul ini baru saja dibuat. Silakan gunakan judul yang berbeda.',
+            );
+        }
+
         $this->apiJsonCacheService->refreshLegalitas();
 
         return redirect()

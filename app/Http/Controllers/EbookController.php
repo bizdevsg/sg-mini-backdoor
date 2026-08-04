@@ -7,8 +7,10 @@ use App\Http\Requests\Ebook\UpdateEbookRequest;
 use App\Models\Ebook;
 use App\Models\EbookCategory;
 use App\Support\ApiJsonCacheService;
+use App\Support\DuplicateEntryGuard;
 use App\Support\OptimizedImageStorage;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -71,12 +73,20 @@ class EbookController extends Controller
 
         $filePath = $request->file('file')->store('ebook-files', 'public');
 
-        Ebook::create([
-            ...$validated,
-            'ebook_category_id' => $ebookCategory->id,
-            'image' => $imagePath,
-            'file' => $filePath,
-        ]);
+        try {
+            Ebook::create([
+                ...$validated,
+                'ebook_category_id' => $ebookCategory->id,
+                'image' => $imagePath,
+                'file' => $filePath,
+            ]);
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'title',
+                'Ebook dengan judul ini baru saja dibuat. Silakan gunakan judul yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshEbook();
         $this->apiJsonCacheService->refreshEbookCategories();
@@ -132,12 +142,20 @@ class EbookController extends Controller
             $filePath = $request->file('file')->store('ebook-files', 'public');
         }
 
-        $ebook->update([
-            ...$validated,
-            'ebook_category_id' => $ebookCategory->id,
-            'image' => $imagePath,
-            'file' => $filePath,
-        ]);
+        try {
+            $ebook->update([
+                ...$validated,
+                'ebook_category_id' => $ebookCategory->id,
+                'image' => $imagePath,
+                'file' => $filePath,
+            ]);
+        } catch (QueryException $exception) {
+            throw DuplicateEntryGuard::translate(
+                $exception,
+                'title',
+                'Ebook dengan judul ini baru saja dibuat. Silakan gunakan judul yang berbeda.',
+            );
+        }
 
         $this->apiJsonCacheService->refreshEbook();
         $this->apiJsonCacheService->refreshEbookCategories();

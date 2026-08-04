@@ -40,6 +40,9 @@
             @method('PUT')
             @include('banner.partials.form', [
                 'banner' => $banner,
+                'confirmTitle' => 'Simpan perubahan banner ini?',
+                'confirmMessage' => 'Perubahan akan langsung diterapkan di beranda setelah disimpan.',
+                'confirmActionLabel' => 'Ya, update',
                 'submitLabel' => 'Update Banner',
                 'cancelUrl' => route('banner.index'),
             ])

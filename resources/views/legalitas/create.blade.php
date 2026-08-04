@@ -37,6 +37,9 @@
         <form action="{{ route('legalitas.store') }}" method="POST" class="space-y-6">
             @csrf
             @include('legalitas.partials.form', [
+                'confirmTitle' => 'Simpan legalitas baru?',
+                'confirmMessage' => 'Pastikan judul, nomor izin, dan deskripsi sudah benar sebelum disimpan.',
+                'confirmActionLabel' => 'Ya, simpan',
                 'submitLabel' => 'Simpan Legalitas',
                 'cancelUrl' => route('legalitas.index'),
             ])
