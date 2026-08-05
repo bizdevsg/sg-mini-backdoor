@@ -1,14 +1,14 @@
 <div>
-    <div class="mb-5 overflow-hidden rounded-2xl border border-white/8 bg-white/3">
-        <div class="border-b border-white/6 px-5 py-4">
-            <p class="text-sm font-semibold text-white">Struktur Endpoint</p>
+    <div class="mb-5 overflow-hidden rounded-2xl border border-black/8 bg-black/3">
+        <div class="border-b border-black/6 px-5 py-4">
+            <p class="text-sm font-semibold text-ivory">Struktur Endpoint</p>
             <p class="mt-1 text-xs leading-5 text-smoke">
                 Semua endpoint di bawah ini berada dalam namespace
                 <span class="font-mono text-champagne">{{ $apiBaseUrl }}</span>. Pengelompokan dibuat berdasarkan menu
                 data agar tim frontend lebih cepat mencari resource yang dibutuhkan.
             </p>
         </div>
-        <div class="grid gap-0 divide-y divide-white/6 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        <div class="grid gap-0 divide-y divide-black/6 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             <div class="px-5 py-4">
                 <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/50">List Endpoint</p>
                 <p class="mt-2 text-xs leading-5 text-smoke">
@@ -32,41 +32,41 @@
 
     <div class="mb-4 flex items-center gap-3">
         <div
-            class="flex h-7 w-7 items-center justify-center rounded-lg border border-blue-500/25 bg-blue-500/15 text-xs font-bold text-blue-300">
+            class="flex h-7 w-7 items-center justify-center rounded-lg border border-blue-500/25 bg-blue-500/15 text-xs font-bold text-blue-700">
             <i class="fa-solid fa-route text-[11px]"></i>
         </div>
-        <h2 class="text-base font-semibold text-white">Endpoints</h2>
-        <div class="h-px flex-1 bg-white/6"></div>
+        <h2 class="text-base font-semibold text-ivory">Endpoints</h2>
+        <div class="h-px flex-1 bg-black/6"></div>
     </div>
 
     <div class="space-y-4">
         @foreach ($endpointGroups as $group)
-            <div class="overflow-hidden rounded-2xl border border-white/8 bg-white/3">
-                <div class="flex items-center gap-3 border-b border-white/6 px-5 py-3.5">
+            <div class="overflow-hidden rounded-2xl border border-black/8 bg-black/3">
+                <div class="flex items-center gap-3 border-b border-black/6 px-5 py-3.5">
                     <div>
                         <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/50">{{ $group['title'] }}</p>
-                        <p class="text-sm font-semibold text-white">{{ $group['description'] }}</p>
+                        <p class="text-sm font-semibold text-ivory">{{ $group['description'] }}</p>
                     </div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full">
                         <thead>
-                            <tr class="border-b border-white/6 bg-black/20 text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/50">
+                            <tr class="border-b border-black/6 bg-onyx text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/50">
                                 <th class="w-20 px-5 py-3">Method</th>
                                 <th class="px-5 py-3">Endpoint</th>
                                 <th class="px-5 py-3">Catatan</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-white/5">
+                        <tbody class="divide-y divide-black/5">
                             @foreach ($group['endpoints'] as $endpoint)
-                                <tr class="align-top transition-colors hover:bg-white/3">
+                                <tr class="align-top transition-colors hover:bg-black/3">
                                     <td class="px-5 py-3">
                                         @php
                                             $methodColor = match ($endpoint['method']) {
-                                                'POST' => 'border-emerald-400/25 bg-emerald-400/10 text-emerald-300',
-                                                'PUT', 'PATCH' => 'border-yellow-400/25 bg-yellow-400/10 text-yellow-300',
-                                                'DELETE' => 'border-red-400/25 bg-red-400/10 text-red-300',
-                                                default => 'border-blue-400/25 bg-blue-400/10 text-blue-200',
+                                                'POST' => 'border-emerald-400/25 bg-emerald-400/10 text-emerald-700',
+                                                'PUT', 'PATCH' => 'border-yellow-400/25 bg-yellow-400/10 text-yellow-700',
+                                                'DELETE' => 'border-red-400/25 bg-red-400/10 text-red-700',
+                                                default => 'border-blue-400/25 bg-blue-400/10 text-blue-800',
                                             };
                                         @endphp
                                         <span
@@ -86,8 +86,8 @@
     </div>
 
     <div class="mt-5 grid gap-4 lg:grid-cols-2">
-        <div class="rounded-2xl border border-white/8 bg-white/3 px-5 py-4">
-            <p class="text-sm font-semibold text-white">Konvensi yang Dipakai</p>
+        <div class="rounded-2xl border border-black/8 bg-black/3 px-5 py-4">
+            <p class="text-sm font-semibold text-ivory">Konvensi yang Dipakai</p>
             <div class="mt-3 space-y-3 text-xs leading-5 text-smoke">
                 <p>Path tanpa parameter biasanya dipakai untuk list data.</p>
                 <p>Path dengan <span class="font-mono text-champagne">{slug}</span> dipakai untuk detail data.</p>
@@ -96,8 +96,8 @@
             </div>
         </div>
 
-        <div class="rounded-2xl border border-white/8 bg-white/3 px-5 py-4">
-            <p class="text-sm font-semibold text-white">Catatan Integrasi</p>
+        <div class="rounded-2xl border border-black/8 bg-black/3 px-5 py-4">
+            <p class="text-sm font-semibold text-ivory">Catatan Integrasi</p>
             <div class="mt-3 space-y-3 text-xs leading-5 text-smoke">
                 <p>Mulai dari endpoint list dulu sebelum memakai endpoint detail.</p>
                 <p>Pastikan slug yang dipakai di endpoint detail berasal dari data list yang valid.</p>

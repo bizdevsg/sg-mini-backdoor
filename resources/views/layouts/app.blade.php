@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'SG Admin') - Solid Gold Berjangka</title>
-    <meta name="theme-color" content="#15110d">
+    <meta name="theme-color" content="#faf8f4">
 
     <link rel="icon" type="image/png" href="{{ asset('favicon/favicon-96x96.png') }}" sizes="96x96">
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon/favicon.svg') }}">
@@ -20,7 +20,7 @@
 </head>
 
 <body
-    class="min-h-screen overflow-x-hidden bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,#2c2217_0%,#15110d_55%,#0d0a08_100%)] text-champagne antialiased selection:bg-gold selection:text-obsidian">
+    class="min-h-screen overflow-x-hidden bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,#fffdf9_0%,#faf8f4_55%,#f2ede3_100%)] text-champagne antialiased selection:bg-gold selection:text-obsidian">
     @php
         $user = auth()->user();
         $theme = $user?->roleTheme() ?? [
@@ -88,7 +88,7 @@
             </div>
 
             {{-- Footer info --}}
-            <footer class="border-t border-white/6 px-4 py-4 text-center text-xs text-smoke/50 lg:px-7">
+            <footer class="border-t border-black/6 px-4 py-4 text-center text-xs text-smoke/50 lg:px-7">
                 &copy; {{ date('Y') }} PT Solid Gold Berjangka. All rights reserved.
             </footer>
         </div>

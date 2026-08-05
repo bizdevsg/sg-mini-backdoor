@@ -73,8 +73,8 @@
     @endphp
 
     <section class="mx-auto space-y-8">
-        <div class="border-b border-white/10 pb-6">
-            <h1 class="text-xl font-semibold text-white sm:text-2xl">Website Settings</h1>
+        <div class="border-b border-black/10 pb-6">
+            <h1 class="text-xl font-semibold text-ivory sm:text-2xl">Website Settings</h1>
             <p class="mt-1 text-sm text-smoke/70">
                 Atur visibilitas Client Area, integrasi Tawk.to, dan pengamanan API publik untuk environment development dan production.
             </p>

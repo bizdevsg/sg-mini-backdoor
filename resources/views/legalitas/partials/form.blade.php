@@ -4,18 +4,18 @@
 @php($confirmActionLabel = $confirmActionLabel ?? 'Ya, simpan')
 
 @if ($errors->any())
-    <div class="flex items-center gap-3 rounded-xl border border-red-500/30 bg-red-950/40 px-4 py-3 text-sm text-red-200 shadow-lg">
-        <i class="fa-solid fa-triangle-exclamation text-base text-red-400"></i>
+    <div class="flex items-center gap-3 rounded-xl border border-red-500/30 bg-red-50/40 px-4 py-3 text-sm text-red-800 shadow-lg">
+        <i class="fa-solid fa-triangle-exclamation text-base text-red-600"></i>
         <div>
-            <p class="font-medium text-red-300">Terdapat kesalahan pengisian:</p>
-            <p class="text-xs text-red-200/80">{{ $errors->first() }}</p>
+            <p class="font-medium text-red-700">Terdapat kesalahan pengisian:</p>
+            <p class="text-xs text-red-800/80">{{ $errors->first() }}</p>
         </div>
     </div>
 @endif
 
-<div class="rounded-2xl border border-white/8 bg-white/3 p-6 space-y-5">
-    <div class="border-b border-white/6 pb-4">
-        <h3 class="text-base font-semibold text-white">Detail Legalitas Perusahaan</h3>
+<div class="rounded-2xl border border-black/8 bg-black/3 p-6 space-y-5">
+    <div class="border-b border-black/6 pb-4">
+        <h3 class="text-base font-semibold text-ivory">Detail Legalitas Perusahaan</h3>
         <p class="mt-0.5 text-xs text-smoke">Isi judul dokumen, nomor izin/SK resmi, dan deskripsi hukum.</p>
     </div>
 
@@ -26,10 +26,10 @@
                 Judul Dokumen Legalitas <span class="text-gold-soft">*</span>
             </label>
             <input type="text" id="title" name="title" value="{{ old('title', $legalitas?->title) }}"
-                class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('title') ? 'border-red-400/60' : 'border-white/8' }}"
+                class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('title') ? 'border-red-400/60' : 'border-black/8' }}"
                 placeholder="Contoh: Izin Usaha Perdagangan Berjangka" required>
             @error('title')
-                <p class="mt-1.5 text-xs font-medium text-red-300">{{ $message }}</p>
+                <p class="mt-1.5 text-xs font-medium text-red-700">{{ $message }}</p>
             @enderror
         </div>
 
@@ -39,10 +39,10 @@
                 Nomor Izin / SK Resmi <span class="text-gold-soft">*</span>
             </label>
             <input type="text" id="nomor" name="nomor" value="{{ old('nomor', $legalitas?->nomor) }}"
-                class="w-full rounded-xl border bg-onyx px-4 py-3 font-mono text-sm text-gold-soft placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('nomor') ? 'border-red-400/60' : 'border-white/8' }}"
+                class="w-full rounded-xl border bg-onyx px-4 py-3 font-mono text-sm text-gold-soft placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('nomor') ? 'border-red-400/60' : 'border-black/8' }}"
                 placeholder="Contoh: 123/BAPPEBTI/SK-III/2026" required>
             @error('nomor')
-                <p class="mt-1.5 text-xs font-medium text-red-300">{{ $message }}</p>
+                <p class="mt-1.5 text-xs font-medium text-red-700">{{ $message }}</p>
             @enderror
         </div>
     </div>
@@ -53,11 +53,11 @@
             Deskripsi Legalitas <span class="text-gold-soft">*</span>
         </label>
         <textarea id="description" name="description" rows="6"
-            class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('description') ? 'border-red-400/60' : 'border-white/8' }}"
+            class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('description') ? 'border-red-400/60' : 'border-black/8' }}"
             placeholder="Tuliskan deskripsi ringkas cakupan izin atau landasan hukum legalitas ini..." required>{{ old('description', filled($legalitas?->description) ? trim(strip_tags($legalitas->description)) : '') }}</textarea>
         <p class="mt-2 text-[11px] text-smoke/70">Jelaskan instansi penerbit, tanggal penetapan, atau ruang lingkup kewenangan lisensi ini.</p>
         @error('description')
-            <p class="mt-1.5 text-xs font-medium text-red-300">{{ $message }}</p>
+            <p class="mt-1.5 text-xs font-medium text-red-700">{{ $message }}</p>
         @enderror
     </div>
 
@@ -71,9 +71,9 @@
 </div>
 
 {{-- Bottom Action Buttons --}}
-<div class="flex items-center justify-end gap-3 border-t border-white/6 pt-6">
+<div class="flex items-center justify-end gap-3 border-t border-black/6 pt-6">
     <a href="{{ $cancelUrl }}"
-        class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-white/18 hover:bg-white/8 hover:text-white">
+        class="inline-flex items-center justify-center gap-2 rounded-xl border border-black/10 bg-black/5 px-5 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-black/18 hover:bg-black/8 hover:text-ivory">
         Batal
     </a>
     <button type="submit"

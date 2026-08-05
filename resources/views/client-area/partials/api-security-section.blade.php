@@ -1,6 +1,6 @@
-<div id="api-security" class="rounded-lg border border-white/10 bg-white/[0.02]">
-    <div class="border-b border-white/10 px-5 py-4">
-        <h2 class="text-sm font-semibold text-white">API &amp; Security</h2>
+<div id="api-security" class="rounded-lg border border-black/10 bg-onyx">
+    <div class="border-b border-black/10 px-5 py-4">
+        <h2 class="text-sm font-semibold text-ivory">API &amp; Security</h2>
         <p class="mt-0.5 text-xs text-smoke/60">
             Kontrol status API publik, origin frontend yang diizinkan, dan catatan rotasi API key.
         </p>
@@ -10,9 +10,9 @@
         @csrf
         @method('PUT')
 
-        <div class="flex items-start justify-between gap-4 rounded-lg border border-white/8 bg-black/20 px-4 py-4">
+        <div class="flex items-start justify-between gap-4 rounded-lg border border-black/8 bg-onyx px-4 py-4">
             <div class="min-w-0">
-                <p class="text-sm font-medium text-white">Public API Aktif</p>
+                <p class="text-sm font-medium text-ivory">Public API Aktif</p>
                 <p class="mt-1 text-xs leading-relaxed text-smoke/60">
                     Jika dimatikan, seluruh endpoint `/api/v1/*` akan mengembalikan response `503`.
                 </p>
@@ -37,7 +37,7 @@
                     Allowed Origin Frontend
                 </label>
                 <textarea id="allowed_origin_frontend" name="allowed_origin_frontend" rows="5"
-                    class="w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-sm text-white outline-none transition placeholder:text-smoke/35 focus:border-gold/40"
+                    class="w-full rounded-lg border border-black/10 bg-onyx px-3 py-2 text-sm text-ivory outline-none transition placeholder:text-smoke/35 focus:border-gold/40"
                     placeholder="https://frontend-dev.test&#10;https://frontend-prod.com">{{ old('allowed_origin_frontend', $settings['allowed_origin_frontend']) }}</textarea>
                 <p class="text-xs text-smoke/50">Dipakai untuk client web/browser. Boleh kosong di backdoor, tapi request web akan ditolak sampai origin frontend diisi. Mobile app bisa memakai header `X-Client-Type: mobile-app`.</p>
             </div>
@@ -49,7 +49,7 @@
                     </label>
                     <input id="api_key_rotation_notice" name="api_key_rotation_notice" type="text"
                         value="{{ old('api_key_rotation_notice', $settings['api_key_rotation_notice']) }}"
-                        class="w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-sm text-white outline-none transition placeholder:text-smoke/35 focus:border-gold/40"
+                        class="w-full rounded-lg border border-black/10 bg-onyx px-3 py-2 text-sm text-ivory outline-none transition placeholder:text-smoke/35 focus:border-gold/40"
                         placeholder="Contoh: Rotasi API key dijadwalkan 15 Agustus 2026.">
                     <p class="text-xs text-smoke/50">Akan dikirim sebagai header response `X-API-Key-Rotation-Notice` ke API publik.</p>
                 </div>
@@ -57,7 +57,7 @@
         </div>
 
         @if ($errors->hasAny(['api_enabled', 'allowed_origin_frontend', 'api_key_rotation_notice']))
-            <div class="rounded-lg border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-xs text-rose-200">
+            <div class="rounded-lg border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-xs text-rose-800">
                 @foreach (['api_enabled', 'allowed_origin_frontend', 'api_key_rotation_notice'] as $field)
                     @foreach ($errors->get($field) as $message)
                         <p>{{ $message }}</p>
@@ -66,7 +66,7 @@
             </div>
         @endif
 
-        <div class="flex items-center justify-between gap-4 border-t border-white/10 pt-4">
+        <div class="flex items-center justify-between gap-4 border-t border-black/10 pt-4">
             <p class="text-xs text-smoke/55">
                 Setting ini berlaku untuk semua endpoint publik yang memakai API key.
             </p>

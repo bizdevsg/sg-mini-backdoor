@@ -6,7 +6,7 @@
     @php
         $theme = auth()->user()?->roleTheme() ?? [
             'hero_bg' =>
-                'bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(199,161,90,0.15),transparent),linear-gradient(160deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.01)_100%)]',
+                'bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(199,161,90,0.15),transparent),linear-gradient(160deg,rgba(21,17,13,0.05)_0%,rgba(21,17,13,0.01)_100%)]',
             'hero_glow' => 'bg-gold/8',
             'hero_shimmer' => 'via-gold/35',
             'badge_border' => 'border-gold/20',
@@ -23,17 +23,17 @@
             @include('api-documentation.partials.sidebar-nav')
 
             <div class="min-w-0 space-y-8">
-                <div class="flex flex-col gap-4 border-b border-white/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
+                <div class="flex flex-col gap-4 border-b border-black/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
                     <div>
                         <p class="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-soft/70">Dokumentasi API</p>
-                        <h1 class="mt-2 text-2xl font-semibold text-white">{{ $currentDocSection['label'] }}</h1>
+                        <h1 class="mt-2 text-2xl font-semibold text-ivory">{{ $currentDocSection['label'] }}</h1>
                         <p class="mt-1 text-sm text-smoke/70">
                             Halaman dokumentasi terpisah untuk {{ strtolower($currentDocSection['label']) }}.
                         </p>
                     </div>
 
                     <button type="button" data-open-doc-download-modal
-                        class="inline-flex items-center justify-center gap-2 rounded-xl border border-gold/25 bg-gold/10 px-4 py-2.5 text-sm font-medium text-gold-soft transition-colors hover:border-gold/40 hover:bg-gold/16 hover:text-white">
+                        class="inline-flex items-center justify-center gap-2 rounded-xl border border-gold/25 bg-gold/10 px-4 py-2.5 text-sm font-medium text-gold-soft transition-colors hover:border-gold/40 hover:bg-gold/16 hover:text-ivory">
                         <i class="fa-solid fa-file-arrow-down text-xs"></i>
                         Download PDF Lengkap
                     </button>
@@ -60,10 +60,10 @@
         <div data-doc-download-backdrop class="absolute inset-0 bg-black/75 backdrop-blur-sm"></div>
 
         <div
-            class="relative w-full max-w-lg overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(180deg,_rgba(37,28,21,0.98)_0%,_rgba(22,17,13,0.98)_100%)] text-champagne shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
-            <div class="border-b border-white/8 px-6 py-5">
+            class="relative w-full max-w-lg overflow-hidden rounded-3xl border border-black/10 bg-[linear-gradient(180deg,_#faf8f4_0%,_#f2ede3_100%)] text-champagne shadow-[0_30px_80px_rgba(0,0,0,0.25)]">
+            <div class="border-b border-black/8 px-6 py-5">
                 <p class="text-xs font-medium uppercase tracking-[0.22em] text-gold-soft/75">Sebelum download</p>
-                <h3 class="mt-2 text-xl font-semibold tracking-[-0.03em] text-white">
+                <h3 class="mt-2 text-xl font-semibold tracking-[-0.03em] text-ivory">
                     Konfirmasi Kebutuhan Dokumen
                 </h3>
                 <p class="mt-2 text-sm leading-6 text-smoke/70">
@@ -82,9 +82,9 @@
                     </label>
                     <textarea id="doc-download-purpose" name="purpose" rows="3" required maxlength="500"
                         placeholder="Contoh: Integrasi API untuk aplikasi mobile versi 2.0"
-                        class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-smoke/40 focus:border-gold/40 focus:outline-none focus:ring-1 focus:ring-gold/30">{{ old('purpose') }}</textarea>
+                        class="mt-2 w-full rounded-xl border border-black/10 bg-black/5 px-4 py-3 text-sm text-ivory placeholder-smoke/40 focus:border-gold/40 focus:outline-none focus:ring-1 focus:ring-gold/30">{{ old('purpose') }}</textarea>
                     @error('purpose')
-                        <p class="mt-1.5 text-xs text-red-300">{{ $message }}</p>
+                        <p class="mt-1.5 text-xs text-red-700">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -95,19 +95,19 @@
                     <input type="text" id="doc-download-recipient" name="recipient" required maxlength="255"
                         value="{{ old('recipient') }}"
                         placeholder="Nama, email, atau tim/vendor penerima dokumen"
-                        class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-smoke/40 focus:border-gold/40 focus:outline-none focus:ring-1 focus:ring-gold/30">
+                        class="mt-2 w-full rounded-xl border border-black/10 bg-black/5 px-4 py-3 text-sm text-ivory placeholder-smoke/40 focus:border-gold/40 focus:outline-none focus:ring-1 focus:ring-gold/30">
                     @error('recipient')
-                        <p class="mt-1.5 text-xs text-red-300">{{ $message }}</p>
+                        <p class="mt-1.5 text-xs text-red-700">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="flex flex-col gap-3 pt-1 sm:flex-row sm:justify-end">
                     <button type="button" data-doc-download-cancel
-                        class="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10">
+                        class="inline-flex items-center justify-center rounded-xl border border-black/10 bg-black/5 px-5 py-3 text-sm font-medium text-ivory transition-colors hover:bg-black/10">
                         Batal
                     </button>
                     <button type="submit"
-                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-medium text-obsidian transition-colors hover:bg-slate-200">
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-gold px-5 py-3 text-sm font-medium text-obsidian transition-colors hover:bg-gold-soft hover:text-white">
                         <i class="fa-solid fa-file-arrow-down text-xs"></i>
                         Download PDF
                     </button>
@@ -170,7 +170,7 @@
                             label.textContent = successLabel;
                         }
 
-                        button.classList.add('border-emerald-400/30', 'text-emerald-300');
+                        button.classList.add('border-emerald-400/30', 'text-emerald-700');
                     } catch (error) {
                         console.error('Failed to copy text.', error);
 
@@ -178,15 +178,15 @@
                             label.textContent = errorLabel;
                         }
 
-                        button.classList.add('border-red-400/30', 'text-red-300');
+                        button.classList.add('border-red-400/30', 'text-red-700');
                     } finally {
                         window.setTimeout(() => {
                             if (label instanceof HTMLElement) {
                                 label.textContent = defaultLabel;
                             }
 
-                            button.classList.remove('border-emerald-400/30', 'text-emerald-300', 'border-red-400/30',
-                                'text-red-300');
+                            button.classList.remove('border-emerald-400/30', 'text-emerald-700', 'border-red-400/30',
+                                'text-red-700');
                         }, 1600);
                     }
                 });

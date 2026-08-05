@@ -5,7 +5,8 @@
 @section('content')
     @php
         $theme = auth()->user()?->roleTheme() ?? [
-            'hero_bg' => 'bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(199,161,90,0.15),transparent),linear-gradient(160deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.01)_100%)]',
+            'hero_bg' =>
+                'bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(199,161,90,0.15),transparent),linear-gradient(160deg,rgba(21,17,13,0.05)_0%,rgba(21,17,13,0.01)_100%)]',
             'hero_glow' => 'bg-gold/8',
             'hero_shimmer' => 'via-gold/35',
             'badge_border' => 'border-gold/20',
@@ -22,20 +23,27 @@
         {{-- ══════════════════════════════════════════════
              HERO HEADER
         ══════════════════════════════════════════════ --}}
-        <div class="relative overflow-hidden rounded-[28px] border border-white/8 {{ $theme['hero_bg'] }} px-7 py-6 shadow-[0_24px_60px_rgba(0,0,0,0.3)] motion-safe:motion-preset-slide-down-sm lg:px-9 lg:py-8">
-            <div class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full {{ $theme['hero_glow'] }} blur-[64px]"></div>
-            <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent {{ $theme['hero_shimmer'] }} to-transparent"></div>
+        <div
+            class="relative overflow-hidden rounded-[28px] border border-black/8 {{ $theme['hero_bg'] }} px-7 py-6   motion-safe:motion-preset-slide-down-sm lg:px-9 lg:py-8">
+            <div
+                class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full {{ $theme['hero_glow'] }} blur-[64px]">
+            </div>
+            <div
+                class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent {{ $theme['hero_shimmer'] }} to-transparent">
+            </div>
 
             <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                 <div class="space-y-3 motion-safe:motion-preset-slide-right-sm motion-safe:motion-delay-[60ms]">
-                    <span class="inline-flex items-center gap-2 rounded-full border {{ $theme['badge_border'] }} {{ $theme['badge_bg'] }} px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] {{ $theme['badge_text'] }}">
+                    <span
+                        class="inline-flex items-center gap-2 rounded-full border {{ $theme['badge_border'] }} {{ $theme['badge_bg'] }} px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] {{ $theme['badge_text'] }}">
                         <span class="h-1.5 w-1.5 animate-pulse rounded-full {{ $theme['dot'] }}"></span>
                         User Management
                     </span>
                     <div>
-                        <h1 class="text-2xl font-semibold tracking-[-0.04em] text-white lg:text-3xl">
+                        <h1 class="text-2xl font-semibold tracking-[-0.04em] text-ivory lg:text-3xl">
                             Pengelolaan User &
-                            <span class="bg-gradient-to-r {{ $theme['gradient_text'] }} bg-clip-text text-transparent">Hak Akses</span>
+                            <span class="bg-gradient-to-r {{ $theme['gradient_text'] }} bg-clip-text text-transparent">Hak
+                                Akses</span>
                         </h1>
                         <p class="mt-2 max-w-xl text-sm leading-6 text-smoke">
                             Kelola daftar pengguna terdaftar di sistem, kelola peran (role), dan pantau hak akses akun.
@@ -43,7 +51,8 @@
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3 motion-safe:motion-preset-slide-left-sm motion-safe:motion-delay-[100ms]">
+                <div
+                    class="flex items-center gap-3 motion-safe:motion-preset-slide-left-sm motion-safe:motion-delay-[100ms]">
                     <a href="{{ route('user-management.create') }}"
                         class="inline-flex items-center gap-2 rounded-xl {{ $theme['btn_primary'] }} px-5 py-2.5 text-sm font-semibold transition-all duration-200">
                         <i class="fa-solid fa-user-plus text-xs"></i>
@@ -56,44 +65,53 @@
         {{-- ══════════════════════════════════════════════
              STATS CARDS
         ══════════════════════════════════════════════ --}}
-        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 motion-safe:motion-preset-fade-lg motion-safe:motion-delay-[80ms]">
-            <div class="flex items-center gap-4 rounded-2xl border border-white/8 bg-white/3 p-5 transition-all hover:border-white/14 hover:bg-white/5">
-                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-smoke">
+        <div
+            class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 motion-safe:motion-preset-fade-lg motion-safe:motion-delay-[80ms]">
+            <div
+                class="flex items-center gap-4 rounded-2xl border border-black/8 bg-black/3 p-5 transition-all hover:border-black/14 hover:bg-black/5">
+                <div
+                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-black/10 bg-black/5 text-smoke">
                     <i class="fa-solid fa-users text-lg"></i>
                 </div>
                 <div>
                     <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/70">Total User</p>
-                    <p class="mt-0.5 text-2xl font-semibold text-white">{{ $users->total() }}</p>
+                    <p class="mt-0.5 text-2xl font-semibold text-ivory">{{ $users->total() }}</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-4 rounded-2xl border border-blue-500/20 bg-blue-500/5 p-5 transition-all hover:border-blue-500/30 hover:bg-blue-500/8">
-                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-blue-500/25 bg-blue-500/12 text-blue-400">
+            <div
+                class="flex items-center gap-4 rounded-2xl border border-blue-500/20 bg-blue-500/5 p-5 transition-all hover:border-blue-500/30 hover:bg-blue-500/8">
+                <div
+                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-blue-500/25 bg-blue-500/12 text-blue-600">
                     <i class="fa-solid fa-user-gear text-lg"></i>
                 </div>
                 <div>
-                    <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-400/80">Admin</p>
-                    <p class="mt-0.5 text-2xl font-semibold text-white">{{ $adminCount }}</p>
+                    <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-600/80">Admin</p>
+                    <p class="mt-0.5 text-2xl font-semibold text-ivory">{{ $adminCount }}</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5 transition-all hover:border-amber-500/30 hover:bg-amber-500/8">
-                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-amber-500/25 bg-amber-500/12 text-amber-300">
+            <div
+                class="flex items-center gap-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5 transition-all hover:border-amber-500/30 hover:bg-amber-500/8">
+                <div
+                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-amber-500/25 bg-amber-500/12 text-amber-700">
                     <i class="fa-solid fa-headset text-lg"></i>
                 </div>
                 <div>
-                    <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-300/80">Admin Host</p>
-                    <p class="mt-0.5 text-2xl font-semibold text-white">{{ $adminHostCount }}</p>
+                    <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-700/80">Admin Host</p>
+                    <p class="mt-0.5 text-2xl font-semibold text-ivory">{{ $adminHostCount }}</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-4 rounded-2xl border border-red-500/20 bg-red-500/5 p-5 transition-all hover:border-red-500/30 hover:bg-red-500/8">
-                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-red-500/25 bg-red-500/12 text-red-400">
+            <div
+                class="flex items-center gap-4 rounded-2xl border border-red-500/20 bg-red-500/5 p-5 transition-all hover:border-red-500/30 hover:bg-red-500/8">
+                <div
+                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-red-500/25 bg-red-500/12 text-red-600">
                     <i class="fa-solid fa-user-shield text-lg"></i>
                 </div>
                 <div>
-                    <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-red-400/80">Superadmin</p>
-                    <p class="mt-0.5 text-2xl font-semibold text-white">{{ $superadminCount }}</p>
+                    <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-red-600/80">Superadmin</p>
+                    <p class="mt-0.5 text-2xl font-semibold text-ivory">{{ $superadminCount }}</p>
                 </div>
             </div>
         </div>
@@ -101,7 +119,8 @@
         {{-- ══════════════════════════════════════════════
              SEARCH & FILTER
         ══════════════════════════════════════════════ --}}
-        <div class="rounded-2xl border border-white/8 bg-white/3 px-5 py-4 motion-safe:motion-preset-fade-lg motion-safe:motion-delay-[80ms]">
+        <div
+            class="rounded-2xl border border-black/8 bg-black/3 px-5 py-4 motion-safe:motion-preset-fade-lg motion-safe:motion-delay-[80ms]">
             <form action="{{ route('user-management.index') }}" method="GET"
                 class="flex flex-col gap-3 sm:flex-row sm:items-center">
                 {{-- Search input with icon --}}
@@ -111,13 +130,13 @@
                     </div>
                     <input type="text" name="search" id="search" value="{{ request('search') }}"
                         placeholder="Cari nama atau email user..."
-                        class="w-full rounded-xl border border-white/8 bg-onyx py-2.5 pl-9 pr-4 text-sm text-champagne placeholder:text-smoke/50 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors">
+                        class="w-full rounded-xl border border-black/8 bg-onyx py-2.5 pl-9 pr-4 text-sm text-champagne placeholder:text-smoke/50 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors">
                 </div>
 
                 {{-- Role selector --}}
                 <div class="w-full sm:w-48">
                     <select name="role"
-                        class="w-full rounded-xl border border-white/8 bg-onyx py-2.5 px-3.5 text-sm text-champagne focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors">
+                        class="w-full rounded-xl border border-black/8 bg-onyx py-2.5 px-3.5 text-sm text-champagne focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors">
                         <option value="">Semua role</option>
                         @foreach ($availableRoles as $roleOption)
                             <option value="{{ $roleOption->value }}" @selected($selectedRole === $roleOption)>
@@ -134,7 +153,7 @@
                         Filter
                     </button>
                     <a href="{{ route('user-management.index') }}"
-                        class="inline-flex items-center gap-1.5 rounded-xl border border-white/8 bg-transparent px-4 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-white/15 hover:text-white">
+                        class="inline-flex items-center gap-1.5 rounded-xl border border-black/8 bg-transparent px-4 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-black/15 hover:text-ivory">
                         <i class="fa-solid fa-xmark text-[10px]"></i>
                         Reset
                     </a>
@@ -145,17 +164,19 @@
         {{-- ══════════════════════════════════════════════
              TABLE / EMPTY STATE
         ══════════════════════════════════════════════ --}}
-        <div class="overflow-hidden rounded-2xl border border-white/8 bg-white/3 motion-safe:motion-preset-slide-up-sm motion-safe:motion-delay-[120ms]">
+        <div
+            class="overflow-hidden rounded-2xl border border-black/8 bg-black/3 motion-safe:motion-preset-slide-up-sm motion-safe:motion-delay-[120ms]">
             @if ($users->isEmpty())
                 {{-- Empty state --}}
                 <div class="flex flex-col items-center px-6 py-20 text-center">
                     <div class="relative">
                         <div class="absolute inset-0 rounded-3xl bg-gold/8 blur-xl"></div>
-                        <div class="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-gold/20 bg-gold/10 text-gold-soft">
+                        <div
+                            class="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-gold/20 bg-gold/10 text-gold-soft">
                             <i class="fa-solid fa-users text-2xl"></i>
                         </div>
                     </div>
-                    <h3 class="mt-6 text-xl font-semibold text-white">Belum ada user</h3>
+                    <h3 class="mt-6 text-xl font-semibold text-ivory">Belum ada user</h3>
                     <p class="mt-2 max-w-sm text-sm leading-6 text-smoke">
                         @if (request('search') || request('role'))
                             Tidak ditemukan akun user yang sesuai kriteria filter.
@@ -176,7 +197,8 @@
                 <div class="overflow-x-auto">
                     <table class="min-w-full">
                         <thead>
-                            <tr class="border-b border-white/6 bg-noir/50 text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/70">
+                            <tr
+                                class="border-b border-black/6 bg-noir/50 text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/70">
                                 <th class="px-6 py-3.5">User</th>
                                 <th class="px-4 py-3.5">Email</th>
                                 <th class="px-4 py-3.5">Role</th>
@@ -185,18 +207,22 @@
                                 <th class="px-4 py-3.5 text-right">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-white/5">
+                        <tbody class="divide-y divide-black/5">
                             @foreach ($users as $managedUser)
-                                <tr class="group align-top transition-colors duration-150 hover:bg-white/3">
+                                <tr class="group align-top transition-colors duration-150 hover:bg-black/3">
                                     {{-- User info --}}
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-3">
-                                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gold/12 text-sm font-bold text-gold-soft">
+                                            <div
+                                                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-black/10 bg-gold/12 text-sm font-bold text-gold-soft">
                                                 {{ mb_strtoupper(mb_substr($managedUser->name, 0, 1)) }}
                                             </div>
                                             <div>
-                                                <p class="font-semibold text-white transition-colors group-hover:text-gold-soft">{{ $managedUser->name }}</p>
-                                                <p class="mt-0.5 font-mono text-[10px] text-smoke/60">ID #{{ $managedUser->id }}</p>
+                                                <p
+                                                    class="font-semibold text-ivory transition-colors group-hover:text-gold-soft">
+                                                    {{ $managedUser->name }}</p>
+                                                <p class="mt-0.5 font-mono text-[10px] text-smoke/60">ID
+                                                    #{{ $managedUser->id }}</p>
                                             </div>
                                         </div>
                                     </td>
@@ -210,12 +236,22 @@
                                     <td class="px-4 py-4">
                                         @php
                                             [$roleBadgeClass, $roleIcon] = match ($managedUser->role) {
-                                                \App\Enums\UserRole::Superadmin => ['border-red-500/25 bg-red-500/10 text-red-300', 'fa-solid fa-shield-halved'],
-                                                \App\Enums\UserRole::AdminHost => ['border-amber-500/25 bg-amber-500/10 text-amber-300', 'fa-solid fa-headset'],
-                                                default => ['border-blue-500/20 bg-blue-500/10 text-blue-300', 'fa-solid fa-user'],
+                                                \App\Enums\UserRole::Superadmin => [
+                                                    'border-red-500/25 bg-red-500/10 text-red-700',
+                                                    'fa-solid fa-shield-halved',
+                                                ],
+                                                \App\Enums\UserRole::AdminHost => [
+                                                    'border-amber-500/25 bg-amber-500/10 text-amber-700',
+                                                    'fa-solid fa-headset',
+                                                ],
+                                                default => [
+                                                    'border-blue-500/20 bg-blue-500/10 text-blue-700',
+                                                    'fa-solid fa-user',
+                                                ],
                                             };
                                         @endphp
-                                        <span class="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] {{ $roleBadgeClass }}">
+                                        <span
+                                            class="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] {{ $roleBadgeClass }}">
                                             <i class="{{ $roleIcon }} text-[9px]"></i>
                                             {{ $managedUser->role->label() }}
                                         </span>
@@ -223,13 +259,16 @@
 
                                     {{-- Joined --}}
                                     <td class="hidden px-4 py-4 sm:table-cell">
-                                        <p class="text-xs font-medium text-champagne/80">{{ $managedUser->created_at?->format('d M Y') ?? '-' }}</p>
-                                        <p class="mt-0.5 text-[10px] text-smoke/60">{{ $managedUser->created_at?->format('H:i') ?? '' }}</p>
+                                        <p class="text-xs font-medium text-champagne/80">
+                                            {{ $managedUser->created_at?->format('d M Y') ?? '-' }}</p>
+                                        <p class="mt-0.5 text-[10px] text-smoke/60">
+                                            {{ $managedUser->created_at?->format('H:i') ?? '' }}</p>
                                     </td>
 
                                     {{-- Status --}}
                                     <td class="px-4 py-4">
-                                        <span class="inline-flex items-center gap-1.5 rounded-md border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-medium text-emerald-300">
+                                        <span
+                                            class="inline-flex items-center gap-1.5 rounded-md border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-medium text-emerald-700">
                                             <span class="h-1 w-1 rounded-full bg-emerald-400"></span>
                                             Aktif
                                         </span>
@@ -244,16 +283,15 @@
                                                 <i class="fa-solid fa-pen text-[10px]"></i>
                                                 Edit
                                             </a>
-                                            <form action="{{ route('user-management.destroy', $managedUser) }}" method="POST" class="inline">
+                                            <form action="{{ route('user-management.destroy', $managedUser) }}"
+                                                method="POST" class="inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit"
-                                                    data-confirm-submit
-                                                    data-confirm-intent="delete"
+                                                <button type="submit" data-confirm-submit data-confirm-intent="delete"
                                                     data-confirm-title="Hapus user ini?"
                                                     data-confirm-message="User {{ $managedUser->name }} akan dihapus dari sistem. Tindakan ini tidak bisa dibatalkan."
                                                     data-confirm-action-label="Ya, hapus"
-                                                    class="inline-flex items-center gap-1.5 rounded-lg border border-red-400/25 bg-red-500/8 px-3 py-1.5 text-xs font-medium text-red-300/80 transition-all duration-150 hover:border-red-400/40 hover:bg-red-500/16 hover:text-red-200"
+                                                    class="inline-flex items-center gap-1.5 rounded-lg border border-red-400/25 bg-red-500/8 px-3 py-1.5 text-xs font-medium text-red-700/80 transition-all duration-150 hover:border-red-400/40 hover:bg-red-500/16 hover:text-red-800"
                                                     title="Hapus user">
                                                     <i class="fa-solid fa-trash text-[10px]"></i>
                                                     Hapus
@@ -268,10 +306,12 @@
                 </div>
 
                 {{-- Footer: count + pagination --}}
-                <div class="flex flex-col items-start justify-between gap-3 border-t border-white/6 bg-noir/30 px-6 py-4 sm:flex-row sm:items-center">
+                <div
+                    class="flex flex-col items-start justify-between gap-3 border-t border-black/6 bg-noir/30 px-6 py-4 sm:flex-row sm:items-center">
                     <p class="text-xs text-smoke">
                         Menampilkan
-                        <span class="font-medium text-champagne/80">{{ $users->firstItem() }}–{{ $users->lastItem() }}</span>
+                        <span
+                            class="font-medium text-champagne/80">{{ $users->firstItem() }}–{{ $users->lastItem() }}</span>
                         dari <span class="font-medium text-champagne/80">{{ $users->total() }}</span> akun user
                     </p>
                     <div class="text-sm">

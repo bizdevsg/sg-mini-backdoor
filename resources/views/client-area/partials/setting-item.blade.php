@@ -7,13 +7,13 @@
 <li class="flex items-start justify-between gap-4 px-5 py-4">
     <div class="flex min-w-0 items-start gap-3">
         <div
-            class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-white/10 bg-white/5 text-smoke/70">
+            class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-black/10 bg-black/5 text-smoke/70">
             <i class="fa-solid {{ $item['icon'] }} text-xs"></i>
         </div>
         <div class="min-w-0">
-            <p class="text-sm font-medium text-white">{{ $item['label'] }}</p>
+            <p class="text-sm font-medium text-ivory">{{ $item['label'] }}</p>
             <p class="mt-0.5 text-xs leading-relaxed text-smoke/60">{{ $item['description'] }}</p>
-            <p class="mt-1 text-[11px] font-medium {{ $item['enabled'] ? 'text-emerald-300' : 'text-smoke/55' }}">
+            <p class="mt-1 text-[11px] font-medium {{ $item['enabled'] ? 'text-emerald-700' : 'text-smoke/55' }}">
                 {{ $statusLabel }}
             </p>
         </div>

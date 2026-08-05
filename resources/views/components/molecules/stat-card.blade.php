@@ -9,7 +9,7 @@
         'flex items-center gap-4 rounded-2xl p-5 transition-transform duration-300 hover:-translate-y-1',
         $highlight ?? false
             ? cn('border shadow-lg shadow-black/10', $theme['badge_border'], $theme['badge_bg'])
-            : 'border border-white/8 bg-white/4 hover:border-white/12 hover:bg-white/6',
+            : 'border border-black/8 bg-black/4 hover:border-black/12 hover:bg-black/6',
         $class ?? null,
     ) }}">
     @include('components.atoms.icon-badge', [
@@ -21,7 +21,7 @@
     <div class="{{ cn('space-y-1') }}">
         @include('components.atoms.meta-label', ['text' => $title])
 
-        <p class="{{ cn('text-3xl font-semibold text-white motion-safe:motion-preset-fade-sm') }}">{{ $value }}</p>
+        <p class="{{ cn('text-3xl font-semibold text-ivory motion-safe:motion-preset-fade-sm') }}">{{ $value }}</p>
         <p class="{{ cn('text-sm text-smoke') }}">{{ $description }}</p>
     </div>
 </div>

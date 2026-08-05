@@ -5,7 +5,8 @@
 @section('content')
     @php
         $theme = auth()->user()?->roleTheme() ?? [
-            'hero_bg' => 'bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(199,161,90,0.15),transparent),linear-gradient(160deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.01)_100%)]',
+            'hero_bg' =>
+                'bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(199,161,90,0.15),transparent),linear-gradient(160deg,rgba(21,17,13,0.05)_0%,rgba(21,17,13,0.01)_100%)]',
             'hero_glow' => 'bg-gold/8',
             'hero_shimmer' => 'via-gold/35',
             'badge_border' => 'border-gold/20',
@@ -23,8 +24,10 @@
              HERO HEADER
         ══════════════════════════════════════════════ --}}
         <div
-            class="relative overflow-hidden rounded-[28px] border border-white/8 {{ $theme['hero_bg'] }} px-7 py-6 shadow-[0_24px_60px_rgba(0,0,0,0.3)] motion-safe:motion-preset-slide-down-sm lg:px-9 lg:py-8">
-            <div class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full {{ $theme['hero_glow'] }} blur-[64px]"></div>
+            class="relative overflow-hidden rounded-[28px] border border-black/8 {{ $theme['hero_bg'] }} px-7 py-6 motion-safe:motion-preset-slide-down-sm lg:px-9 lg:py-8">
+            <div
+                class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full {{ $theme['hero_glow'] }} blur-[64px]">
+            </div>
             <div
                 class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent {{ $theme['hero_shimmer'] }} to-transparent">
             </div>
@@ -37,7 +40,7 @@
                         Catalog Management
                     </span>
                     <div>
-                        <h1 class="text-2xl font-semibold tracking-[-0.04em] text-white lg:text-3xl">
+                        <h1 class="text-2xl font-semibold tracking-[-0.04em] text-ivory lg:text-3xl">
                             Produk
                             <span
                                 class="bg-gradient-to-r {{ $theme['gradient_text'] }} bg-clip-text text-transparent">{{ $sectionName }}</span>
@@ -52,7 +55,7 @@
                 <div
                     class="flex items-center gap-3 motion-safe:motion-preset-slide-left-sm motion-safe:motion-delay-[100ms]">
                     @if (!$produks->isEmpty())
-                        <span class="rounded-xl border border-white/8 bg-white/5 px-4 py-2.5 text-sm text-smoke">
+                        <span class="rounded-xl border border-black/8 bg-black/5 px-4 py-2.5 text-sm text-smoke">
                             {{ $produks->total() }} produk
                         </span>
                     @endif
@@ -66,7 +69,7 @@
         </div>
 
         <div
-            class="rounded-2xl border border-white/8 bg-white/3 px-5 py-4 motion-safe:motion-preset-fade-lg motion-safe:motion-delay-[80ms]">
+            class="rounded-2xl border border-black/8 bg-black/3 px-5 py-4 motion-safe:motion-preset-fade-lg motion-safe:motion-delay-[80ms]">
             <form action="{{ route('produk.index', ['section' => $section]) }}" method="GET"
                 class="flex flex-col gap-3 sm:flex-row sm:items-center">
                 {{-- Search input with icon --}}
@@ -76,7 +79,7 @@
                     </div>
                     <input type="text" name="search" id="search" value="{{ request('search') }}"
                         placeholder="Cari nama produk..."
-                        class="w-full rounded-xl border border-white/8 bg-onyx py-2.5 pl-9 pr-4 text-sm text-champagne placeholder:text-smoke/50 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors">
+                        class="w-full rounded-xl border border-black/8 bg-onyx py-2.5 pl-9 pr-4 text-sm text-champagne placeholder:text-smoke/50 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors">
                 </div>
 
                 <div class="flex gap-2">
@@ -86,7 +89,7 @@
                         Filter
                     </button>
                     <a href="{{ route('produk.index', ['section' => $section]) }}"
-                        class="inline-flex items-center gap-1.5 rounded-xl border border-white/8 bg-transparent px-4 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-white/15 hover:text-white">
+                        class="inline-flex items-center gap-1.5 rounded-xl border border-black/8 bg-transparent px-4 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-black/15 hover:text-ivory">
                         <i class="fa-solid fa-xmark text-[10px]"></i>
                         Reset
                     </a>
@@ -95,7 +98,7 @@
         </div>
 
         <div
-            class="overflow-hidden rounded-2xl border border-white/8 bg-white/3 motion-safe:motion-preset-slide-up-sm motion-safe:motion-delay-[120ms]">
+            class="overflow-hidden rounded-2xl border border-black/8 bg-black/3 motion-safe:motion-preset-slide-up-sm motion-safe:motion-delay-[120ms]">
             @if ($produks->isEmpty())
                 {{-- Empty state --}}
                 <div class="flex flex-col items-center px-6 py-20 text-center">
@@ -106,7 +109,7 @@
                             <i class="fa-solid fa-box-open text-2xl"></i>
                         </div>
                     </div>
-                    <h3 class="mt-6 text-xl font-semibold text-white">
+                    <h3 class="mt-6 text-xl font-semibold text-ivory">
                         Belum ada produk {{ strtolower($sectionName) }}
                     </h3>
                     <p class="mt-2 max-w-sm text-sm leading-6 text-smoke">
@@ -131,7 +134,7 @@
                     <table class="min-w-full">
                         <thead>
                             <tr
-                                class="border-b border-white/6 bg-noir/50 text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/70">
+                                class="border-b border-black/6 bg-noir/50 text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/70">
                                 <th class="w-full px-6 py-3.5">Produk</th>
                                 <th class="px-4 py-3.5">Kategori</th>
                                 <th class="hidden px-4 py-3.5 lg:table-cell">Dibuat</th>
@@ -139,12 +142,12 @@
                                 <th class="px-4 py-3.5 text-right">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-white/5">
+                        <tbody class="divide-y divide-black/5">
                             @foreach ($produks as $produk)
-                                <tr class="group align-top transition-colors duration-150 hover:bg-white/3">
+                                <tr class="group align-top transition-colors duration-150 hover:bg-black/3">
                                     {{-- Product name + excerpt --}}
                                     <td class="w-full px-6 py-4">
-                                        <p class="font-medium text-white">{{ $produk->nama_produk }}</p>
+                                        <p class="font-medium text-ivory">{{ $produk->nama_produk }}</p>
                                     </td>
 
                                     {{-- Category badge --}}
@@ -157,13 +160,13 @@
                                             </span>
                                         @elseif ($produk->kategori === 'SPA')
                                             <span
-                                                class="inline-flex items-center gap-1.5 rounded-md border border-blue-400/20 bg-blue-400/8 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-blue-300/80">
+                                                class="inline-flex items-center gap-1.5 rounded-md border border-blue-400/20 bg-blue-400/8 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-blue-700/80">
                                                 <span class="h-1 w-1 rounded-full bg-blue-400/70"></span>
                                                 Bilateral
                                             </span>
                                         @else
                                             <span
-                                                class="inline-flex items-center rounded-md border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium text-smoke">
+                                                class="inline-flex items-center rounded-md border border-black/10 bg-black/5 px-2.5 py-1 text-[10px] font-medium text-smoke">
                                                 {{ $produk->kategori }}
                                             </span>
                                         @endif
@@ -189,7 +192,7 @@
                                     <td class="px-4 py-4">
                                         <div class="flex items-center justify-end gap-1.5">
                                             <a href="{{ route('produk.show', ['produk' => $produk, 'section' => $section]) }}"
-                                                class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-smoke transition-all duration-150 hover:border-white/18 hover:bg-white/8 hover:text-white"
+                                                class="inline-flex items-center gap-1.5 rounded-lg border border-black/10 bg-black/5 px-3 py-1.5 text-xs font-medium text-smoke transition-all duration-150 hover:border-black/18 hover:bg-black/8 hover:text-ivory"
                                                 title="Lihat detail">
                                                 <i class="fa-solid fa-eye text-[10px]"></i>
                                                 Detail
@@ -209,7 +212,7 @@
                                                     data-confirm-title="Hapus produk ini?"
                                                     data-confirm-message="Produk {{ $produk->nama_produk }} akan dihapus permanen. Tindakan ini tidak bisa dibatalkan."
                                                     data-confirm-action-label="Ya, hapus"
-                                                    class="inline-flex items-center gap-1.5 rounded-lg border border-red-400/25 bg-red-500/8 px-3 py-1.5 text-xs font-medium text-red-300/80 transition-all duration-150 hover:border-red-400/40 hover:bg-red-500/16 hover:text-red-200"
+                                                    class="inline-flex items-center gap-1.5 rounded-lg border border-red-400/25 bg-red-500/8 px-3 py-1.5 text-xs font-medium text-red-700/80 transition-all duration-150 hover:border-red-400/40 hover:bg-red-500/16 hover:text-red-800"
                                                     title="Hapus produk">
                                                     <i class="fa-solid fa-trash text-[10px]"></i>
                                                     Hapus
@@ -225,7 +228,7 @@
 
                 {{-- Footer: count + pagination --}}
                 <div
-                    class="flex flex-col items-start justify-between gap-3 border-t border-white/6 bg-noir/30 px-6 py-4 sm:flex-row sm:items-center">
+                    class="flex flex-col items-start justify-between gap-3 border-t border-black/6 bg-noir/30 px-6 py-4 sm:flex-row sm:items-center">
                     <p class="text-xs text-smoke">
                         Menampilkan
                         <span

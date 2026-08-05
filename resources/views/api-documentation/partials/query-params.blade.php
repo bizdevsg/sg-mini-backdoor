@@ -1,7 +1,7 @@
 <div>
-    <div class="mb-5 overflow-hidden rounded-2xl border border-white/8 bg-white/3">
-        <div class="border-b border-white/6 px-5 py-4">
-            <p class="text-sm font-semibold text-white">Cara Memakai Query Parameter</p>
+    <div class="mb-5 overflow-hidden rounded-2xl border border-black/8 bg-black/3">
+        <div class="border-b border-black/6 px-5 py-4">
+            <p class="text-sm font-semibold text-ivory">Cara Memakai Query Parameter</p>
             <p class="mt-1 text-xs leading-5 text-smoke">
                 Query parameter dipakai untuk mengubah hasil list endpoint tanpa mengubah path utama. Parameter ini
                 diletakkan setelah tanda <span class="font-mono text-champagne">?</span> pada URL dan bisa digabung
@@ -9,7 +9,7 @@
             </p>
         </div>
         <div class="px-5 py-4">
-            <div class="rounded-xl border border-white/8 bg-black/20 px-4 py-3 font-mono text-[11px] text-champagne">
+            <div class="rounded-xl border border-black/8 bg-onyx px-4 py-3 font-mono text-[11px] text-champagne">
                 {{ $apiBaseUrl }}/ebook?page=1&per_page=10&search=trading&category=edukasi
             </div>
             <p class="mt-3 text-xs leading-5 text-smoke">
@@ -21,15 +21,15 @@
 
     <div class="mb-4 flex items-center gap-3">
         <div
-            class="flex h-7 w-7 items-center justify-center rounded-lg border border-purple-500/25 bg-purple-500/15 text-xs font-bold text-purple-300">
+            class="flex h-7 w-7 items-center justify-center rounded-lg border border-purple-500/25 bg-purple-500/15 text-xs font-bold text-purple-700">
             <i class="fa-solid fa-sliders text-[11px]"></i>
         </div>
-        <h2 class="text-base font-semibold text-white">Query Parameters</h2>
-        <div class="h-px flex-1 bg-white/6"></div>
+        <h2 class="text-base font-semibold text-ivory">Query Parameters</h2>
+        <div class="h-px flex-1 bg-black/6"></div>
     </div>
 
-    <div class="overflow-hidden rounded-2xl border border-white/8 bg-white/3">
-        <div class="grid divide-y divide-white/6 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+    <div class="overflow-hidden rounded-2xl border border-black/8 bg-black/3">
+        <div class="grid divide-y divide-black/6 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             <div class="px-5 py-4">
                 <p class="mb-1 font-mono text-xs text-champagne">?page=1&per_page=10</p>
                 <p class="text-[11px] leading-5 text-smoke">Pagination - halaman dan jumlah item per halaman.</p>
@@ -53,14 +53,14 @@
             </div>
         </div>
 
-        <div class="border-t border-white/6 bg-white/3 px-5 py-4">
+        <div class="border-t border-black/6 bg-black/3 px-5 py-4">
             <div class="flex items-start gap-3">
                 <div
                     class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-orange-400/20 bg-orange-400/10">
-                    <i class="fa-solid fa-box-open text-[11px] text-orange-300"></i>
+                    <i class="fa-solid fa-box-open text-[11px] text-orange-700"></i>
                 </div>
                 <div>
-                    <p class="text-sm font-medium text-white">Postman</p>
+                    <p class="text-sm font-medium text-ivory">Postman</p>
                     <p class="mt-1 text-xs leading-5 text-smoke">
                         Isi header <span class="font-mono text-champagne">{{ $apiKeyHeader }}</span> dengan API key aktif.
                         Untuk web tambahkan <span class="font-mono text-champagne">Origin: {{ $webOriginExample }}</span>.
@@ -74,8 +74,8 @@
     </div>
 
     <div class="mt-5 grid gap-4 lg:grid-cols-2">
-        <div class="rounded-2xl border border-white/8 bg-white/3 px-5 py-4">
-            <p class="text-sm font-semibold text-white">Praktik yang Disarankan</p>
+        <div class="rounded-2xl border border-black/8 bg-black/3 px-5 py-4">
+            <p class="text-sm font-semibold text-ivory">Praktik yang Disarankan</p>
             <div class="mt-3 space-y-3 text-xs leading-5 text-smoke">
                 <p>Gunakan default pagination di frontend agar request tidak terlalu besar.</p>
                 <p>URL encode keyword pencarian kalau ada spasi atau karakter khusus.</p>
@@ -84,8 +84,8 @@
             </div>
         </div>
 
-        <div class="rounded-2xl border border-white/8 bg-white/3 px-5 py-4">
-            <p class="text-sm font-semibold text-white">Hal yang Perlu Diperhatikan</p>
+        <div class="rounded-2xl border border-black/8 bg-black/3 px-5 py-4">
+            <p class="text-sm font-semibold text-ivory">Hal yang Perlu Diperhatikan</p>
             <div class="mt-3 space-y-3 text-xs leading-5 text-smoke">
                 <p>Tidak semua endpoint memakai seluruh query parameter yang sama.</p>
                 <p>Endpoint detail umumnya tidak memerlukan query parameter list.</p>

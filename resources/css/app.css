@@ -12,21 +12,21 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
     --color-obsidian: #15110d;
-    --color-noir: #1c1712;
-    --color-onyx: #272019;
-    --color-carbon: #3a2f24;
-    --color-smoke: #a79a89;
+    --color-noir: #faf8f4;
+    --color-onyx: #f2ede3;
+    --color-carbon: #e6ddc9;
+    --color-smoke: #141414;
     --color-gold: #c7a15a;
-    --color-gold-soft: #e2c78f;
-    --color-gold-deep: #8f6832;
-    --color-champagne: #ece1cf;
-    --color-ivory: #f7f0e6;
+    --color-gold-soft: #8a6a2e;
+    --color-gold-deep: #5c4319;
+    --color-champagne: #4a4030;
+    --color-ivory: #1c1712;
     --color-bronze: #6b4a22;
 }
 
 .sg-sidebar-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: rgb(199 161 90 / 0.85) rgb(255 255 255 / 0.04);
+    scrollbar-color: rgb(199 161 90 / 0.85) rgb(0 0 0 / 0.04);
     scrollbar-gutter: stable;
 }
 
@@ -35,19 +35,19 @@
 }
 
 .sg-sidebar-scrollbar::-webkit-scrollbar-track {
-    background: rgb(255 255 255 / 0.04);
-    border-left: 1px solid rgb(255 255 255 / 0.05);
+    background: rgb(0 0 0 / 0.04);
+    border-left: 1px solid rgb(0 0 0 / 0.05);
 }
 
 .sg-sidebar-scrollbar::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgb(226 199 143 / 0.95), rgb(199 161 90 / 0.78));
-    border: 2px solid rgb(28 23 18 / 0.95);
+    background: linear-gradient(180deg, rgb(199 161 90 / 0.95), rgb(138 106 46 / 0.85));
+    border: 2px solid rgb(250 248 244 / 0.95);
     border-radius: 9999px;
-    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.06);
 }
 
 .sg-sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, rgb(245 223 176 / 1), rgb(214 178 104 / 0.92));
+    background: linear-gradient(180deg, rgb(180 143 74 / 1), rgb(138 106 46 / 0.95));
 }
 
 .sg-sidebar-scrollbar::-webkit-scrollbar-button {

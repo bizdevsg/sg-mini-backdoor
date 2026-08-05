@@ -1,5 +1,5 @@
 <div
-    class="{{ cn('overflow-hidden rounded-2xl border border-white/8 bg-white/4 motion-safe:motion-preset-slide-up-sm motion-safe:motion-delay-[220ms]') }}">
+    class="{{ cn('overflow-hidden rounded-2xl border border-black/8 bg-black/4 motion-safe:motion-preset-slide-up-sm motion-safe:motion-delay-[220ms]') }}">
     @include('components.molecules.section-header', [
         'eyebrow' => 'Produk terbaru',
         'title' => 'Aktivitas katalog terbaru',
@@ -7,7 +7,7 @@
     ])
 
     <div class="{{ cn('overflow-x-auto') }}">
-        <table class="{{ cn('min-w-full divide-y divide-white/8') }}">
+        <table class="{{ cn('min-w-full divide-y divide-black/8') }}">
             <thead class="{{ cn('bg-noir/70') }}">
                 <tr class="{{ cn('text-left text-xs uppercase tracking-[0.18em] text-smoke') }}">
                     @include('components.atoms.table-cell', ['as' => 'th', 'muted' => false, 'class' => 'font-medium', 'text' => 'No'])
@@ -17,7 +17,7 @@
                     @include('components.atoms.table-cell', ['as' => 'th', 'muted' => false, 'class' => 'font-medium', 'text' => 'Dibuat'])
                 </tr>
             </thead>
-            <tbody class="{{ cn('divide-y divide-white/6') }}">
+            <tbody class="{{ cn('divide-y divide-black/6') }}">
                 @forelse ($products as $index => $product)
                     @include('components.molecules.recent-product-row', [
                         'product' => $product,

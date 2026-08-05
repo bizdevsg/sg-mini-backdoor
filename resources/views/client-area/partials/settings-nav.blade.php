@@ -7,20 +7,20 @@
             @foreach ($sections as $navSection)
                 <li>
                     <a href="#{{ $navSection['key'] }}"
-                        class="block rounded-lg px-3 py-2 text-smoke/70 transition-colors hover:bg-white/5 hover:text-white">
+                        class="block rounded-lg px-3 py-2 text-smoke/70 transition-colors hover:bg-black/5 hover:text-ivory">
                         {{ $navSection['title'] }}
                     </a>
                 </li>
             @endforeach
             <li>
                 <a href="#api-security"
-                    class="block rounded-lg px-3 py-2 text-smoke/70 transition-colors hover:bg-white/5 hover:text-white">
+                    class="block rounded-lg px-3 py-2 text-smoke/70 transition-colors hover:bg-black/5 hover:text-ivory">
                     API &amp; Security
                 </a>
             </li>
             <li>
                 <a href="#api-access"
-                    class="block rounded-lg px-3 py-2 text-smoke/70 transition-colors hover:bg-white/5 hover:text-white">
+                    class="block rounded-lg px-3 py-2 text-smoke/70 transition-colors hover:bg-black/5 hover:text-ivory">
                     API Access
                 </a>
             </li>

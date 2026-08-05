@@ -1,8 +1,8 @@
-<tr class="{{ cn('transition-colors hover:bg-white/4') }}">
+<tr class="{{ cn('transition-colors hover:bg-black/4') }}">
     @include('components.atoms.table-cell', ['text' => $index + 1])
 
     <td class="{{ cn('px-6 py-4') }}">
-        <p class="{{ cn('font-medium text-white') }}">{{ $product->nama_produk }}</p>
+        <p class="{{ cn('font-medium text-ivory') }}">{{ $product->nama_produk }}</p>
     </td>
 
     @include('components.atoms.table-cell', ['text' => $product->kategori])

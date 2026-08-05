@@ -1,6 +1,6 @@
 @props([
     'field',
-    'class' => 'mt-1.5 text-xs font-medium text-red-300',
+    'class' => 'mt-1.5 text-xs font-medium text-red-700',
 ])
 
 @error($field)

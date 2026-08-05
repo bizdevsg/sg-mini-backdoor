@@ -12,7 +12,7 @@
 @endphp
 
 <header
-    class="fixed h-20.25 inset-x-0 top-0 z-30 border-b border-white/8 bg-noir/80 px-4 py-3.5 backdrop-blur-xl lg:left-72 lg:px-7">
+    class="fixed h-20.25 inset-x-0 top-0 z-30 border-b border-black/8 bg-noir/80 px-4 py-3.5 backdrop-blur-xl lg:left-72 lg:px-7">
     {{-- Subtle top shimmer border --}}
     <div
         class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent {{ $theme['topbar_shimmer'] }} to-transparent">
@@ -32,7 +32,7 @@
                 </span>
             </div>
 
-            <h1 class="text-lg font-semibold tracking-tight text-white lg:text-xl">
+            <h1 class="text-lg font-semibold tracking-tight text-ivory lg:text-xl">
                 @yield('title', 'SG Admin')
             </h1>
         </div>
@@ -42,7 +42,7 @@
             {{-- User Badge & Logout --}}
             <div class="flex items-center gap-2.5">
                 {{-- Server Time --}}
-                <div class="flex items-center gap-2.5 rounded-xl border border-white/8 bg-white/4 px-3 py-1.5 text-xs">
+                <div class="flex items-center gap-2.5 rounded-xl border border-black/8 bg-black/4 px-3 py-1.5 text-xs">
                     <div class="flex h-6 w-6 items-center justify-center rounded-lg border {{ $theme['topbar_box'] }}">
                         <i class="fa-regular fa-clock"></i>
                     </div>
@@ -62,7 +62,7 @@
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" title="Keluar dari akun"
-                        class="flex h-9 w-9 items-center justify-center rounded-xl border border-red-500/25 bg-red-500/10 text-red-300 transition-all duration-200 hover:border-red-400/40 hover:bg-red-500/20 hover:text-red-100 cursor-pointer shadow-sm">
+                        class="flex h-9 w-9 items-center justify-center rounded-xl border border-red-500/25 bg-red-500/10 text-red-700 transition-all duration-200 hover:border-red-400/40 hover:bg-red-500/20 hover:text-red-900 cursor-pointer shadow-sm">
                         <i class="fa-solid fa-power-off text-xs"></i>
                     </button>
                 </form>

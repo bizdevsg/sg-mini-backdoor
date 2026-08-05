@@ -14,7 +14,7 @@
     $fieldName = $error ?: $name;
     $baseClasses =
         'w-full rounded-lg border bg-onyx px-4 py-3 text-champagne placeholder:text-smoke focus:border-gold/30 focus:outline-none focus:ring-2 focus:ring-gold/15';
-    $stateClasses = $errors->has($fieldName) ? 'border-red-400/60' : 'border-white/8';
+    $stateClasses = $errors->has($fieldName) ? 'border-red-400/60' : 'border-black/8';
     $helperId = $helper ? $id . '-help' : null;
     $clientErrorId = $required ? $id . '-client-error' : null;
     $errorId = $errors->has($fieldName) ? $id . '-error' : null;
@@ -361,10 +361,10 @@
     @endif
 
     @if ($required)
-        <p id="{{ $clientErrorId }}" class="hidden text-sm text-red-300"></p>
+        <p id="{{ $clientErrorId }}" class="hidden text-sm text-red-700"></p>
     @endif
 
     @error($fieldName)
-        <p id="{{ $errorId }}" class="text-sm text-red-300">{{ $message }}</p>
+        <p id="{{ $errorId }}" class="text-sm text-red-700">{{ $message }}</p>
     @enderror
 </div>

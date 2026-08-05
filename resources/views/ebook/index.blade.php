@@ -5,7 +5,8 @@
 @section('content')
     @php
         $theme = auth()->user()?->roleTheme() ?? [
-            'hero_bg' => 'bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(199,161,90,0.15),transparent),linear-gradient(160deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.01)_100%)]',
+            'hero_bg' =>
+                'bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(199,161,90,0.15),transparent),linear-gradient(160deg,rgba(21,17,13,0.05)_0%,rgba(21,17,13,0.01)_100%)]',
             'hero_glow' => 'bg-gold/8',
             'hero_shimmer' => 'via-gold/35',
             'gradient_text' => 'from-gold-soft to-champagne',
@@ -18,9 +19,14 @@
         {{-- ══════════════════════════════════════════════
              HERO HEADER
         ══════════════════════════════════════════════ --}}
-        <div class="relative overflow-hidden rounded-[28px] border border-white/8 {{ $theme['hero_bg'] }} px-7 py-6 shadow-[0_24px_60px_rgba(0,0,0,0.3)] motion-safe:motion-preset-slide-down-sm lg:px-9 lg:py-8">
-            <div class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full {{ $theme['hero_glow'] }} blur-[64px]"></div>
-            <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent {{ $theme['hero_shimmer'] }} to-transparent"></div>
+        <div
+            class="relative overflow-hidden rounded-[28px] border border-black/8 {{ $theme['hero_bg'] }} px-7 py-6   motion-safe:motion-preset-slide-down-sm lg:px-9 lg:py-8">
+            <div
+                class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full {{ $theme['hero_glow'] }} blur-[64px]">
+            </div>
+            <div
+                class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent {{ $theme['hero_shimmer'] }} to-transparent">
+            </div>
 
             <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                 <div class="space-y-3 motion-safe:motion-preset-slide-right-sm motion-safe:motion-delay-[60ms]">
@@ -34,9 +40,10 @@
                     </div>
 
                     <div>
-                        <h1 class="text-2xl font-semibold tracking-[-0.04em] text-white lg:text-3xl">
+                        <h1 class="text-2xl font-semibold tracking-[-0.04em] text-ivory lg:text-3xl">
                             Katalog Ebook:
-                            <span class="bg-gradient-to-r {{ $theme['gradient_text'] }} bg-clip-text text-transparent">{{ $ebookCategory->name }}</span>
+                            <span
+                                class="bg-gradient-to-r {{ $theme['gradient_text'] }} bg-clip-text text-transparent">{{ $ebookCategory->name }}</span>
                         </h1>
                         <p class="mt-2 max-w-xl text-sm leading-6 text-smoke">
                             Kelola seluruh publikasi ebook dalam kategori {{ $ebookCategory->name }}.
@@ -44,9 +51,10 @@
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3 motion-safe:motion-preset-slide-left-sm motion-safe:motion-delay-[100ms]">
+                <div
+                    class="flex items-center gap-3 motion-safe:motion-preset-slide-left-sm motion-safe:motion-delay-[100ms]">
                     @if (!$ebooks->isEmpty())
-                        <span class="rounded-xl border border-white/8 bg-white/5 px-4 py-2.5 text-sm text-smoke">
+                        <span class="rounded-xl border border-black/8 bg-black/5 px-4 py-2.5 text-sm text-smoke">
                             {{ $ebooks->total() }} ebook
                         </span>
                     @endif
@@ -62,7 +70,8 @@
         {{-- ══════════════════════════════════════════════
              SEARCH & FILTER
         ══════════════════════════════════════════════ --}}
-        <div class="rounded-2xl border border-white/8 bg-white/3 px-5 py-4 motion-safe:motion-preset-fade-lg motion-safe:motion-delay-[80ms]">
+        <div
+            class="rounded-2xl border border-black/8 bg-black/3 px-5 py-4 motion-safe:motion-preset-fade-lg motion-safe:motion-delay-[80ms]">
             <form action="{{ route('ebook.index', $ebookCategory) }}" method="GET"
                 class="flex flex-col gap-3 sm:flex-row sm:items-center">
                 {{-- Search input with icon --}}
@@ -72,7 +81,7 @@
                     </div>
                     <input type="text" name="search" id="search" value="{{ request('search') }}"
                         placeholder="Cari judul, deskripsi, atau slug ebook..."
-                        class="w-full rounded-xl border border-white/8 bg-onyx py-2.5 pl-9 pr-4 text-sm text-champagne placeholder:text-smoke/50 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors">
+                        class="w-full rounded-xl border border-black/8 bg-onyx py-2.5 pl-9 pr-4 text-sm text-champagne placeholder:text-smoke/50 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors">
                 </div>
 
                 <div class="flex gap-2">
@@ -82,7 +91,7 @@
                         Filter
                     </button>
                     <a href="{{ route('ebook.index', $ebookCategory) }}"
-                        class="inline-flex items-center gap-1.5 rounded-xl border border-white/8 bg-transparent px-4 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-white/15 hover:text-white">
+                        class="inline-flex items-center gap-1.5 rounded-xl border border-black/8 bg-transparent px-4 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-black/15 hover:text-ivory">
                         <i class="fa-solid fa-xmark text-[10px]"></i>
                         Reset
                     </a>
@@ -93,20 +102,23 @@
         {{-- ══════════════════════════════════════════════
              TABLE / EMPTY STATE
         ══════════════════════════════════════════════ --}}
-        <div class="overflow-hidden rounded-2xl border border-white/8 bg-white/3 motion-safe:motion-preset-slide-up-sm motion-safe:motion-delay-[120ms]">
+        <div
+            class="overflow-hidden rounded-2xl border border-black/8 bg-black/3 motion-safe:motion-preset-slide-up-sm motion-safe:motion-delay-[120ms]">
             @if ($ebooks->isEmpty())
                 {{-- Empty state --}}
                 <div class="flex flex-col items-center px-6 py-20 text-center">
                     <div class="relative">
                         <div class="absolute inset-0 rounded-3xl bg-gold/8 blur-xl"></div>
-                        <div class="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-gold/20 bg-gold/10 text-gold-soft">
+                        <div
+                            class="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-gold/20 bg-gold/10 text-gold-soft">
                             <i class="fa-solid fa-book-open text-2xl"></i>
                         </div>
                     </div>
-                    <h3 class="mt-6 text-xl font-semibold text-white">Belum ada ebook</h3>
+                    <h3 class="mt-6 text-xl font-semibold text-ivory">Belum ada ebook</h3>
                     <p class="mt-2 max-w-sm text-sm leading-6 text-smoke">
                         @if (request('search'))
-                            Tidak ditemukan ebook untuk pencarian "<span class="text-champagne/80">{{ request('search') }}</span>".
+                            Tidak ditemukan ebook untuk pencarian "<span
+                                class="text-champagne/80">{{ request('search') }}</span>".
                         @else
                             Mulai dengan menambahkan ebook pertama untuk kategori {{ $ebookCategory->name }}.
                         @endif
@@ -124,7 +136,8 @@
                 <div class="overflow-x-auto">
                     <table class="min-w-full">
                         <thead>
-                            <tr class="border-b border-white/6 bg-noir/50 text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/70">
+                            <tr
+                                class="border-b border-black/6 bg-noir/50 text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/70">
                                 <th class="px-6 py-3.5">Judul & Deskripsi</th>
                                 <th class="px-4 py-3.5">Kategori</th>
                                 <th class="px-4 py-3.5">Slug</th>
@@ -132,12 +145,13 @@
                                 <th class="px-4 py-3.5 text-right">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-white/5">
+                        <tbody class="divide-y divide-black/5">
                             @foreach ($ebooks as $ebook)
-                                <tr class="group align-top transition-colors duration-150 hover:bg-white/3">
+                                <tr class="group align-top transition-colors duration-150 hover:bg-black/3">
                                     {{-- Title & excerpt --}}
                                     <td class="px-6 py-4">
-                                        <p class="font-semibold text-white transition-colors group-hover:text-gold-soft">{{ $ebook->title }}</p>
+                                        <p class="font-semibold text-ivory transition-colors group-hover:text-gold-soft">
+                                            {{ $ebook->title }}</p>
                                         <p class="mt-1 line-clamp-2 max-w-xl text-xs leading-5 text-smoke">
                                             {{ \Illuminate\Support\Str::limit(strip_tags($ebook->description), 130) }}
                                         </p>
@@ -145,7 +159,8 @@
 
                                     {{-- Category badge --}}
                                     <td class="px-4 py-4">
-                                        <span class="inline-flex items-center gap-1.5 rounded-md border border-gold/25 bg-gold/12 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-gold-soft">
+                                        <span
+                                            class="inline-flex items-center gap-1.5 rounded-md border border-gold/25 bg-gold/12 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-gold-soft">
                                             <span class="h-1 w-1 rounded-full bg-gold"></span>
                                             {{ $ebook->kategori }}
                                         </span>
@@ -153,7 +168,8 @@
 
                                     {{-- Slug pill --}}
                                     <td class="px-4 py-4">
-                                        <span class="inline-flex items-center gap-1.5 rounded-lg border border-white/8 bg-onyx px-2.5 py-1 font-mono text-[11px] text-champagne/80">
+                                        <span
+                                            class="inline-flex items-center gap-1.5 rounded-lg border border-black/8 bg-onyx px-2.5 py-1 font-mono text-[11px] text-champagne/80">
                                             <i class="fa-solid fa-link text-[9px] text-smoke/50"></i>
                                             {{ $ebook->slug }}
                                         </span>
@@ -163,9 +179,9 @@
                                     <td class="px-4 py-4">
                                         @if ($ebook->file_url)
                                             <a href="{{ $ebook->file_url }}" target="_blank" rel="noreferrer"
-                                                class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs font-medium text-champagne/80 transition-all duration-150 hover:border-white/18 hover:bg-white/10 hover:text-white"
+                                                class="inline-flex items-center gap-1.5 rounded-lg border border-black/10 bg-black/5 px-2.5 py-1.5 text-xs font-medium text-champagne/80 transition-all duration-150 hover:border-black/18 hover:bg-black/10 hover:text-ivory"
                                                 title="Unduh PDF">
-                                                <i class="fa-solid fa-file-pdf text-red-400 text-[11px]"></i>
+                                                <i class="fa-solid fa-file-pdf text-red-600 text-[11px]"></i>
                                                 PDF
                                                 <i class="fa-solid fa-download text-[9px] text-smoke/60"></i>
                                             </a>
@@ -178,7 +194,7 @@
                                     <td class="px-4 py-4">
                                         <div class="flex items-center justify-end gap-1.5">
                                             <a href="{{ route('ebook.show', ['ebookCategory' => $ebookCategory->slug, 'ebook' => $ebook->slug]) }}"
-                                                class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-smoke transition-all duration-150 hover:border-white/18 hover:bg-white/8 hover:text-white"
+                                                class="inline-flex items-center gap-1.5 rounded-lg border border-black/10 bg-black/5 px-3 py-1.5 text-xs font-medium text-smoke transition-all duration-150 hover:border-black/18 hover:bg-black/8 hover:text-ivory"
                                                 title="Lihat detail">
                                                 <i class="fa-solid fa-eye text-[10px]"></i>
                                                 Detail
@@ -189,16 +205,16 @@
                                                 <i class="fa-solid fa-pen text-[10px]"></i>
                                                 Edit
                                             </a>
-                                            <form action="{{ route('ebook.destroy', ['ebookCategory' => $ebookCategory->slug, 'ebook' => $ebook->slug]) }}" method="POST" class="inline">
+                                            <form
+                                                action="{{ route('ebook.destroy', ['ebookCategory' => $ebookCategory->slug, 'ebook' => $ebook->slug]) }}"
+                                                method="POST" class="inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit"
-                                                    data-confirm-submit
-                                                    data-confirm-intent="delete"
+                                                <button type="submit" data-confirm-submit data-confirm-intent="delete"
                                                     data-confirm-title="Hapus ebook ini?"
                                                     data-confirm-message="Ebook {{ $ebook->title }} akan dihapus permanen. Tindakan ini tidak bisa dibatalkan."
                                                     data-confirm-action-label="Ya, hapus"
-                                                    class="inline-flex items-center gap-1.5 rounded-lg border border-red-400/25 bg-red-500/8 px-3 py-1.5 text-xs font-medium text-red-300/80 transition-all duration-150 hover:border-red-400/40 hover:bg-red-500/16 hover:text-red-200"
+                                                    class="inline-flex items-center gap-1.5 rounded-lg border border-red-400/25 bg-red-500/8 px-3 py-1.5 text-xs font-medium text-red-700/80 transition-all duration-150 hover:border-red-400/40 hover:bg-red-500/16 hover:text-red-800"
                                                     title="Hapus ebook">
                                                     <i class="fa-solid fa-trash text-[10px]"></i>
                                                     Hapus
@@ -213,10 +229,12 @@
                 </div>
 
                 {{-- Footer: count + pagination --}}
-                <div class="flex flex-col items-start justify-between gap-3 border-t border-white/6 bg-noir/30 px-6 py-4 sm:flex-row sm:items-center">
+                <div
+                    class="flex flex-col items-start justify-between gap-3 border-t border-black/6 bg-noir/30 px-6 py-4 sm:flex-row sm:items-center">
                     <p class="text-xs text-smoke">
                         Menampilkan
-                        <span class="font-medium text-champagne/80">{{ $ebooks->firstItem() }}–{{ $ebooks->lastItem() }}</span>
+                        <span
+                            class="font-medium text-champagne/80">{{ $ebooks->firstItem() }}–{{ $ebooks->lastItem() }}</span>
                         dari <span class="font-medium text-champagne/80">{{ $ebooks->total() }}</span> ebook
                     </p>
                     <div class="text-sm">

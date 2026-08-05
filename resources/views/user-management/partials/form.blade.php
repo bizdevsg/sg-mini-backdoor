@@ -4,11 +4,11 @@
 @php($confirmActionLabel = $confirmActionLabel ?? 'Ya, simpan')
 
 @if ($errors->any())
-    <div class="flex items-center gap-3 rounded-xl border border-red-500/30 bg-red-950/40 px-4 py-3 text-sm text-red-200 shadow-lg">
-        <i class="fa-solid fa-triangle-exclamation text-base text-red-400"></i>
+    <div class="flex items-center gap-3 rounded-xl border border-red-500/30 bg-red-50/40 px-4 py-3 text-sm text-red-800 shadow-lg">
+        <i class="fa-solid fa-triangle-exclamation text-base text-red-600"></i>
         <div>
-            <p class="font-medium text-red-300">Terdapat kesalahan pengisian:</p>
-            <p class="text-xs text-red-200/80">{{ $errors->first() }}</p>
+            <p class="font-medium text-red-700">Terdapat kesalahan pengisian:</p>
+            <p class="text-xs text-red-800/80">{{ $errors->first() }}</p>
         </div>
     </div>
 @endif
@@ -16,9 +16,9 @@
 <div class="space-y-6">
 
     {{-- Main Profile Card --}}
-    <div class="rounded-2xl border border-white/8 bg-white/3 p-6 space-y-5">
-        <div class="border-b border-white/6 pb-4">
-            <h3 class="text-base font-semibold text-white">Informasi Akun User</h3>
+    <div class="rounded-2xl border border-black/8 bg-black/3 p-6 space-y-5">
+        <div class="border-b border-black/6 pb-4">
+            <h3 class="text-base font-semibold text-ivory">Informasi Akun User</h3>
             <p class="mt-0.5 text-xs text-smoke">Lengkapi nama lengkap, email resmi, dan tingkat kewenangan (role).</p>
         </div>
 
@@ -29,10 +29,10 @@
                     Nama Lengkap <span class="text-gold-soft">*</span>
                 </label>
                 <input type="text" id="name" name="name" value="{{ old('name', $managedUser?->name) }}"
-                    class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('name') ? 'border-red-400/60' : 'border-white/8' }}"
+                    class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('name') ? 'border-red-400/60' : 'border-black/8' }}"
                     placeholder="Contoh: Admin Operasional" required>
                 @error('name')
-                    <p class="mt-1.5 text-xs font-medium text-red-300">{{ $message }}</p>
+                    <p class="mt-1.5 text-xs font-medium text-red-700">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -42,10 +42,10 @@
                     Alamat Email <span class="text-gold-soft">*</span>
                 </label>
                 <input type="email" id="email" name="email" value="{{ old('email', $managedUser?->email) }}"
-                    class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('email') ? 'border-red-400/60' : 'border-white/8' }}"
+                    class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('email') ? 'border-red-400/60' : 'border-black/8' }}"
                     placeholder="admin@perusahaan.com" required>
                 @error('email')
-                    <p class="mt-1.5 text-xs font-medium text-red-300">{{ $message }}</p>
+                    <p class="mt-1.5 text-xs font-medium text-red-700">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -55,7 +55,7 @@
                     Role / Peran System <span class="text-gold-soft">*</span>
                 </label>
                 <select id="role" name="role"
-                    class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('role') ? 'border-red-400/60' : 'border-white/8' }}"
+                    class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('role') ? 'border-red-400/60' : 'border-black/8' }}"
                     required>
                     <option value="" disabled @selected(old('role', $managedUser?->role?->value) === null)>Pilih role</option>
                     @foreach ($availableRoles as $roleOption)
@@ -65,16 +65,16 @@
                     @endforeach
                 </select>
                 @error('role')
-                    <p class="mt-1.5 text-xs font-medium text-red-300">{{ $message }}</p>
+                    <p class="mt-1.5 text-xs font-medium text-red-700">{{ $message }}</p>
                 @enderror
             </div>
         </div>
     </div>
 
     {{-- Password & Security Card --}}
-    <div class="rounded-2xl border border-white/8 bg-white/3 p-6 space-y-5">
-        <div class="border-b border-white/6 pb-4">
-            <h3 class="text-base font-semibold text-white">Keamanan & Password</h3>
+    <div class="rounded-2xl border border-black/8 bg-black/3 p-6 space-y-5">
+        <div class="border-b border-black/6 pb-4">
+            <h3 class="text-base font-semibold text-ivory">Keamanan & Password</h3>
             <p class="mt-0.5 text-xs text-smoke">
                 {{ $managedUser ? 'Biarkan kolom password kosong jika tidak ingin mengganti password user.' : 'Atur password awal untuk akun user baru.' }}
             </p>
@@ -87,11 +87,11 @@
                     {{ $managedUser ? 'Password Baru (Opsional)' : 'Password' }} {{ !$managedUser ? '*' : '' }}
                 </label>
                 <input type="password" id="password" name="password"
-                    class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('password') ? 'border-red-400/60' : 'border-white/8' }}"
+                    class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('password') ? 'border-red-400/60' : 'border-black/8' }}"
                     placeholder="{{ $managedUser ? 'Kosongkan jika tidak diubah' : 'Minimal 8 karakter' }}"
                     @required(!$managedUser)>
                 @error('password')
-                    <p class="mt-1.5 text-xs font-medium text-red-300">{{ $message }}</p>
+                    <p class="mt-1.5 text-xs font-medium text-red-700">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -101,7 +101,7 @@
                     Konfirmasi Password {{ !$managedUser ? '*' : '' }}
                 </label>
                 <input type="password" id="password_confirmation" name="password_confirmation"
-                    class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('password_confirmation') ? 'border-red-400/60' : 'border-white/8' }}"
+                    class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 transition-colors {{ $errors->has('password_confirmation') ? 'border-red-400/60' : 'border-black/8' }}"
                     placeholder="Ulangi password" @required(!$managedUser)>
                 <x-forms.field-error field="password_confirmation" />
             </div>
@@ -118,9 +118,9 @@
 </div>
 
 {{-- Bottom Action Buttons --}}
-<div class="flex items-center justify-end gap-3 border-t border-white/6 pt-6">
+<div class="flex items-center justify-end gap-3 border-t border-black/6 pt-6">
     <a href="{{ $cancelUrl }}"
-        class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-white/18 hover:bg-white/8 hover:text-white">
+        class="inline-flex items-center justify-center gap-2 rounded-xl border border-black/10 bg-black/5 px-5 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-black/18 hover:bg-black/8 hover:text-ivory">
         Batal
     </a>
     <button type="submit"

@@ -205,23 +205,23 @@
 @endphp
 
 <aside
-    class="fixed inset-y-0 left-0 z-40 hidden w-72 flex-col justify-between overflow-y-hidden border-r border-white/8 bg-noir/95 backdrop-blur-md lg:flex">
+    class="fixed inset-y-0 left-0 z-40 hidden w-72 flex-col overflow-y-hidden border-r border-black/8 bg-noir/95 backdrop-blur-md lg:flex">
 
     <div>
         {{-- Header Logo Section --}}
-        <div class="relative overflow-hidden border-b border-white/6 bg-onyx/50 px-6 py-5">
+        <div class="relative overflow-hidden border-b border-black/6 bg-onyx/50 px-6 py-5">
             <div
                 class="pointer-events-none absolute -left-8 -top-8 h-24 w-24 rounded-full {{ $theme['bg_glow_1'] }} blur-xl">
             </div>
             <div class="flex flex-col items-center justify-center gap-2">
-                <img src="{{ asset('assets/logo-utama.png') }}" alt="Logo SG"
+                <img src="{{ asset('assets/logo-utama-black.png') }}" alt="Logo SG"
                     class="h-10 w-fit object-contain transition-transform duration-300 hover:scale-105 mx-auto">
             </div>
         </div>
     </div>
 
     {{-- Navigation Links --}}
-    <nav class="sg-sidebar-scrollbar space-y-1.5 overflow-y-auto px-3 py-3">
+    <nav class="sg-sidebar-scrollbar space-y-1.5 overflow-y-auto px-3 py-3 h-full">
         @foreach ($navigationSections as $section)
             @if (!empty($section['heading']))
                 <div class="flex items-center gap-2.5 pt-3">
@@ -238,7 +238,7 @@
                         class="group rounded-xl transition-all duration-300 ease-out"
                         @if ($item['open'] ?? false) open @endif>
                         <summary data-collapsible-trigger
-                            class="flex cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-white transition-colors duration-300 select-none hover:bg-white/5 group-data-[state=open]:bg-white/4 [&::-webkit-details-marker]:hidden">
+                            class="flex cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-ivory transition-colors duration-300 select-none hover:bg-black/5 group-data-[state=open]:bg-black/4 [&::-webkit-details-marker]:hidden">
                             <span class="flex items-center gap-3">
                                 <i
                                     class="{{ $item['icon'] }} w-4 text-center {{ $theme['text'] }} transition-transform duration-300 group-data-[state=open]:scale-110"></i>
@@ -251,10 +251,10 @@
                         <div data-collapsible-content
                             class="overflow-hidden transition-[height,opacity] duration-300 ease-out"
                             @if (!($item['open'] ?? false)) style="height: 0; opacity: 0;" @endif>
-                            <div class="ml-5 space-y-1 border-l border-white/10 px-3 pb-1 pt-1.5">
+                            <div class="ml-5 space-y-1 border-l border-black/10 px-3 pb-1 pt-1.5">
                                 @foreach ($item['children'] as $child)
                                     <a href="{{ $child['href'] }}"
-                                        class="flex translate-y-1 items-center gap-2.5 rounded-lg px-3 py-2 font-medium opacity-80 transition-all duration-300 ease-out group-data-[state=open]:translate-y-0 group-data-[state=open]:opacity-100 {{ $child['active'] ? $theme['active_child'] : 'text-smoke/80 hover:bg-white/5 hover:text-white' }}">
+                                        class="flex translate-y-1 items-center gap-2.5 rounded-lg px-3 py-2 font-medium opacity-80 transition-all duration-300 ease-out group-data-[state=open]:translate-y-0 group-data-[state=open]:opacity-100 {{ $child['active'] ? $theme['active_child'] : 'text-smoke/80 hover:bg-black/5 hover:text-ivory' }}">
                                         <i class="{{ $child['icon'] }} w-3.5 text-center text-[11px]"></i>
                                         {{ $child['label'] }}
                                     </a>
@@ -264,7 +264,7 @@
                     </details>
                 @else
                     <a href="{{ $item['href'] }}"
-                        class="flex items-center gap-3 rounded-xl px-3.5 py-2.5 font-medium transition-all duration-200 border-l-2 {{ $item['active'] ? $theme['active_sidebar'] : 'border-transparent text-smoke hover:bg-white/5 hover:text-white' }}">
+                        class="flex items-center gap-3 rounded-xl px-3.5 py-2.5 font-medium transition-all duration-200 border-l-2 {{ $item['active'] ? $theme['active_sidebar'] : 'border-transparent text-smoke hover:bg-black/5 hover:text-ivory' }}">
                         <i
                             class="{{ $item['icon'] }} w-4 text-center text-[13px] {{ $item['active'] ? $theme['text'] : 'text-smoke/70' }}"></i>
                         <span>{{ $item['label'] }}</span>
@@ -275,9 +275,9 @@
     </nav>
 
     {{-- Sidebar Footer: User Card --}}
-    <div class="p-3 border-t border-white/6">
+    <div class="p-3 border-t border-black/6">
         <div
-            class="flex items-center gap-3 rounded-xl border border-white/8 bg-white/3 p-3 transition-colors hover:bg-white/5">
+            class="flex items-center gap-3 rounded-xl border border-black/8 bg-black/3 p-3 transition-colors hover:bg-black/5">
             <div
                 class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border {{ $theme['avatar_border'] }} {{ $theme['avatar_bg'] }} font-bold text-xs {{ $theme['avatar_text'] }}">
                 @if ($theme['role_label'] === 'Superadmin')
@@ -290,7 +290,7 @@
             </div>
             <div class="min-w-0 flex-1">
                 <div class="flex items-center justify-between gap-1">
-                    <p class="truncate text-xs font-semibold text-white">{{ $user->name ?? 'Admin User' }}</p>
+                    <p class="truncate text-xs font-semibold text-ivory">{{ $user->name ?? 'Admin User' }}</p>
                 </div>
                 <p class="truncate text-[10px] text-smoke/70">{{ $user->email ?? 'admin@sg.com' }}</p>
             </div>
