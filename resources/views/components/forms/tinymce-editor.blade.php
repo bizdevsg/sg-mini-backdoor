@@ -30,10 +30,9 @@
 
         <style>
             .tox.tox-tinymce {
-                border: 1px solid rgb(255 255 255 / 0.08);
+                border: 1px solid rgb(0 0 0 / 0.1);
                 border-radius: 1rem;
                 overflow: hidden;
-                box-shadow: 0 20px 45px rgb(0 0 0 / 0.2);
             }
 
             html.sg-tinymce-fullscreen,
@@ -187,7 +186,7 @@
                         link_default_protocol: 'https',
                         file_picker_types: 'image',
                         table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | tablecellprops',
-                        skin: 'oxide-dark',
+                        skin: 'snow',
                         content_css: 'dark',
                         placeholder,
                         images_upload_handler: async (blobInfo, progress) => {
@@ -229,8 +228,8 @@
                         },
                         content_style: `
                             body {
-                                background: #272019;
-                                color: #e7eaf0;
+                                background: #eeeeee;
+                                color: #141414;
                                 font-family: "Segoe UI", sans-serif;
                                 font-size: 14px;
                                 line-height: 1.7;
@@ -329,7 +328,7 @@
 
                             if (clientErrorElement) {
                                 clientErrorElement.textContent = isEmpty ? 'Field ini wajib diisi.' :
-                                '';
+                                    '';
                                 clientErrorElement.classList.toggle('hidden', !isEmpty);
                             }
 
