@@ -7,10 +7,8 @@ use App\Http\Requests\Signal\UpdateSignalRequest;
 use App\Models\Signal;
 use App\Models\SignalCategory;
 use App\Support\ApiJsonCacheService;
-use App\Support\DuplicateEntryGuard;
 use App\Support\OptimizedImageStorage;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -45,6 +43,7 @@ class SignalController extends Controller
     {
         return view('signal.create', [
             'signalCategory' => $signalCategory,
+            'categories' => $this->signalCategories(),
         ]);
     }
 
@@ -63,25 +62,18 @@ class SignalController extends Controller
             }
         }
 
-        try {
-            Signal::create(Signal::prepareForPersistence([
-                ...$validated,
-                'signal_category_id' => $signalCategory->id,
-                'image' => $imagePath,
-            ]));
-        } catch (QueryException $exception) {
-            throw DuplicateEntryGuard::translate(
-                $exception,
-                'title_id',
-                'Signal dengan judul ini baru saja dibuat. Silakan gunakan judul yang berbeda.',
-            );
-        }
+        $selectedCategory = SignalCategory::query()->findOrFail($validated['category_id']);
+
+        Signal::create([
+            ...$validated,
+            'image' => $imagePath,
+        ]);
 
         $this->apiJsonCacheService->refreshSignal();
         $this->apiJsonCacheService->refreshSignalCategories();
 
         return redirect()
-            ->route('signal.index', $signalCategory)
+            ->route('signal.index', $selectedCategory)
             ->with('status', 'Signal berhasil ditambahkan.');
     }
 
@@ -104,6 +96,7 @@ class SignalController extends Controller
         return view('signal.edit', [
             'signalCategory' => $signalCategory,
             'signal' => $signal,
+            'categories' => $this->signalCategories(),
         ]);
     }
 
@@ -125,25 +118,18 @@ class SignalController extends Controller
             $this->optimizedImageStorage->delete($signal->image);
         }
 
-        try {
-            $signal->update(Signal::prepareForPersistence([
-                ...$validated,
-                'signal_category_id' => $signalCategory->id,
-                'image' => $imagePath,
-            ]));
-        } catch (QueryException $exception) {
-            throw DuplicateEntryGuard::translate(
-                $exception,
-                'title_id',
-                'Signal dengan judul ini baru saja dibuat. Silakan gunakan judul yang berbeda.',
-            );
-        }
+        $selectedCategory = SignalCategory::query()->findOrFail($validated['category_id']);
+
+        $signal->update([
+            ...$validated,
+            'image' => $imagePath,
+        ]);
 
         $this->apiJsonCacheService->refreshSignal();
         $this->apiJsonCacheService->refreshSignalCategories();
 
         return redirect()
-            ->route('signal.index', $signalCategory)
+            ->route('signal.index', $selectedCategory)
             ->with('status', 'Signal berhasil diperbarui.');
     }
 
@@ -163,6 +149,13 @@ class SignalController extends Controller
 
     private function ensureCategoryMatchesSignal(SignalCategory $signalCategory, Signal $signal): void
     {
-        abort_unless($signal->signal_category_id === $signalCategory->id, 404);
+        abort_unless($signal->category_id === $signalCategory->id, 404);
+    }
+
+    private function signalCategories()
+    {
+        return SignalCategory::query()
+            ->orderBy('name')
+            ->get(['id', 'name']);
     }
 }

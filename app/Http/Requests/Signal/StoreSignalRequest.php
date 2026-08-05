@@ -16,21 +16,13 @@ class StoreSignalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'author' => ['required', 'string', 'max:100'],
-            'source' => ['required', 'string', 'max:150'],
-            'title_id' => ['required', 'string', 'max:150'],
-            'title_en' => ['required', 'string', 'max:150'],
-            'slug' => ['nullable', 'string', 'max:160', Rule::unique('signals', 'slug')],
-            'content_id' => ['required', 'string'],
-            'content_en' => ['required', 'string'],
+            'category_id' => ['required', 'integer', Rule::exists('signal_categories', 'id')],
+            'potensi' => ['required', Rule::in(Signal::POTENSI_OPTIONS)],
+            'timeframe' => ['required', Rule::in(Signal::TIMEFRAME_OPTIONS)],
+            'taking_profit' => ['required', 'string', 'max:100'],
+            'stop_loss' => ['required', 'string', 'max:100'],
+            'sumber' => ['required', 'string', 'max:150'],
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,avif', 'max:5120'],
         ];
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'slug' => Signal::generateSlug($this->string('title_id')->toString()),
-        ]);
     }
 }

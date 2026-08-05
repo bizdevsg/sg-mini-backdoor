@@ -47,6 +47,6 @@ class SignalCategory extends Model
 
     public function signals(): HasMany
     {
-        return $this->hasMany(Signal::class, 'signal_category_id');
+        return $this->hasMany(Signal::class, 'category_id');
     }
 }

@@ -54,7 +54,7 @@ Route::prefix('v1')->middleware(['api.activity.log', 'api.settings', 'api.key'])
         Route::get('/categories/{slug}', [SignalCategoryApiController::class, 'show']);
         Route::get('/categories/{slug}/detail', [SignalCategoryApiController::class, 'detail']);
         Route::get('/', [SignalApiController::class, 'index']);
-        Route::get('/{slug}', [SignalApiController::class, 'show']);
+        Route::get('/{signalId}', [SignalApiController::class, 'show']);
     });
 
     Route::prefix('berita')->group(function () {

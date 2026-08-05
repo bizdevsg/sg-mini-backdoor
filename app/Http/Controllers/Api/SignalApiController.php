@@ -23,17 +23,14 @@ class SignalApiController extends Controller
         $search = $request->string('search')->toString();
 
         $items = $this->apiJsonCacheService->search($items, $search, [
-            'title',
-            'title_id',
-            'title_en',
-            'author',
+            'potensi',
+            'timeframe',
+            'taking_profit',
+            'stop_loss',
+            'sumber',
             'source',
-            'slug',
             'kategori',
             'category.name',
-            'content',
-            'content_id',
-            'content_en',
         ]);
 
         return response()->json(
@@ -47,14 +44,12 @@ class SignalApiController extends Controller
         );
     }
 
-    public function show(string $slug): JsonResponse
+    public function show(int $signalId): JsonResponse
     {
         $this->apiJsonCacheService->ensureSignalCache();
 
-        $signal = $this->apiJsonCacheService->findBySlug(
-            $this->apiJsonCacheService->signalItems(),
-            $slug
-        );
+        $signal = collect($this->apiJsonCacheService->signalItems())
+            ->first(fn (array $item): bool => (int) data_get($item, 'id') === $signalId);
 
         abort_if($signal === null, 404);
 

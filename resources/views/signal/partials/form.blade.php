@@ -1,7 +1,7 @@
 @php($signal = $signal ?? null)
 @php($signalCategory = $signalCategory ?? $signal?->category)
 @php($currentImageUrl = $signal?->image_url)
-@php($authorInitials = ['MRV', 'ASD', 'YDS', 'ARL', 'CP', 'ALG', 'SRH', 'SNM'])
+@php($signalLabel = $signal ? strtoupper($signal->potensi) . ' ' . $signal->timeframe : 'Signal')
 @php($confirmTitle = $confirmTitle ?? 'Simpan data?')
 @php($confirmMessage = $confirmMessage ?? 'Pastikan data yang diisi sudah benar sebelum dilanjutkan.')
 @php($confirmActionLabel = $confirmActionLabel ?? 'Ya, simpan')
@@ -18,91 +18,100 @@
 
 <div class="grid gap-6 lg:grid-cols-[1fr_360px]">
     <div class="space-y-6">
-        <div class="rounded-2xl border border-black/8 bg-black/3 p-6 space-y-5">
+        <div class="space-y-5 rounded-2xl border border-black/8 bg-black/3 p-6">
             <div class="border-b border-black/6 pb-4">
                 <h3 class="text-base font-semibold text-ivory">Detail Signal</h3>
-                <p class="mt-0.5 text-xs text-smoke">Lengkapi metadata, judul bilingual, dan konten bilingual signal.</p>
+                <p class="mt-0.5 text-xs text-smoke">
+                    Lengkapi kategori, potensi, timeframe, target profit, stop loss, dan sumber signal.
+                </p>
             </div>
 
-            <div class="w-full">
-                <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">Kategori Signal</span>
-                <div class="inline-flex w-full items-center gap-2 rounded-xl border border-blue-500/25 bg-blue-500/10 px-4 py-2.5 text-sm font-semibold text-blue-700">
-                    <i class="fa-solid fa-folder-open text-xs"></i>
-                    {{ $signalCategory?->name ?? '-' }}
+            <div class="grid gap-4 md:grid-cols-2">
+                <div>
+                    <label class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
+                        Kategori Signal
+                    </label>
+                    <div class="flex items-center gap-2 rounded-xl border border-black/8 bg-onyx px-4 py-3 text-sm text-champagne">
+                        <i class="fa-solid fa-folder text-xs text-gold-soft"></i>
+                        {{ $signal?->category?->name ?? $signalCategory->name }}
+                    </div>
+                    <input type="hidden" name="category_id" value="{{ $signal?->category_id ?? $signalCategory->id }}">
+                    <x-forms.field-error field="category_id" />
+                </div>
+
+                <div>
+                    <label for="sumber" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
+                        Sumber <span class="text-gold-soft">*</span>
+                    </label>
+                    <input type="text" id="sumber" name="sumber" value="{{ old('sumber', $signal?->sumber) }}"
+                        class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('sumber') ? 'border-red-400/60' : 'border-black/8' }}"
+                        placeholder="Contoh: TradingView / Tim Riset" required>
+                    <x-forms.field-error field="sumber" />
                 </div>
             </div>
 
             <div class="grid gap-4 md:grid-cols-2">
                 <div>
-                    <label for="source" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
-                        Source <span class="text-gold-soft">*</span>
+                    <label for="potensi" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
+                        Potensi <span class="text-gold-soft">*</span>
                     </label>
-                    <input type="text" id="source" name="source" value="{{ old('source', $signal?->source) }}"
-                        class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('source') ? 'border-red-400/60' : 'border-black/8' }}"
-                        placeholder="Contoh: Bloomberg" required>
-                    <x-forms.field-error field="source" />
-                </div>
-                <div>
-                    <label for="author" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
-                        Author <span class="text-gold-soft">*</span>
-                    </label>
-                    <select id="author" name="author"
-                        class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('author') ? 'border-red-400/60' : 'border-black/8' }}"
+                    <select id="potensi" name="potensi"
+                        class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('potensi') ? 'border-red-400/60' : 'border-black/8' }}"
                         required>
-                        <option value="" @selected(old('author', $signal?->author) === '')>Pilih inisial author</option>
-                        @foreach ($authorInitials as $authorInitial)
-                            <option value="{{ $authorInitial }}" @selected(old('author', $signal?->author) === $authorInitial)>
-                                {{ $authorInitial }}
+                        <option value="">Pilih potensi</option>
+                        @foreach (\App\Models\Signal::POTENSI_OPTIONS as $potensi)
+                            <option value="{{ $potensi }}" @selected(old('potensi', $signal?->potensi) === $potensi)>
+                                {{ strtoupper($potensi) }}
                             </option>
                         @endforeach
                     </select>
-                    <x-forms.field-error field="author" />
+                    <x-forms.field-error field="potensi" />
+                </div>
+
+                <div>
+                    <label for="timeframe" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
+                        Timeframe <span class="text-gold-soft">*</span>
+                    </label>
+                    <select id="timeframe" name="timeframe"
+                        class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('timeframe') ? 'border-red-400/60' : 'border-black/8' }}"
+                        required>
+                        <option value="">Pilih timeframe</option>
+                        @foreach (\App\Models\Signal::TIMEFRAME_OPTIONS as $timeframe)
+                            <option value="{{ $timeframe }}" @selected(old('timeframe', $signal?->timeframe) === $timeframe)>
+                                {{ $timeframe }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <x-forms.field-error field="timeframe" />
                 </div>
             </div>
 
             <div class="grid gap-4 md:grid-cols-2">
                 <div>
-                    <label for="title_id" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
-                        Judul ID <span class="text-gold-soft">*</span>
+                    <label for="taking_profit" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
+                        Taking Profit <span class="text-gold-soft">*</span>
                     </label>
-                    <input type="text" id="title_id" name="title_id" value="{{ old('title_id', $signal?->title_id) }}"
-                        class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('title_id') ? 'border-red-400/60' : 'border-black/8' }}"
-                        placeholder="Contoh: Rekomendasi Emas Sesi Pagi" required>
-                    <x-forms.field-error field="title_id" />
+                    <input type="text" id="taking_profit" name="taking_profit" value="{{ old('taking_profit', $signal?->taking_profit) }}"
+                        class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('taking_profit') ? 'border-red-400/60' : 'border-black/8' }}"
+                        placeholder="Contoh: 2365 - 2372" required>
+                    <x-forms.field-error field="taking_profit" />
                 </div>
+
                 <div>
-                    <label for="title_en" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
-                        Judul EN <span class="text-gold-soft">*</span>
+                    <label for="stop_loss" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
+                        Stop Loss <span class="text-gold-soft">*</span>
                     </label>
-                    <input type="text" id="title_en" name="title_en" value="{{ old('title_en', $signal?->title_en) }}"
-                        class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('title_en') ? 'border-red-400/60' : 'border-black/8' }}"
-                        placeholder="Example: Morning Gold Recommendation" required>
-                    <x-forms.field-error field="title_en" />
+                    <input type="text" id="stop_loss" name="stop_loss" value="{{ old('stop_loss', $signal?->stop_loss) }}"
+                        class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('stop_loss') ? 'border-red-400/60' : 'border-black/8' }}"
+                        placeholder="Contoh: 2350" required>
+                    <x-forms.field-error field="stop_loss" />
                 </div>
-            </div>
-
-            <div>
-                <label for="content_id" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
-                    Konten ID <span class="text-gold-soft">*</span>
-                </label>
-                <x-forms.tinymce-editor id="content_id" name="content_id" :value="old('content_id', $signal?->content_id)" :height="320"
-                    placeholder="Tuliskan isi signal versi Indonesia..." required
-                    helper="Gunakan editor untuk menulis analisa, entry, target, atau catatan signal versi Indonesia." />
-            </div>
-
-            <div>
-                <label for="content_en" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
-                    Konten EN <span class="text-gold-soft">*</span>
-                </label>
-                <x-forms.tinymce-editor id="content_en" name="content_en" :value="old('content_en', $signal?->content_en)" :height="320"
-                    placeholder="Write the English signal content..." required
-                    helper="Use the editor for the English version of the signal content." />
             </div>
         </div>
     </div>
 
     <div class="space-y-6">
-        <div class="rounded-2xl border border-black/8 bg-black/3 p-5 space-y-4">
+        <div class="space-y-4 rounded-2xl border border-black/8 bg-black/3 p-5">
             <div>
                 <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-smoke/70">Gambar Signal</p>
                 <p class="mt-0.5 text-xs text-smoke/80">Unggah gambar pendukung signal.</p>
@@ -110,14 +119,14 @@
 
             <input type="file" id="image" name="image"
                 accept=".jpg,.jpeg,.png,.webp,.avif,image/jpeg,image/png,image/webp,image/avif"
-                class="block w-full rounded-xl border bg-onyx px-3.5 py-2.5 text-xs text-champagne file:mr-3 file:rounded-lg file:border-0 file:bg-black/10 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-champagne hover:file:bg-gold hover:file:text-obsidian {{ $errors->has('image') ? 'border-red-400/60' : 'border-black/8' }}">
+                class="block w-full rounded-xl border bg-onyx px-3.5 py-2.5 text-xs text-champagne file:mr-3 file:rounded-lg file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-champagne hover:file:bg-gold hover:file:text-obsidian {{ $errors->has('image') ? 'border-red-400/60' : 'border-black/8' }}">
             <x-forms.field-error field="image" />
 
             @if ($currentImageUrl)
-                <div class="rounded-xl border border-black/8 bg-onyx p-3 space-y-2">
+                <div class="space-y-2 rounded-xl border border-black/8 bg-onyx p-3">
                     <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-smoke/60">Gambar Saat Ini</p>
                     <div class="overflow-hidden rounded-lg border border-black/8">
-                        <img src="{{ $currentImageUrl }}" alt="{{ $signal->title_id }}" class="h-44 w-full object-cover">
+                        <img src="{{ $currentImageUrl }}" alt="{{ $signalLabel }}" class="h-44 w-full object-cover">
                     </div>
                 </div>
             @endif
@@ -127,7 +136,7 @@
 
 <div class="flex items-center justify-end gap-3 border-t border-black/6 pt-6">
     <a href="{{ $cancelUrl }}"
-        class="inline-flex items-center justify-center gap-2 rounded-xl border border-black/10 bg-black/5 px-5 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-black/18 hover:bg-black/8 hover:text-ivory">
+        class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-white/20 hover:bg-white/10 hover:text-ivory">
         Batal
     </a>
     <button type="submit"

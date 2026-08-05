@@ -4,9 +4,10 @@
 
 @section('content')
     <section class="space-y-6">
+        @php($signalLabel = strtoupper($signal->potensi) . ' ' . $signal->timeframe)
         <div class="rounded-[28px] border border-black/8 bg-black/3 px-7 py-6  ">
             <h1 class="text-2xl font-semibold text-ivory">Edit Signal</h1>
-            <p class="mt-2 text-sm text-smoke">Perbarui signal <span class="text-blue-700">{{ $signal->title_id }}</span>.</p>
+            <p class="mt-2 text-sm text-smoke">Perbarui signal <span class="text-blue-700">{{ $signalLabel }}</span>.</p>
         </div>
 
         <form action="{{ route('signal.update', ['signalCategory' => $signalCategory, 'signal' => $signal]) }}" method="POST"
