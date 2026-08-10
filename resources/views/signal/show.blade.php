@@ -47,6 +47,10 @@
                         <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-smoke/70">Sumber</p>
                         <p class="mt-2 text-lg font-semibold text-ivory">{{ $signal->sumber }}</p>
                     </div>
+                    <div class="rounded-2xl border border-amber-500/20 bg-amber-500/8 p-5">
+                        <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-700/80">Confident</p>
+                        <p class="mt-2 text-lg font-semibold text-amber-700">{{ $signal->confident ?: '-' }}</p>
+                    </div>
                     <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/8 p-5">
                         <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-700/80">Taking Profit</p>
                         <p class="mt-2 text-lg font-semibold text-emerald-700">{{ $signal->taking_profit }}</p>
@@ -69,6 +73,10 @@
                         <div>
                             <p class="text-xs uppercase tracking-[0.16em] text-smoke/60">Timeframe</p>
                             <p class="mt-1 font-medium text-ivory">{{ $signal->timeframe }}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs uppercase tracking-[0.16em] text-smoke/60">Slug</p>
+                            <p class="mt-1 font-mono text-champagne/80">{{ $signal->slug }}</p>
                         </div>
                         <div>
                             <p class="text-xs uppercase tracking-[0.16em] text-smoke/60">Dibuat</p>

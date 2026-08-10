@@ -9,11 +9,14 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 #[Fillable([
     'category_id',
+    'slug',
     'potensi',
     'timeframe',
+    'confident',
     'taking_profit',
     'stop_loss',
     'sumber',
@@ -32,6 +35,7 @@ class Signal extends Model
     protected $attributes = [
         'potensi' => 'buy',
         'timeframe' => '15M',
+        'confident' => '',
         'taking_profit' => '',
         'stop_loss' => '',
         'sumber' => '',
@@ -40,6 +44,33 @@ class Signal extends Model
     protected $appends = [
         'kategori',
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    public static function generateSlug(string $categoryName, string $potensi, string $timeframe, ?self $ignore = null): string
+    {
+        $baseSlug = Str::slug($categoryName . '-' . $potensi . '-' . $timeframe);
+
+        if ($baseSlug === '') {
+            $baseSlug = 'signal';
+        }
+
+        $slug = $baseSlug;
+        $counter = 2;
+
+        while (static::query()
+            ->when($ignore, fn ($query) => $query->whereKeyNot($ignore->getKey()))
+            ->where('slug', $slug)
+            ->exists()) {
+            $slug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
 
     public function category(): BelongsTo
     {
@@ -56,6 +87,7 @@ class Signal extends Model
             foreach ([
                 'potensi',
                 'timeframe',
+                'confident',
                 'taking_profit',
                 'stop_loss',
                 'sumber',

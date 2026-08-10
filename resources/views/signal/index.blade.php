@@ -48,7 +48,7 @@
                         <i class="fa-solid fa-magnifying-glass text-xs text-smoke/60"></i>
                     </div>
                     <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="Cari potensi, timeframe, TP, SL, atau sumber signal..."
+                        placeholder="Cari potensi, timeframe, confident, TP, SL, atau sumber signal..."
                         class="w-full rounded-xl border border-black/8 bg-onyx py-2.5 pl-9 pr-4 text-sm text-champagne placeholder:text-smoke/50 focus:border-black/20 focus:outline-none">
                 </div>
                 <div class="flex gap-2">
@@ -114,6 +114,10 @@
                         </div>
 
                         <div class="grid gap-2 text-xs text-smoke">
+                            <div class="rounded-xl border border-amber-500/20 bg-amber-500/8 px-3 py-2">
+                                <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-amber-700/70">Confident</p>
+                                <p class="mt-1 font-medium text-amber-700">{{ $signal->confident ?: '-' }}</p>
+                            </div>
                             <div class="rounded-xl border border-emerald-500/20 bg-emerald-500/8 px-3 py-2">
                                 <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-700/70">Taking Profit</p>
                                 <p class="mt-1 font-medium text-emerald-700">{{ $signal->taking_profit }}</p>

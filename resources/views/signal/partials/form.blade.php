@@ -39,6 +39,19 @@
                     <x-forms.field-error field="category_id" />
                 </div>
 
+                @if ($signal?->slug)
+                    <div>
+                        <label class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
+                            Slug
+                        </label>
+                        <div class="flex items-center gap-2 rounded-xl border border-black/8 bg-onyx px-4 py-3 font-mono text-sm text-champagne/80">
+                            <i class="fa-solid fa-link text-xs text-smoke/50"></i>
+                            {{ $signal->slug }}
+                        </div>
+                        <p class="mt-1.5 text-[11px] text-smoke/60">Dibuat otomatis dari kategori, potensi, dan timeframe.</p>
+                    </div>
+                @endif
+
                 <div>
                     <label for="sumber" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
                         Sumber <span class="text-gold-soft">*</span>
@@ -47,6 +60,16 @@
                         class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('sumber') ? 'border-red-400/60' : 'border-black/8' }}"
                         placeholder="Contoh: TradingView / Tim Riset" required>
                     <x-forms.field-error field="sumber" />
+                </div>
+
+                <div>
+                    <label for="confident" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
+                        Confident
+                    </label>
+                    <input type="text" id="confident" name="confident" value="{{ old('confident', $signal?->confident) }}"
+                        class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('confident') ? 'border-red-400/60' : 'border-black/8' }}"
+                        placeholder="Contoh: High / 80%">
+                    <x-forms.field-error field="confident" />
                 </div>
             </div>
 

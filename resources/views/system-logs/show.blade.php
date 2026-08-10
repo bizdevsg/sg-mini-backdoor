@@ -3,11 +3,12 @@
 @section('title', 'System Log Monitoring')
 
 @section('content')
-    <section class="space-y-4">
-        <div class="overflow-hidden rounded-xl border border-neutral-800 bg-[#0c0c0c] font-mono"
+    <section class="space-y-4 h-full">
+        <div class="overflow-hidden rounded-xl border border-neutral-800 bg-[#0c0c0c] font-mono max-h-svh flex flex-col"
             style="box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.04);">
 
-            <div class="select-none border-b border-neutral-800 bg-[#1a1a1c] px-4 py-2.5">
+            <!-- Header (Fixed) -->
+            <div class="select-none border-b border-neutral-800 bg-[#1a1a1c] px-4 py-2.5 shrink-0">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div class="flex items-center gap-1.5">
@@ -18,9 +19,7 @@
                             <div class="h-3 w-3 cursor-pointer rounded-full border border-[#1aab29] bg-[#28c840] transition-all hover:brightness-110"
                                 title="Maximize"></div>
                         </div>
-
                         <div class="h-4 w-px bg-neutral-700"></div>
-
                         <div class="flex items-center gap-2 text-[11px]">
                             <i class="fa-solid fa-code-branch text-[#28c840]"></i>
                             <span class="font-semibold text-neutral-300">git log</span>
@@ -30,7 +29,6 @@
                             <span class="font-bold text-[#57b6f9]">{{ $activeCategory }}</span>
                         </div>
                     </div>
-
                     <div class="flex items-center gap-2">
                         <span
                             class="inline-flex items-center gap-1.5 rounded border border-[#28c840]/30 bg-[#28c840]/10 px-2 py-0.5 text-[10px] font-bold text-[#28c840]">
@@ -46,7 +44,8 @@
                 </div>
             </div>
 
-            <div class="space-y-2 border-b border-neutral-800 bg-[#111113] px-4 py-2.5 sm:px-5">
+            <!-- Filter Bar (Fixed) -->
+            <div class="space-y-2 border-b border-neutral-800 bg-[#111113] px-4 py-2.5 sm:px-5 shrink-0">
                 <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                     <div class="space-y-2">
                         <div class="text-[12px] leading-snug">
@@ -98,8 +97,10 @@
                 </div>
             </div>
 
-            <div class="min-h-svh bg-[#0c0c0c]" id="terminal-console-body">
-                <div class="flex items-center justify-between border-b border-neutral-900 px-5 py-2 text-[10px]">
+            <!-- Logs Container (Scrollable) -->
+            <div class="flex-1 overflow-y-auto bg-[#0c0c0c]">
+                <div
+                    class="flex items-center justify-between border-b border-neutral-900 px-5 py-2 text-[10px] sticky top-0 bg-[#0c0c0c] z-10">
                     <div class="flex items-center gap-2.5">
                         <span class="font-bold text-[#febc2e]">commit HEAD</span>
                         <span class="text-neutral-700">&rarr;</span>
@@ -192,37 +193,45 @@
 
                                     <div class="min-w-0 flex-1 space-y-1.5 pl-2">
                                         <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                            <span class="text-[11px] font-bold tracking-wider text-[#febc2e]">{{ $commitHash }}</span>
+                                            <span
+                                                class="text-[11px] font-bold tracking-wider text-[#febc2e]">{{ $commitHash }}</span>
                                             <span class="select-none text-[10px] text-neutral-700">|</span>
-                                            <span class="text-[11px] text-neutral-500">{{ $log->created_at?->format('Y-m-d') }}</span>
-                                            <span class="text-[10px] text-neutral-700">{{ $log->created_at?->format('H:i:s') }}</span>
+                                            <span
+                                                class="text-[11px] text-neutral-500">{{ $log->created_at?->format('Y-m-d') }}</span>
+                                            <span
+                                                class="text-[10px] text-neutral-700">{{ $log->created_at?->format('H:i:s') }}</span>
                                             <span
                                                 class="inline-flex items-center rounded border px-1.5 py-px text-[10px] font-bold uppercase leading-tight tracking-widest {{ $evColor }}">{{ $log->event }}</span>
                                             @if (in_array($activeCategory, ['api', 'data'], true) && $statusCode !== null)
-                                                <span class="font-mono text-[11px] font-bold {{ $statusColor }}">HTTP {{ $statusCode }}</span>
+                                                <span class="font-mono text-[11px] font-bold {{ $statusColor }}">HTTP
+                                                    {{ $statusCode }}</span>
                                             @endif
                                         </div>
 
                                         <div class="flex flex-wrap items-center gap-x-2 gap-y-px text-[11px]">
                                             <span class="select-none text-neutral-600">Author:</span>
-                                            <span class="font-semibold text-white">{{ $log->user?->name ?? 'system' }}</span>
+                                            <span
+                                                class="font-semibold text-white">{{ $log->user?->name ?? 'system' }}</span>
                                             @if ($log->user?->email)
                                                 <span class="text-neutral-600">&lt;{{ $log->user->email }}&gt;</span>
                                             @endif
                                             @if ($log->ip_address)
                                                 <span class="select-none text-neutral-700">|</span>
-                                                <span class="font-mono text-[10px] text-[#28c840]/70">{{ $log->ip_address }}</span>
+                                                <span
+                                                    class="font-mono text-[10px] text-[#28c840]/70">{{ $log->ip_address }}</span>
                                             @endif
                                         </div>
 
-                                        <div class="border-l border-neutral-800 pl-1 text-[11px] leading-snug text-neutral-300">
+                                        <div
+                                            class="border-l border-neutral-800 pl-1 text-[11px] leading-snug text-neutral-300">
                                             {{ $log->description }}
                                         </div>
 
                                         @if ($activeCategory === 'data' && is_array($log->context))
                                             <div
                                                 class="inline-flex flex-wrap items-center gap-x-3 gap-y-0.5 rounded border border-neutral-800/80 bg-neutral-900/50 px-3 py-1 text-[10px]">
-                                                <span class="font-semibold uppercase tracking-wider text-neutral-600">ctx</span>
+                                                <span
+                                                    class="font-semibold uppercase tracking-wider text-neutral-600">ctx</span>
                                                 <span class="select-none text-neutral-700">|</span>
                                                 <span>module: <strong
                                                         class="text-[#57b6f9]">{{ $moduleMeta[$moduleKey] ?? $moduleKey }}</strong></span>
@@ -238,12 +247,8 @@
                                                 @endif
                                                 @if (isset($log->context['duration_ms']))
                                                     <span class="select-none text-neutral-700">|</span>
-                                                    <span>latency:
-                                                        <strong
-                                                            class="{{ (int) $log->context['duration_ms'] > 500 ? 'text-[#ff5f57]' : 'text-[#28c840]' }}">
-                                                            {{ $log->context['duration_ms'] }}ms
-                                                        </strong>
-                                                    </span>
+                                                    <span>latency: <strong
+                                                            class="{{ (int) $log->context['duration_ms'] > 500 ? 'text-[#ff5f57]' : 'text-[#28c840]' }}">{{ $log->context['duration_ms'] }}ms</strong></span>
                                                 @endif
                                                 @if (isset($log->context['target']))
                                                     <span class="select-none text-neutral-700">|</span>
@@ -252,14 +257,11 @@
                                                 @endif
                                                 @if (array_key_exists('previous_status', $log->context) && array_key_exists('new_status', $log->context))
                                                     <span class="select-none text-neutral-700">|</span>
-                                                    <span>
-                                                        status:
-                                                        <strong
+                                                    <span>status: <strong
                                                             class="text-[#ff5f57]">{{ $log->context['previous_status'] ?? false ? 'aktif' : 'nonaktif' }}</strong>
                                                         <span class="mx-0.5 text-neutral-600">&rarr;</span>
                                                         <strong
-                                                            class="text-[#28c840]">{{ $log->context['new_status'] ?? false ? 'aktif' : 'nonaktif' }}</strong>
-                                                    </span>
+                                                            class="text-[#28c840]">{{ $log->context['new_status'] ?? false ? 'aktif' : 'nonaktif' }}</strong></span>
                                                 @endif
                                                 @if (isset($log->context['purpose']))
                                                     <span class="select-none text-neutral-700">|</span>
@@ -277,7 +279,8 @@
                                         @if ($activeCategory === 'api' && is_array($log->context) && $moduleKey)
                                             <div
                                                 class="inline-flex flex-wrap items-center gap-x-3 gap-y-0.5 rounded border border-neutral-800/80 bg-neutral-900/50 px-3 py-1 text-[10px]">
-                                                <span class="font-semibold uppercase tracking-wider text-neutral-600">ctx</span>
+                                                <span
+                                                    class="font-semibold uppercase tracking-wider text-neutral-600">ctx</span>
                                                 <span class="select-none text-neutral-700">|</span>
                                                 <span>module: <strong
                                                         class="text-[#57b6f9]">{{ $moduleMeta[$moduleKey] ?? $moduleKey }}</strong></span>
@@ -293,12 +296,8 @@
                                                 @endif
                                                 @if (isset($log->context['duration_ms']))
                                                     <span class="select-none text-neutral-700">|</span>
-                                                    <span>latency:
-                                                        <strong
-                                                            class="{{ (int) $log->context['duration_ms'] > 500 ? 'text-[#ff5f57]' : 'text-[#28c840]' }}">
-                                                            {{ $log->context['duration_ms'] }}ms
-                                                        </strong>
-                                                    </span>
+                                                    <span>latency: <strong
+                                                            class="{{ (int) $log->context['duration_ms'] > 500 ? 'text-[#ff5f57]' : 'text-[#28c840]' }}">{{ $log->context['duration_ms'] }}ms</strong></span>
                                                 @endif
                                             </div>
                                         @endif
@@ -352,8 +351,9 @@
                 </div>
             </div>
 
+            <!-- Pagination (Fixed) -->
             @if ($logs->hasPages())
-                <div class="border-t border-neutral-800 bg-[#111113] px-5 py-3">
+                <div class="border-t border-neutral-800 bg-[#111113] px-5 py-3 shrink-0">
                     <div class="git-terminal-pagination">
                         {{ $logs->links() }}
                     </div>
@@ -412,7 +412,8 @@
                         const query = event.target.value.toLowerCase().trim();
 
                         container.querySelectorAll('.log-entry-row').forEach((row) => {
-                            row.style.display = !query || row.textContent.toLowerCase().includes(query) ? '' : 'none';
+                            row.style.display = !query || row.textContent.toLowerCase().includes(
+                                query) ? '' : 'none';
                         });
                     });
                 }

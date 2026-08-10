@@ -16,6 +16,7 @@ class SignalResource extends JsonResource
             'title' => strtoupper($this->potensi) . ' ' . $this->timeframe,
             'potensi' => $this->potensi,
             'timeframe' => $this->timeframe,
+            'confident' => $this->confident,
             'taking_profit' => $this->taking_profit,
             'stop_loss' => $this->stop_loss,
             'sumber' => $this->sumber,

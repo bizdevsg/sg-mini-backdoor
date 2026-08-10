@@ -25,6 +25,7 @@ class SignalApiController extends Controller
         $items = $this->apiJsonCacheService->search($items, $search, [
             'potensi',
             'timeframe',
+            'confident',
             'taking_profit',
             'stop_loss',
             'sumber',
