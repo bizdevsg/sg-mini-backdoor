@@ -51,6 +51,10 @@
                         <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-700/80">Confident</p>
                         <p class="mt-2 text-lg font-semibold text-amber-700">{{ $signal->confident ?: '-' }}</p>
                     </div>
+                    <div class="rounded-2xl border border-blue-500/20 bg-blue-500/8 p-5">
+                        <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-700/80">Entry</p>
+                        <p class="mt-2 text-lg font-semibold text-blue-700">{{ $signal->entry }}</p>
+                    </div>
                     <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/8 p-5">
                         <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-700/80">Taking Profit</p>
                         <p class="mt-2 text-lg font-semibold text-emerald-700">{{ $signal->taking_profit }}</p>

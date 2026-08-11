@@ -21,6 +21,7 @@ class StoreSignalRequest extends FormRequest
             'potensi' => ['required', Rule::in(Signal::POTENSI_OPTIONS)],
             'timeframe' => ['required', Rule::in(Signal::TIMEFRAME_OPTIONS)],
             'confident' => ['nullable', 'string', 'max:100'],
+            'entry' => ['required', 'string', 'max:100'],
             'taking_profit' => ['required', 'string', 'max:100'],
             'stop_loss' => ['required', 'string', 'max:100'],
             'sumber' => ['required', 'string', 'max:150'],

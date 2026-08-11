@@ -26,6 +26,7 @@ class SignalApiController extends Controller
             'potensi',
             'timeframe',
             'confident',
+            'entry',
             'taking_profit',
             'stop_loss',
             'sumber',

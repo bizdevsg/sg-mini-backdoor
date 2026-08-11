@@ -109,7 +109,17 @@
                 </div>
             </div>
 
-            <div class="grid gap-4 md:grid-cols-2">
+            <div class="grid gap-4 md:grid-cols-3">
+                <div>
+                    <label for="entry" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
+                        Entry <span class="text-gold-soft">*</span>
+                    </label>
+                    <input type="text" id="entry" name="entry" value="{{ old('entry', $signal?->entry) }}"
+                        class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('entry') ? 'border-red-400/60' : 'border-black/8' }}"
+                        placeholder="Contoh: 2358" required>
+                    <x-forms.field-error field="entry" />
+                </div>
+
                 <div>
                     <label for="taking_profit" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
                         Taking Profit <span class="text-gold-soft">*</span>

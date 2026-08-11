@@ -17,6 +17,7 @@ class SignalResource extends JsonResource
             'potensi' => $this->potensi,
             'timeframe' => $this->timeframe,
             'confident' => $this->confident,
+            'entry' => $this->entry,
             'taking_profit' => $this->taking_profit,
             'stop_loss' => $this->stop_loss,
             'sumber' => $this->sumber,
