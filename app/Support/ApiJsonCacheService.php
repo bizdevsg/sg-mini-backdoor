@@ -32,6 +32,7 @@ use App\Models\SignalCategory;
 use App\Http\Resources\TradingviewSymbolResource;
 use App\Models\TermsAndCondition;
 use App\Models\TradingviewSymbol;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 
 class ApiJsonCacheService
@@ -402,7 +403,7 @@ class ApiJsonCacheService
     public function signalItems(): array
     {
         return array_map(
-            fn (array $item) => $this->normalizeInformasiItem($item),
+            fn (array $item) => $this->normalizeSignalItem($item),
             $this->readItems('signal')
         );
     }
@@ -651,6 +652,36 @@ class ApiJsonCacheService
             $item['content'] = $item['content_html'] ?: ($item['content'] ?? '');
             unset($item['content_html']);
         }
+
+        return $item;
+    }
+
+    /**
+     * @param  array<string, mixed>  $item
+     * @return array<string, mixed>
+     */
+    private function normalizeSignalItem(array $item): array
+    {
+        $item = $this->normalizeInformasiItem($item);
+
+        $timeframe = (string) ($item['timeframe'] ?? '');
+        $createdAt = $item['created_at'] ?? null;
+        $expirationMinutes = Signal::TIMEFRAME_EXPIRATION_MINUTES[$timeframe] ?? null;
+
+        if (! is_string($createdAt) || $createdAt === '' || $expirationMinutes === null) {
+            $item['expires_at'] = null;
+            $item['remaining_seconds'] = null;
+            $item['is_expired'] = false;
+
+            return $item;
+        }
+
+        $reference = now();
+        $expiresAt = Carbon::parse($createdAt)->addMinutes($expirationMinutes);
+
+        $item['expires_at'] = $expiresAt->toIso8601String();
+        $item['remaining_seconds'] = max(0, $reference->diffInSeconds($expiresAt, false));
+        $item['is_expired'] = $reference->greaterThanOrEqualTo($expiresAt);
 
         return $item;
     }

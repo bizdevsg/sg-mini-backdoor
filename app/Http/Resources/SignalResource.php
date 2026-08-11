@@ -10,12 +10,18 @@ class SignalResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $reference = now();
+        $expiresAt = $this->signalExpiresAt();
+
         return [
             'id' => $this->id,
             'category_id' => $this->category_id,
             'title' => strtoupper($this->potensi) . ' ' . $this->timeframe,
             'potensi' => $this->potensi,
             'timeframe' => $this->timeframe,
+            'expires_at' => $expiresAt?->toIso8601String(),
+            'remaining_seconds' => $this->signalRemainingSeconds($reference),
+            'is_expired' => $this->signalHasExpired($reference),
             'confident' => $this->confident,
             'entry' => $this->entry,
             'taking_profit' => $this->taking_profit,

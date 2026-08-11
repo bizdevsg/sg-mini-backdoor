@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 #[Fillable([
@@ -30,6 +31,17 @@ class Signal extends Model
     public const POTENSI_OPTIONS = ['buy', 'sell'];
 
     public const TIMEFRAME_OPTIONS = ['15M', '30M', '1H', '4H', '1D'];
+
+    public const TIMEFRAME_EXPIRATION_MINUTES = [
+        '1M' => 15,
+        '5M' => 60,
+        '15M' => 180,
+        '30M' => 240,
+        '1H' => 300,
+        '4H' => 1080,
+        '1D' => 1440,
+        '1W' => 5760,
+    ];
 
     protected $table = 'signals';
 
@@ -108,6 +120,48 @@ class Signal extends Model
     public function scopeOrderForListing(Builder $query): Builder
     {
         return $query->latest();
+    }
+
+    public function expirationMinutes(): ?int
+    {
+        return static::TIMEFRAME_EXPIRATION_MINUTES[$this->timeframe] ?? null;
+    }
+
+    public function signalExpiresAt(): ?Carbon
+    {
+        $expirationMinutes = $this->expirationMinutes();
+
+        if ($this->created_at === null || $expirationMinutes === null) {
+            return null;
+        }
+
+        return $this->created_at->copy()->addMinutes($expirationMinutes);
+    }
+
+    public function signalRemainingSeconds(?Carbon $reference = null): ?int
+    {
+        $expiresAt = $this->signalExpiresAt();
+
+        if ($expiresAt === null) {
+            return null;
+        }
+
+        $reference ??= now();
+
+        return max(0, $reference->diffInSeconds($expiresAt, false));
+    }
+
+    public function signalHasExpired(?Carbon $reference = null): bool
+    {
+        $expiresAt = $this->signalExpiresAt();
+
+        if ($expiresAt === null) {
+            return false;
+        }
+
+        $reference ??= now();
+
+        return $reference->greaterThanOrEqualTo($expiresAt);
     }
 
     protected function kategori(): Attribute
