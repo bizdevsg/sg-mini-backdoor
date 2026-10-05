@@ -16,6 +16,8 @@ use App\Http\Resources\ProdukResource;
 use App\Http\Resources\SignalCategoryResource;
 use App\Http\Resources\SignalResource;
 use App\Http\Resources\TermsAndConditionResource;
+use App\Http\Resources\WakilPialangCategoryResource;
+use App\Http\Resources\WakilPialangResource;
 use App\Models\Banner;
 use App\Models\Berita;
 use App\Models\BeritaCategory;
@@ -32,6 +34,8 @@ use App\Models\SignalCategory;
 use App\Http\Resources\TradingviewSymbolResource;
 use App\Models\TermsAndCondition;
 use App\Models\TradingviewSymbol;
+use App\Models\WakilPialang;
+use App\Models\WakilPialangCategory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 
@@ -170,6 +174,24 @@ class ApiJsonCacheService
         }
 
         $this->refreshTradingviewSymbol();
+    }
+
+    public function ensureWakilPialangCache(): void
+    {
+        if ($this->cacheExists('wakil-pialang')) {
+            return;
+        }
+
+        $this->refreshWakilPialang();
+    }
+
+    public function ensureWakilPialangCategoryCache(): void
+    {
+        if ($this->cacheExists('wakil-pialang-categories')) {
+            return;
+        }
+
+        $this->refreshWakilPialangCategories();
     }
 
     public function refreshProduk(): void
@@ -354,6 +376,30 @@ class ApiJsonCacheService
         $this->write('tradingview-symbol', $items);
     }
 
+    public function refreshWakilPialang(): void
+    {
+        $items = WakilPialang::query()
+            ->with('category')
+            ->orderBy('nama')
+            ->get()
+            ->map(fn (WakilPialang $item) => (new WakilPialangResource($item))->resolve())
+            ->all();
+
+        $this->write('wakil-pialang', $items);
+    }
+
+    public function refreshWakilPialangCategories(): void
+    {
+        $items = WakilPialangCategory::query()
+            ->withCount('wakilPialangs')
+            ->orderBy('nama_kategori')
+            ->get()
+            ->map(fn (WakilPialangCategory $category) => (new WakilPialangCategoryResource($category))->resolve())
+            ->all();
+
+        $this->write('wakil-pialang-categories', $items);
+    }
+
     /**
      * @return array<int, array<string, mixed>>
      */
@@ -493,6 +539,22 @@ class ApiJsonCacheService
     }
 
     /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function wakilPialangItems(): array
+    {
+        return $this->readItems('wakil-pialang');
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function wakilPialangCategoryItems(): array
+    {
+        return $this->readItems('wakil-pialang-categories');
+    }
+
+    /**
      * @param  array<int, array<string, mixed>>  $items
      * @param  array<int, string>  $fields
      * @return array<int, array<string, mixed>>
@@ -555,6 +617,21 @@ class ApiJsonCacheService
     {
         foreach ($items as $item) {
             if (($item['slug'] ?? null) === $slug) {
+                return $item;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  array<int, array<string, mixed>>  $items
+     * @return array<string, mixed>|null
+     */
+    public function findById(array $items, int $id): ?array
+    {
+        foreach ($items as $item) {
+            if (($item['id'] ?? null) === $id) {
                 return $item;
             }
         }

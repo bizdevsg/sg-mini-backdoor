@@ -22,6 +22,8 @@ use App\Http\Controllers\TermsAndConditionsController;
 use App\Http\Controllers\TinyMceImageController;
 use App\Http\Controllers\TradingviewSymbolController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\WakilPialangCategoryController;
+use App\Http\Controllers\WakilPialangController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -125,6 +127,26 @@ Route::middleware(['auth', 'admin.panel.access', 'admin.data.log'])->group(funct
             Route::get('/{ebookCategory}/edit', [EbookCategoryController::class, 'edit'])->name('edit');
             Route::put('/{ebookCategory}', [EbookCategoryController::class, 'update'])->name('update');
             Route::delete('/{ebookCategory}', [EbookCategoryController::class, 'destroy'])->name('destroy');
+        });
+    Route::prefix('wakil-pialang-berjangka')
+        ->name('wakil-pialang.')
+        ->group(function () {
+            Route::get('/{wakilPialangCategory}', [WakilPialangController::class, 'index'])->name('index');
+            Route::get('/{wakilPialangCategory}/create', [WakilPialangController::class, 'create'])->name('create');
+            Route::post('/{wakilPialangCategory}', [WakilPialangController::class, 'store'])->name('store');
+            Route::get('/{wakilPialangCategory}/{wakilPialang}/edit', [WakilPialangController::class, 'edit'])->name('edit');
+            Route::put('/{wakilPialangCategory}/{wakilPialang}', [WakilPialangController::class, 'update'])->name('update');
+            Route::delete('/{wakilPialangCategory}/{wakilPialang}', [WakilPialangController::class, 'destroy'])->name('destroy');
+        });
+    Route::prefix('kategori-wakil-pialang')
+        ->name('wakil-pialang-categories.')
+        ->group(function () {
+            Route::get('/', [WakilPialangCategoryController::class, 'index'])->name('index');
+            Route::get('/create', [WakilPialangCategoryController::class, 'create'])->name('create');
+            Route::post('/', [WakilPialangCategoryController::class, 'store'])->name('store');
+            Route::get('/{wakilPialangCategory}/edit', [WakilPialangCategoryController::class, 'edit'])->name('edit');
+            Route::put('/{wakilPialangCategory}', [WakilPialangCategoryController::class, 'update'])->name('update');
+            Route::delete('/{wakilPialangCategory}', [WakilPialangCategoryController::class, 'destroy'])->name('destroy');
         });
     Route::prefix('penghargaan')
         ->name('penghargaan.')

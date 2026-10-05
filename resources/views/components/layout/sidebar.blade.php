@@ -109,6 +109,12 @@
         $contentItems = [
             ...$contentItems,
             [
+                'label' => 'Wakil Pialang Berjangka',
+                'icon' => 'fa-solid fa-user-tie',
+                'href' => route('wakil-pialang-categories.index'),
+                'active' => request()->routeIs('wakil-pialang.*') || request()->routeIs('wakil-pialang-categories.*'),
+            ],
+            [
                 'label' => 'Penghargaan',
                 'icon' => 'fa-solid fa-award',
                 'href' => route('penghargaan.index'),

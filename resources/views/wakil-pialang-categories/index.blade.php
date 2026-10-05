@@ -1,0 +1,178 @@
+@extends('layouts.app')
+
+@section('title', 'Kategori Wakil Pialang')
+
+@section('content')
+    @php
+        $theme = auth()->user()?->roleTheme() ?? [
+            'hero_bg' =>
+                'bg-[radial-gradient(ellipse_70%_80%_at_0%_0%,rgba(59,130,246,0.18),transparent),linear-gradient(160deg,rgba(21,17,13,0.05)_0%,rgba(21,17,13,0.01)_100%)]',
+            'badge_border' => 'border-blue-500/20',
+            'badge_bg' => 'bg-blue-500/10',
+            'badge_text' => 'text-blue-700/90',
+            'dot' => 'bg-blue-500',
+            'btn_primary' => 'bg-blue-500 text-white hover:bg-blue-600',
+        ];
+    @endphp
+
+    <section class="space-y-6">
+        <div class="relative overflow-hidden rounded-[28px] border border-black/8 {{ $theme['hero_bg'] }} px-7 py-6">
+            <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                <div class="space-y-3">
+                    <span
+                        class="inline-flex items-center gap-2 rounded-full border {{ $theme['badge_border'] }} {{ $theme['badge_bg'] }} px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] {{ $theme['badge_text'] }}">
+                        <span class="h-1.5 w-1.5 animate-pulse rounded-full {{ $theme['dot'] }}"></span>
+                        Wakil Pialang Berjangka
+                    </span>
+                    <div>
+                        <h1 class="text-2xl font-semibold tracking-[-0.04em] text-ivory lg:text-3xl">Kategori Wakil Pialang
+                        </h1>
+                        <p class="mt-2 max-w-xl text-sm leading-6 text-smoke">Kelola kategori beserta alamat, telepon, dan
+                            lokasi kantor cabang.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    @if (!$categories->isEmpty())
+                        <span class="rounded-xl border border-black/8 bg-black/5 px-4 py-2.5 text-sm text-smoke">
+                            {{ $categories->total() }} kategori
+                        </span>
+                    @endif
+                    <a href="{{ route('wakil-pialang-categories.create') }}"
+                        class="inline-flex items-center gap-2 rounded-xl {{ $theme['btn_primary'] }} px-5 py-2.5 text-sm font-semibold transition-all duration-200">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                        Tambah Kategori
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-black/8 bg-black/3 px-5 py-4">
+            <form action="{{ route('wakil-pialang-categories.index') }}" method="GET"
+                class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div class="relative flex-1">
+                    <div class="pointer-events-none absolute inset-y-0 left-3.5 flex items-center">
+                        <i class="fa-solid fa-magnifying-glass text-xs text-smoke/60"></i>
+                    </div>
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Cari nama, alamat, atau telp..."
+                        class="w-full rounded-xl border border-black/8 bg-onyx py-2.5 pl-9 pr-4 text-sm text-champagne placeholder:text-smoke/50 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12">
+                </div>
+                <div class="flex gap-2">
+                    <button type="submit"
+                        class="inline-flex items-center gap-1.5 rounded-xl border border-blue-500/25 bg-blue-500/10 px-4 py-2.5 text-sm font-medium text-blue-700 transition-all duration-200 hover:border-blue-500/40 hover:bg-blue-500/18">
+                        <i class="fa-solid fa-filter text-[10px]"></i>
+                        Filter
+                    </button>
+                    <a href="{{ route('wakil-pialang-categories.index') }}"
+                        class="inline-flex items-center gap-1.5 rounded-xl border border-black/8 px-4 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-black/15 hover:text-ivory">
+                        <i class="fa-solid fa-xmark text-[10px]"></i>
+                        Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div class="overflow-hidden rounded-2xl border border-black/8 bg-black/3">
+            @if ($categories->isEmpty())
+                <div class="flex flex-col items-center px-6 py-20 text-center">
+                    <div
+                        class="flex h-20 w-20 items-center justify-center rounded-3xl border border-blue-500/20 bg-blue-500/10 text-blue-700">
+                        <i class="fa-solid fa-location-dot text-2xl"></i>
+                    </div>
+                    <h3 class="mt-6 text-xl font-semibold text-ivory">Belum ada kategori</h3>
+                    <p class="mt-2 max-w-sm text-sm leading-6 text-smoke">
+                        @if (request('search'))
+                            Tidak ditemukan kategori untuk pencarian "{{ request('search') }}".
+                        @else
+                            Tambahkan kategori terlebih dahulu agar wakil pialang dapat dikelompokkan.
+                        @endif
+                    </p>
+                </div>
+            @else
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr
+                                class="border-b border-black/6 bg-noir/50 text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/70">
+                                <th class="px-6 py-3.5">Nama Kategori</th>
+                                <th class="px-4 py-3.5">Alamat Kantor Cabang</th>
+                                <th class="px-4 py-3.5">Telp</th>
+                                <th class="px-4 py-3.5">Google Maps</th>
+                                <th class="px-4 py-3.5">Jumlah Wakil</th>
+                                <th class="px-4 py-3.5 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-black/5">
+                            @foreach ($categories as $category)
+                                <tr class="group align-top transition-colors duration-150 hover:bg-black/3">
+                                    <td class="px-6 py-4">
+                                        <p class="font-semibold text-ivory group-hover:text-blue-700">
+                                            {{ $category->nama_kategori }}</p>
+                                    </td>
+                                    <td class="max-w-xs px-4 py-4 text-sm text-smoke">
+                                        <p class="line-clamp-2" title="{{ $category->alamat_kantor_cabang }}">
+                                            {{ $category->alamat_kantor_cabang }}</p>
+                                    </td>
+                                    <td class="px-4 py-4 text-sm text-champagne/80">{{ $category->telp }}</td>
+                                    <td class="px-4 py-4">
+                                        <a href="{{ $category->link_google_maps }}" target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="inline-flex items-center gap-1.5 text-xs font-medium text-blue-700 hover:underline">
+                                            <i class="fa-solid fa-map-location-dot text-[10px]"></i>
+                                            Buka Maps
+                                        </a>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <span
+                                            class="inline-flex items-center gap-1.5 rounded-md border border-blue-500/20 bg-blue-500/10 px-2.5 py-1 text-xs font-medium text-blue-700">
+                                            <i class="fa-solid fa-user-tie text-[10px]"></i>
+                                            {{ $category->wakil_pialangs_count }} Wakil
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center justify-end gap-1.5">
+                                            <a href="{{ route('wakil-pialang.index', $category) }}"
+                                                class="inline-flex items-center gap-1.5 rounded-lg border border-black/10 bg-black/5 px-3 py-1.5 text-xs font-medium text-smoke transition-all duration-150 hover:border-black/18 hover:bg-black/8 hover:text-ivory">
+                                                <i class="fa-solid fa-layer-group text-[10px]"></i>
+                                                Lihat Wakil
+                                            </a>
+                                            <a href="{{ route('wakil-pialang-categories.edit', $category) }}"
+                                                class="inline-flex items-center gap-1.5 rounded-lg border border-blue-500/20 bg-blue-500/8 px-3 py-1.5 text-xs font-medium text-blue-700 transition-all duration-150 hover:border-blue-500/35 hover:bg-blue-500/15">
+                                                <i class="fa-solid fa-pen text-[10px]"></i>
+                                                Edit
+                                            </a>
+                                            <form action="{{ route('wakil-pialang-categories.destroy', $category) }}"
+                                                method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" data-confirm-submit data-confirm-intent="delete"
+                                                    data-confirm-title="Hapus kategori ini?"
+                                                    data-confirm-message="Kategori {{ $category->nama_kategori }} akan dihapus permanen jika sudah tidak dipakai wakil pialang."
+                                                    data-confirm-action-label="Ya, hapus"
+                                                    class="inline-flex items-center gap-1.5 rounded-lg border border-red-400/25 bg-red-500/8 px-3 py-1.5 text-xs font-medium text-red-700/80 transition-all duration-150 hover:border-red-400/40 hover:bg-red-500/16 hover:text-red-800">
+                                                    <i class="fa-solid fa-trash text-[10px]"></i>
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <div
+                    class="flex flex-col items-start justify-between gap-3 border-t border-black/6 bg-noir/30 px-6 py-4 sm:flex-row sm:items-center">
+                    <p class="text-xs text-smoke">
+                        Menampilkan <span
+                            class="font-medium text-champagne/80">{{ $categories->firstItem() }}-{{ $categories->lastItem() }}</span>
+                        dari <span class="font-medium text-champagne/80">{{ $categories->total() }}</span> kategori
+                    </p>
+                    <div class="text-sm">{{ $categories->appends(request()->query())->links() }}</div>
+                </div>
+            @endif
+        </div>
+    </section>
+@endsection

@@ -17,6 +17,8 @@ use App\Http\Controllers\Api\SignalApiController;
 use App\Http\Controllers\Api\SignalCategoryApiController;
 use App\Http\Controllers\Api\TermsAndConditionsApiController;
 use App\Http\Controllers\Api\TradingviewSymbolApiController;
+use App\Http\Controllers\Api\WakilPialangApiController;
+use App\Http\Controllers\Api\WakilPialangCategoryApiController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->middleware(['api.activity.log', 'api.settings', 'api.key'])->group(function () {
@@ -90,6 +92,14 @@ Route::prefix('v1')->middleware(['api.activity.log', 'api.settings', 'api.key'])
     Route::prefix('tradingview-symbol')->group(function () {
         Route::get('/', [TradingviewSymbolApiController::class, 'index']);
         Route::get('/{symbolWs}', [TradingviewSymbolApiController::class, 'show']);
+    });
+
+    Route::prefix('wakil-pialang-berjangka')->group(function () {
+        Route::get('/categories', [WakilPialangCategoryApiController::class, 'index']);
+        Route::get('/categories/{slug}', [WakilPialangCategoryApiController::class, 'show']);
+        Route::get('/categories/{slug}/detail', [WakilPialangCategoryApiController::class, 'detail']);
+        Route::get('/', [WakilPialangApiController::class, 'index']);
+        Route::get('/{slug}', [WakilPialangApiController::class, 'show']);
     });
 
     Route::prefix('massages')->group(function () {
