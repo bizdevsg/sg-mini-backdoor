@@ -7,6 +7,7 @@ use App\Http\Controllers\BeritaCategoryController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\ClientAreaSettingController;
 use App\Http\Controllers\CompanyProfileController;
+use App\Http\Controllers\CrudUndoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EbookController;
 use App\Http\Controllers\EbookCategoryController;
@@ -30,8 +31,9 @@ Route::get('/', function () {
     return redirect()->route(auth()->user()?->adminLandingRouteName() ?? 'dashboard');
 });
 
-Route::middleware(['auth', 'admin.panel.access', 'admin.data.log'])->group(function () {
+Route::middleware(['auth', 'admin.panel.access', 'admin.data.log', 'crud.undo.capture'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/crud-undo', CrudUndoController::class)->name('crud-undo.perform');
     Route::prefix('banner')
         ->name('banner.')
         ->group(function () {

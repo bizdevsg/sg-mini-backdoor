@@ -24,9 +24,15 @@ class WakilPialangCategoryApiController extends Controller
             ['nama_kategori', 'slug', 'alamat_kantor_cabang', 'telp']
         );
 
-        return response()->json([
-            'data' => array_values($items),
-        ]);
+        return response()->json(
+            $this->apiJsonCacheService->paginate(
+                array_values($items),
+                (int) $request->integer('per_page', 20),
+                (int) $request->integer('page', 1),
+                $request->url(),
+                array_filter($request->query())
+            )
+        );
     }
 
     public function show(Request $request, string $slug): JsonResponse

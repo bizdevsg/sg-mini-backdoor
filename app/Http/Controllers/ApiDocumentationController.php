@@ -201,7 +201,7 @@ class ApiDocumentationController extends Controller
                 'endpoints' => [
                     ['method' => 'GET', 'path' => '/wakil-pialang-berjangka', 'notes' => 'List wakil pialang, dukung `search`, `category` (slug kategori), `status` (aktif/tidak_aktif), dan pagination.'],
                     ['method' => 'GET', 'path' => '/wakil-pialang-berjangka/{slug}', 'notes' => 'Detail wakil pialang.'],
-                    ['method' => 'GET', 'path' => '/wakil-pialang-berjangka/categories', 'notes' => 'List kategori beserta alamat, telp, dan link Google Maps.'],
+                    ['method' => 'GET', 'path' => '/wakil-pialang-berjangka/categories', 'notes' => 'List kategori beserta alamat, telp, dan link Google Maps; dukung `search` dan pagination.'],
                     ['method' => 'GET', 'path' => '/wakil-pialang-berjangka/categories/{slug}', 'notes' => 'Wakil pialang berdasarkan kategori, dukung `search`, `status`, dan pagination.'],
                     ['method' => 'GET', 'path' => '/wakil-pialang-berjangka/categories/{slug}/detail', 'notes' => 'Detail kategori beserta seluruh wakil pialangnya.'],
                 ],

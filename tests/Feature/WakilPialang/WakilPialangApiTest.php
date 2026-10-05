@@ -92,9 +92,20 @@ test('wakil pialang category api returns categories with their members by slug',
     $this->getJson('/api/v1/wakil-pialang-berjangka/categories', apiKeyHeaders())
         ->assertSuccessful()
         ->assertJsonCount(2, 'data')
+        ->assertJsonPath('meta.current_page', 1)
+        ->assertJsonPath('meta.per_page', 20)
+        ->assertJsonPath('meta.total', 2)
+        ->assertJsonPath('meta.last_page', 1)
         ->assertJsonPath('data.1.slug', 'pusat')
         ->assertJsonPath('data.1.wakil_pialangs_count', 1)
         ->assertJsonPath('data.1.link_google_maps', 'https://maps.google.com/?q=sudirman');
+
+    $this->getJson('/api/v1/wakil-pialang-berjangka/categories?search=Pusat&per_page=1', apiKeyHeaders())
+        ->assertSuccessful()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('meta.per_page', 1)
+        ->assertJsonPath('meta.total', 1)
+        ->assertJsonPath('data.0.slug', 'pusat');
 
     $this->getJson('/api/v1/wakil-pialang-berjangka/categories/'.$pusat->slug, apiKeyHeaders())
         ->assertSuccessful()

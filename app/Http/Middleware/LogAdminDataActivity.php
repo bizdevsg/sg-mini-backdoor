@@ -19,6 +19,7 @@ class LogAdminDataActivity
         'logout',
         'client-area.update',
         'client-area.update-api-security',
+        'crud-undo.perform',
         'api-documentation.pdf',
     ];
 

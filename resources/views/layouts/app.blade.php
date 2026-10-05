@@ -45,44 +45,6 @@
                 @include('components.layout.topbar')
 
                 <main class="px-4 pb-8 pt-32 lg:px-7 lg:pb-10 lg:pt-32">
-                    {{-- Flash Notification Status --}}
-                    @if (session('status'))
-                        <div data-auto-dismiss data-auto-dismiss-delay="5000" role="status"
-                            class="group relative mb-6 overflow-hidden rounded-2xl border border-emerald-400/25 bg-[linear-gradient(135deg,_rgba(16,70,52,0.95)_0%,_rgba(10,42,31,0.98)_100%)] text-emerald-50 shadow-[0_20px_50px_rgba(16,185,129,0.25)] backdrop-blur-md transition-all duration-300 motion-safe:motion-preset-slide-down-sm">
-                            <div class="flex items-center justify-between gap-4 px-5 py-4">
-                                <div class="flex items-center gap-3.5 min-w-0 flex-1">
-                                    <div
-                                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-300/30 bg-emerald-400/15 text-emerald-300 shadow-sm">
-                                        <i class="fa-solid fa-circle-check text-base"></i>
-                                    </div>
-
-                                    <div class="min-w-0 flex-1">
-                                        <p
-                                            class="text-[10px] font-semibold uppercase tracking-[0.24em] text-emerald-300/80">
-                                            Berhasil
-                                        </p>
-                                        <p
-                                            class="mt-0.5 text-xs sm:text-sm font-medium leading-relaxed text-emerald-50">
-                                            {{ session('status') }}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <button type="button" data-auto-dismiss-close
-                                    class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-emerald-200/80 transition-all hover:border-white/20 hover:bg-white/12 hover:text-white focus:outline-none cursor-pointer"
-                                    aria-label="Tutup notifikasi">
-                                    <i class="fa-solid fa-xmark text-xs"></i>
-                                </button>
-                            </div>
-
-                            <div class="h-0.5 w-full bg-black/20">
-                                <div data-auto-dismiss-progress
-                                    class="h-full origin-left bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200"
-                                    style="transform: scaleX(1);"></div>
-                            </div>
-                        </div>
-                    @endif
-
                     @yield('content')
                 </main>
             </div>
@@ -93,6 +55,60 @@
             </footer>
         </div>
     </div>
+
+    @php
+        $undoNotification = session('undo_notification');
+        $statusMessage = $undoNotification['message'] ?? session('status');
+        $isErrorStatus = session('status_type') === 'error';
+        $dismissDelay = (int) (($undoNotification['expires_in'] ?? 5) * 1000);
+    @endphp
+
+    @if ($statusMessage)
+        <div class="pointer-events-none fixed inset-x-4 bottom-4 z-50 flex justify-end sm:inset-x-auto sm:right-6 sm:bottom-6"
+            aria-live="polite" aria-atomic="true">
+            <div data-auto-dismiss data-auto-dismiss-delay="{{ $dismissDelay }}" role="status"
+                class="pointer-events-auto w-full max-w-md overflow-hidden rounded-2xl border {{ $isErrorStatus ? 'border-red-400/30 bg-[linear-gradient(135deg,_rgba(92,24,24,0.97)_0%,_rgba(54,16,16,0.99)_100%)] text-red-50 shadow-[0_20px_50px_rgba(239,68,68,0.22)]' : 'border-emerald-400/25 bg-[linear-gradient(135deg,_rgba(16,70,52,0.97)_0%,_rgba(10,42,31,0.99)_100%)] text-emerald-50 shadow-[0_20px_50px_rgba(16,185,129,0.25)]' }} backdrop-blur-md transition-all duration-300 motion-safe:motion-preset-slide-up-sm">
+                <div class="flex items-start gap-3.5 px-4 py-4 sm:px-5">
+                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border {{ $isErrorStatus ? 'border-red-300/30 bg-red-400/15 text-red-200' : 'border-emerald-300/30 bg-emerald-400/15 text-emerald-300' }}">
+                        <i class="fa-solid {{ $isErrorStatus ? 'fa-circle-exclamation' : 'fa-circle-check' }} text-base"></i>
+                    </div>
+
+                    <div class="min-w-0 flex-1">
+                        <p class="text-[10px] font-semibold uppercase tracking-[0.24em] {{ $isErrorStatus ? 'text-red-200/80' : 'text-emerald-300/80' }}">
+                            {{ $isErrorStatus ? 'Tidak dapat diproses' : 'Pemberitahuan' }}
+                        </p>
+                        <p class="mt-0.5 text-xs font-medium leading-relaxed sm:text-sm">
+                            {{ $statusMessage }}
+                        </p>
+
+                        @if ($undoNotification)
+                            <form method="POST" action="{{ route('crud-undo.perform') }}" class="mt-3">
+                                @csrf
+                                <input type="hidden" name="token" value="{{ $undoNotification['token'] }}">
+                                <button type="submit"
+                                    class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white transition hover:border-white/35 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/40">
+                                    <i class="fa-solid fa-rotate-left text-[10px]"></i>
+                                    Undo
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+
+                    <button type="button" data-auto-dismiss-close
+                        class="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/75 transition hover:border-white/20 hover:bg-white/12 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/30"
+                        aria-label="Tutup pemberitahuan">
+                        <i class="fa-solid fa-xmark text-xs"></i>
+                    </button>
+                </div>
+
+                <div class="h-0.5 w-full bg-black/20">
+                    <div data-auto-dismiss-progress
+                        class="h-full origin-left {{ $isErrorStatus ? 'bg-gradient-to-r from-red-400 via-orange-300 to-red-200' : 'bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200' }}"
+                        style="transform: scaleX(1);"></div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     @include('components.modals.confirm-submit')
 

@@ -190,6 +190,7 @@ class User extends Authenticatable
             'berita-categories.*',
             'ebook.*',
             'ebook-categories.*',
+            'crud-undo.perform',
             'tinymce.images.store',
             'logout',
         ];
