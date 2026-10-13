@@ -134,8 +134,8 @@ Route::middleware(['auth', 'admin.panel.access', 'admin.data.log', 'crud.undo.ca
         ->name('wakil-pialang.')
         ->group(function () {
             Route::get('/{wakilPialangCategory}', [WakilPialangController::class, 'index'])->name('index');
-            Route::get('/{wakilPialangCategory}/create', [WakilPialangController::class, 'create'])->name('create');
-            Route::post('/{wakilPialangCategory}', [WakilPialangController::class, 'store'])->name('store');
+            Route::get('/{wakilPialangCategory}/batch/create', [WakilPialangController::class, 'createBatch'])->name('batch.create');
+            Route::post('/{wakilPialangCategory}/batch', [WakilPialangController::class, 'storeBatch'])->name('batch.store');
             Route::get('/{wakilPialangCategory}/{wakilPialang}/edit', [WakilPialangController::class, 'edit'])->name('edit');
             Route::put('/{wakilPialangCategory}/{wakilPialang}', [WakilPialangController::class, 'update'])->name('update');
             Route::delete('/{wakilPialangCategory}/{wakilPialang}', [WakilPialangController::class, 'destroy'])->name('destroy');

@@ -57,10 +57,10 @@
                 <span class="font-mono text-champagne">{{ $apiKeyHeader }}</span>.
             </p>
             <p class="mt-3 text-[11px] leading-5 text-smoke/80">
-                API key ini disimpan di sisi server admin dan dipakai oleh client yang sudah diotorisasi. Jangan expose
-                value ini ke pihak yang tidak berkepentingan.
+                Server hanya menyimpan hash SHA-256 API key. Nilai aslinya harus didistribusikan kepada client yang
+                diotorisasi melalui kanal aman.
             </p>
-            @if (filled($apiKeyValue))
+            @if ($apiKeyConfigured)
                 <div
                     class="mt-3 flex items-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/8 px-3 py-2">
                     <i class="fa-solid fa-circle-check text-[11px] text-emerald-600"></i>

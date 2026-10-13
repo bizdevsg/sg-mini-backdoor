@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\WakilPialang\StoreWakilPialangRequest;
+use App\Http\Requests\WakilPialang\StoreWakilPialangBatchRequest;
 use App\Http\Requests\WakilPialang\UpdateWakilPialangRequest;
 use App\Models\WakilPialang;
 use App\Models\WakilPialangCategory;
@@ -10,6 +10,7 @@ use App\Support\ApiJsonCacheService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class WakilPialangController extends Controller
 {
@@ -43,25 +44,32 @@ class WakilPialangController extends Controller
         ]);
     }
 
-    public function create(WakilPialangCategory $wakilPialangCategory): View
+    public function createBatch(WakilPialangCategory $wakilPialangCategory): View
     {
-        return view('wakil-pialang.create', [
+        return view('wakil-pialang.create-batch', [
             'wakilPialangCategory' => $wakilPialangCategory,
         ]);
     }
 
-    public function store(StoreWakilPialangRequest $request, WakilPialangCategory $wakilPialangCategory): RedirectResponse
+    public function storeBatch(StoreWakilPialangBatchRequest $request, WakilPialangCategory $wakilPialangCategory): RedirectResponse
     {
-        WakilPialang::create([
-            ...$request->validated(),
-            'id_kategori' => $wakilPialangCategory->id,
-        ]);
+        $items = $request->validated('items');
+
+        DB::transaction(function () use ($items, $wakilPialangCategory): void {
+            foreach ($items as $item) {
+                WakilPialang::create([
+                    ...$item,
+                    'slug' => WakilPialang::generateSlug($item['nama']),
+                    'id_kategori' => $wakilPialangCategory->id,
+                ]);
+            }
+        });
 
         $this->refreshApiCache();
 
         return redirect()
             ->route('wakil-pialang.index', $wakilPialangCategory)
-            ->with('status', 'Wakil pialang berjangka berhasil ditambahkan.');
+            ->with('status', count($items).' wakil pialang berjangka berhasil ditambahkan.');
     }
 
     public function edit(WakilPialangCategory $wakilPialangCategory, WakilPialang $wakilPialang): View

@@ -51,13 +51,10 @@ function something()
 
 function apiKeyHeaders(array $headers = []): array
 {
-    $configuredKey = (string) config('api-auth.key', '');
+    $configuredKey = 'test-api-key';
     $headerName = (string) config('api-auth.header', 'X-API-Key');
 
-    if ($configuredKey === '') {
-        $configuredKey = 'test-api-key';
-        config()->set('api-auth.key', $configuredKey);
-    }
+    config()->set('api-auth.key_hash', hash('sha256', $configuredKey));
 
     return array_merge([
         $headerName => $configuredKey,

@@ -46,16 +46,16 @@
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3">
+                <div class="flex flex-wrap items-center gap-3">
                     @if (!$items->isEmpty())
                         <span class="rounded-xl border border-black/8 bg-black/5 px-4 py-2.5 text-sm text-smoke">
                             {{ $items->total() }} wakil
                         </span>
                     @endif
-                    <a href="{{ route('wakil-pialang.create', $wakilPialangCategory) }}"
+                    <a href="{{ route('wakil-pialang.batch.create', $wakilPialangCategory) }}"
                         class="inline-flex items-center gap-2 rounded-xl {{ $theme['btn_primary'] }} px-5 py-2.5 text-sm font-semibold transition-all duration-200">
-                        <i class="fa-solid fa-plus text-xs"></i>
-                        Tambah Wakil Pialang
+                        <i class="fa-solid fa-users text-xs"></i>
+                        Tambah
                     </a>
                 </div>
             </div>
@@ -126,17 +126,21 @@
                             @foreach ($items as $item)
                                 <tr class="group align-top transition-colors duration-150 hover:bg-black/3">
                                     <td class="px-6 py-4">
-                                        <p class="font-semibold text-ivory group-hover:text-gold-soft">{{ $item->nama }}</p>
+                                        <p class="font-semibold text-ivory group-hover:text-gold-soft">{{ $item->nama }}
+                                        </p>
                                     </td>
-                                    <td class="px-4 py-4 font-mono text-xs text-champagne/80">{{ $item->no_identitas }}</td>
+                                    <td class="px-4 py-4 font-mono text-xs text-champagne/80">{{ $item->no_identitas }}
+                                    </td>
                                     <td class="px-4 py-4">
                                         @if ($item->status === 'aktif')
-                                            <span class="inline-flex items-center gap-1.5 rounded-md border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-700">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 rounded-md border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-700">
                                                 <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
                                                 Aktif
                                             </span>
                                         @else
-                                            <span class="inline-flex items-center gap-1.5 rounded-md border border-black/10 bg-black/5 px-2.5 py-1 text-xs font-medium text-smoke">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 rounded-md border border-black/10 bg-black/5 px-2.5 py-1 text-xs font-medium text-smoke">
                                                 <span class="h-1.5 w-1.5 rounded-full bg-smoke/60"></span>
                                                 Tidak Aktif
                                             </span>
@@ -149,7 +153,8 @@
                                                 <i class="fa-solid fa-pen text-[10px]"></i>
                                                 Edit
                                             </a>
-                                            <form action="{{ route('wakil-pialang.destroy', [$wakilPialangCategory, $item]) }}"
+                                            <form
+                                                action="{{ route('wakil-pialang.destroy', [$wakilPialangCategory, $item]) }}"
                                                 method="POST" class="inline">
                                                 @csrf
                                                 @method('DELETE')

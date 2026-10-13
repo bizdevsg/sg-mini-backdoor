@@ -112,7 +112,7 @@ Semua modul kategori/produk mendukung **slug otomatis dengan de-duplikasi** (`ge
     - `api_enabled` — kill switch API publik.
     - `allowed_origin_frontend` — whitelist origin (CORS custom, mendukung multi-origin & wildcard `*`).
     - `api_key_rotation_notice` — pesan notifikasi rotasi API key dikirim lewat response header `X-API-Key-Rotation-Notice`.
-- Konfigurasi API key aktual disimpan di config (`config('api-auth.key')`), header default `X-API-Key`.
+- Hanya hash SHA-256 API key yang disimpan di config (`config('api-auth.key_hash')`); header request default tetap `X-API-Key`.
 
 ### 5.5 API Documentation
 

@@ -48,7 +48,7 @@
                 <div class="rounded-xl border border-black/8 bg-onyx px-4 py-3">
                     <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/50">Header Wajib</p>
                     <div class="mt-2 space-y-1 font-mono text-[11px]">
-                        <p class="text-champagne">{{ $apiKeyHeader }}: {{ filled($apiKeyValue) ? $apiKeyValue : 'your-api-key' }}</p>
+                        <p class="text-champagne">{{ $apiKeyHeader }}: {{ $apiKeyPlaceholder }}</p>
                         <p class="text-champagne">Origin: {{ $webOriginExample }}</p>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                 <div class="rounded-xl border border-black/8 bg-onyx px-4 py-3">
                     <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/50">Header Wajib</p>
                     <div class="mt-2 space-y-1 font-mono text-[11px]">
-                        <p class="text-champagne">{{ $apiKeyHeader }}: {{ filled($apiKeyValue) ? $apiKeyValue : 'your-api-key' }}</p>
+                        <p class="text-champagne">{{ $apiKeyHeader }}: {{ $apiKeyPlaceholder }}</p>
                         <p class="text-emerald-700">{{ $mobileClientHeader }}: {{ $mobileClientValue }}</p>
                     </div>
                 </div>
@@ -110,37 +110,19 @@
             </div>
         </div>
 
-        @if (filled($apiKeyValue))
-            <div class="overflow-hidden rounded-2xl border border-black/8 bg-[#120f0c]">
-                <div class="relative">
-                    <div class="absolute right-3 top-3">
-                        <button type="button" data-copy-button data-copy-text="{{ $apiKeyValue }}"
-                            data-copy-label-default="Copy Key" data-copy-label-success="Copied!"
-                            data-copy-label-error="Failed"
-                            class="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[10px] font-medium text-white/70 transition-colors hover:border-white/18 hover:bg-white/8 hover:text-white">
-                            <i class="fa-regular fa-copy text-[10px]"></i>
-                            <span data-copy-label>Copy Key</span>
-                        </button>
-                    </div>
-
-                    <div class="space-y-1 px-4 py-3 font-mono text-[12px] leading-6">
-                        <div class="flex gap-3">
-                            <span class="select-none text-gold/50">$</span>
-                            <span class="text-gold">{{ $apiKeyHeader }}</span>
-                        </div>
-                        <div class="flex gap-3">
-                            <span class="select-none text-gold/50">&gt;</span>
-                            <span class="break-all text-white/90">{{ $apiKeyValue }}</span>
-                        </div>
-                    </div>
-                </div>
+        @if ($apiKeyConfigured)
+            <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/8 px-4 py-4 text-sm text-emerald-800">
+                <p class="font-medium">Hash API key sudah dikonfigurasi.</p>
+                <p class="mt-1 text-xs text-emerald-800/80">
+                    Nilai asli tidak dapat dipulihkan dari hash. Distribusikan API key kepada client melalui kanal aman.
+                </p>
             </div>
         @else
             <div
                 class="rounded-2xl border border-amber-400/20 bg-amber-400/8 px-4 py-4 text-sm text-amber-800">
                 <p class="font-medium">API key belum dikonfigurasi.</p>
                 <p class="mt-1 text-xs text-amber-800/80">
-                    Isi value API key di <span class="font-mono">.env</span> agar request ke
+                    Isi hash API key di <span class="font-mono">API_KEY_HASH</span> agar request ke
                     <span class="font-mono">/api/v1</span> bisa diautentikasi.
                 </p>
             </div>

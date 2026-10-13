@@ -134,7 +134,9 @@ class ApiDocumentationController extends Controller
 
         $apiBaseUrl = url('/api/v1');
         $apiKeyHeader = (string) config('api-auth.header', 'X-API-Key');
-        $apiKeyValue = (string) config('api-auth.key', '');
+        $apiKeyHash = (string) config('api-auth.key_hash', '');
+        $apiKeyConfigured = preg_match('/\A[a-f0-9]{64}\z/iD', $apiKeyHash) === 1;
+        $apiKeyPlaceholder = 'your-api-key';
         $mobileClientHeader = 'X-Client-Type';
         $mobileClientValue = 'mobile-app';
         $webOriginExample = 'https://frontend-prod.test';
@@ -267,22 +269,23 @@ class ApiDocumentationController extends Controller
         $requestExamples = [
             [
                 'label' => 'Banner List - Web Client',
-                'command' => "curl --request GET \"{$apiBaseUrl}/banner\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyValue}\" \\\n  --header \"Origin: {$webOriginExample}\"",
+                'command' => "curl --request GET \"{$apiBaseUrl}/banner\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyPlaceholder}\" \\\n  --header \"Origin: {$webOriginExample}\"",
             ],
             [
                 'label' => 'System Settings - Mobile App',
-                'command' => "curl --request GET \"{$apiBaseUrl}/client-area\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyValue}\" \\\n  --header \"X-Client-Type: mobile-app\"",
+                'command' => "curl --request GET \"{$apiBaseUrl}/client-area\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyPlaceholder}\" \\\n  --header \"X-Client-Type: mobile-app\"",
             ],
             [
                 'label' => 'Privacy Policy',
-                'command' => "curl --request GET \"{$apiBaseUrl}/privacy-policy\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyValue}\" \\\n  --header \"Origin: {$webOriginExample}\"",
+                'command' => "curl --request GET \"{$apiBaseUrl}/privacy-policy\" \\\n  --header \"{$apiKeyHeader}: {$apiKeyPlaceholder}\" \\\n  --header \"Origin: {$webOriginExample}\"",
             ],
         ];
 
         return [
             'apiBaseUrl' => $apiBaseUrl,
             'apiKeyHeader' => $apiKeyHeader,
-            'apiKeyValue' => $apiKeyValue,
+            'apiKeyConfigured' => $apiKeyConfigured,
+            'apiKeyPlaceholder' => $apiKeyPlaceholder,
             'mobileClientHeader' => $mobileClientHeader,
             'mobileClientValue' => $mobileClientValue,
             'webOriginExample' => $webOriginExample,

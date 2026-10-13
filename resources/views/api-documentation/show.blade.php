@@ -15,7 +15,7 @@
             'dot' => 'bg-gold',
             'gradient_text' => 'from-gold-soft to-champagne',
         ];
-        $headerExample = $apiKeyHeader . ': ' . (filled($apiKeyValue) ? $apiKeyValue : 'isi-api-key-di-env');
+        $headerExample = $apiKeyHeader . ': ' . $apiKeyPlaceholder;
     @endphp
 
     <section class="space-y-6">
@@ -42,7 +42,8 @@
                 @include($currentDocSection['partial'], [
                     'apiBaseUrl' => $apiBaseUrl,
                     'apiKeyHeader' => $apiKeyHeader,
-                    'apiKeyValue' => $apiKeyValue,
+                    'apiKeyConfigured' => $apiKeyConfigured,
+                    'apiKeyPlaceholder' => $apiKeyPlaceholder,
                     'headerExample' => $headerExample,
                     'mobileClientHeader' => $mobileClientHeader,
                     'mobileClientValue' => $mobileClientValue,

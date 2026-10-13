@@ -11,15 +11,15 @@ class AuthenticateApiWithKey
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $configuredKey = (string) config('api-auth.key');
+        $configuredKeyHash = strtolower((string) config('api-auth.key_hash'));
         $headerName = (string) config('api-auth.header', 'X-API-Key');
         $providedKey = (string) $request->header($headerName, '');
 
-        if ($configuredKey === '') {
+        if (preg_match('/\A[a-f0-9]{64}\z/D', $configuredKeyHash) !== 1) {
             return $this->forbidden('API key belum dikonfigurasi.');
         }
 
-        if ($providedKey === '' || ! hash_equals($configuredKey, $providedKey)) {
+        if ($providedKey === '' || ! hash_equals($configuredKeyHash, hash('sha256', $providedKey))) {
             return $this->forbidden('API key tidak valid.');
         }
 

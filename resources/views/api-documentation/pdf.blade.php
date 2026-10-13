@@ -656,7 +656,7 @@
 
 <body>
     @php
-        $headerExample = $apiKeyHeader . ': ' . (filled($apiKeyValue) ? $apiKeyValue : 'isi-api-key-di-env');
+        $headerExample = $apiKeyHeader . ': ' . $apiKeyPlaceholder;
         $printedAt = ($requestedAt ?? now('Asia/Jakarta'))->format('d F Y, H:i') . ' WIB';
         $tocDescriptions = [
             'getting-started' => 'Alur dasar memakai public API dari nol.',
@@ -811,10 +811,10 @@
                         </div>
                     </div>
 
-                    @if (filled($apiKeyValue))
+                    @if ($apiKeyConfigured)
                         <div class="callout success">
                             <span class="dot"></span>
-                            <div>API key saat ini sudah tersedia di server dan siap dipakai untuk integrasi resmi.</div>
+                            <div>Hash API key sudah tersedia di server dan siap dipakai untuk validasi integrasi resmi.</div>
                         </div>
                     @else
                         <div class="callout warning">
@@ -872,7 +872,7 @@
                     <div class="kv-box">
                         <div class="kv-label">Header Wajib</div>
                         <div class="kv-row">{{ $apiKeyHeader }}:
-                            {{ filled($apiKeyValue) ? $apiKeyValue : 'your-api-key' }}</div>
+                            {{ $apiKeyPlaceholder }}</div>
                         <div class="kv-row">Origin: {{ $webOriginExample }}</div>
                     </div>
                     <div class="panel" style="margin-bottom: 16px;">
@@ -888,7 +888,7 @@
                     <div class="kv-box">
                         <div class="kv-label">Header Wajib</div>
                         <div class="kv-row">{{ $apiKeyHeader }}:
-                            {{ filled($apiKeyValue) ? $apiKeyValue : 'your-api-key' }}</div>
+                            {{ $apiKeyPlaceholder }}</div>
                         <div class="kv-row">{{ $mobileClientHeader }}: {{ $mobileClientValue }}</div>
                     </div>
                     <div class="panel" style="margin-bottom: 16px;">

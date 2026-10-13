@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 uses(LazilyRefreshDatabase::class);
 
 test('client area api returns dev and prod statuses', function () {
-    config()->set('api-auth.key', 'test-api-key');
+    config()->set('api-auth.key_hash', hash('sha256', 'test-api-key'));
 
     ClientAreaSetting::query()->create([
         'client_area_dev' => true,
@@ -46,7 +46,7 @@ test('client area api returns dev and prod statuses', function () {
 });
 
 test('client area api rejects missing origin when allowed origins are configured', function () {
-    config()->set('api-auth.key', 'test-api-key');
+    config()->set('api-auth.key_hash', hash('sha256', 'test-api-key'));
 
     ClientAreaSetting::query()->create([
         'api_enabled' => true,
@@ -60,7 +60,7 @@ test('client area api rejects missing origin when allowed origins are configured
 });
 
 test('client area api rejects requests when allowed origin frontend is not configured', function () {
-    config()->set('api-auth.key', 'test-api-key');
+    config()->set('api-auth.key_hash', hash('sha256', 'test-api-key'));
 
     ClientAreaSetting::query()->create([
         'api_enabled' => true,
@@ -74,7 +74,7 @@ test('client area api rejects requests when allowed origin frontend is not confi
 });
 
 test('client area api allows trusted mobile app requests without origin header', function () {
-    config()->set('api-auth.key', 'test-api-key');
+    config()->set('api-auth.key_hash', hash('sha256', 'test-api-key'));
 
     ClientAreaSetting::query()->create([
         'api_enabled' => true,
@@ -93,7 +93,7 @@ test('client area api allows trusted mobile app requests without origin header',
 });
 
 test('client area api returns 503 when public api is disabled', function () {
-    config()->set('api-auth.key', 'test-api-key');
+    config()->set('api-auth.key_hash', hash('sha256', 'test-api-key'));
 
     ClientAreaSetting::query()->create([
         'api_enabled' => false,
@@ -106,7 +106,7 @@ test('client area api returns 503 when public api is disabled', function () {
 });
 
 test('client area api rejects disallowed origin', function () {
-    config()->set('api-auth.key', 'test-api-key');
+    config()->set('api-auth.key_hash', hash('sha256', 'test-api-key'));
 
     ClientAreaSetting::query()->create([
         'api_enabled' => true,

@@ -21,7 +21,7 @@ test('api documentation root redirects to getting started page for superadmin', 
 
 test('superadmin can access api documentation section page', function () {
     config()->set('api-auth.header', 'X-API-Key');
-    config()->set('api-auth.key', 'super-secret-api-key');
+    config()->set('api-auth.key_hash', hash('sha256', 'super-secret-api-key'));
 
     $user = User::factory()->superadmin()->create();
 
@@ -30,7 +30,8 @@ test('superadmin can access api documentation section page', function () {
         ->assertSuccessful()
         ->assertSee('Authentication')
         ->assertSee('X-API-Key')
-        ->assertSee('super-secret-api-key')
+        ->assertSee('your-api-key')
+        ->assertDontSee('super-secret-api-key')
         ->assertSee('Website')
         ->assertSee('Mobile App');
 });

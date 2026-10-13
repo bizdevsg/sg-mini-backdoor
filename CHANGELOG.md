@@ -2,16 +2,22 @@
 
 ### Added
 - Menambahkan Bruno collection `bruno/sg-admin-api` untuk seluruh endpoint public API v1, lengkap dengan environment production, autentikasi API key, parameter contoh, body form kontak, dan dokumentasi penggunaan.
+- Menambahkan halaman Tambah Sekaligus pada Wakil Pialang Berjangka untuk menambahkan hingga 100 wakil pialang dalam satu kategori, lengkap dengan baris formulir dinamis dan validasi nomor identitas unik.
 - Menambahkan metadata pagination JSON pada endpoint daftar kategori Wakil Pialang Berjangka agar client dapat membaca halaman aktif, jumlah item per halaman, total data, rentang data, dan halaman terakhir.
 - Menambahkan toast pemberitahuan di pojok kanan bawah dengan aksi Undo selama 10 detik untuk perubahan edit dan hapus pada seluruh modul CRUD admin.
 - Menambahkan snapshot Undo terenkripsi, token sekali pakai yang terikat ke user, pemeriksaan konflik perubahan, serta pencadangan privat untuk gambar dan file yang dihapus atau diganti.
 - Menambahkan retensi snapshot Undo selama 24 jam dan command terjadwal `crud-undo:prune` untuk menghapus permanen snapshot serta backup file yang sudah melewati retensi.
 
 ### Changed
+- Menambahkan `deploy.sh` root project ke `.gitignore` agar skrip deployment lokal tidak ikut ter-commit ke repository.
 - Endpoint detail Signal kini menggunakan slug melalui `GET /api/v1/signal/{slug}` menggantikan ID, sehingga client dapat memakai identifier yang stabil dan mudah dibaca; response Signal kini turut menyertakan field `slug`, dan cache lama tanpa slug akan diperbarui otomatis.
+- Autentikasi public API kini menyimpan hash SHA-256 melalui `API_KEY_HASH` dan membandingkan hash request secara constant-time; dokumentasi HTML/PDF tidak lagi menampilkan API key asli.
 - Endpoint `GET /api/v1/wakil-pialang-berjangka/categories` kini mendukung parameter `page` dan `per_page` serta menyertakan informasi tautan request.
 - Flash message admin kini tampil sebagai toast responsif dan dapat ditutup tanpa menggeser konten halaman.
 - Scheduler cleanup Undo dijadwalkan setiap hari pukul 03:15 dan dilindungi `withoutOverlapping()`.
 
 ### Fixed
 - Memperbaiki penyimpanan `retention_until` pada snapshot Undo agar tidak dibuang oleh mass assignment dan tidak menyebabkan error MySQL pada insert aksi Undo.
+
+### Removed
+- Menghapus alur tambah satuan Wakil Pialang Berjangka (tombol, halaman, route, controller, dan request) sehingga penambahan data baru dilakukan melalui Tambah Sekaligus.
