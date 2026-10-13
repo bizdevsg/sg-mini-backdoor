@@ -92,7 +92,7 @@ class ApiJsonCacheService
             $items = $this->readItems('signal');
 
             if ($items === [] || collect($items)->every(
-                fn (array $item): bool => array_key_exists('slug', $item)
+                fn (array $item): bool => array_key_exists('uuid', $item)
             )) {
                 return;
             }
@@ -623,6 +623,21 @@ class ApiJsonCacheService
     {
         foreach ($items as $item) {
             if (($item['slug'] ?? null) === $slug) {
+                return $item;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  array<int, array<string, mixed>>  $items
+     * @return array<string, mixed>|null
+     */
+    public function findByUuid(array $items, string $uuid): ?array
+    {
+        foreach ($items as $item) {
+            if (($item['uuid'] ?? null) === $uuid) {
                 return $item;
             }
         }

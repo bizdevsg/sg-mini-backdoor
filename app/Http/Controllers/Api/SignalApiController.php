@@ -46,13 +46,13 @@ class SignalApiController extends Controller
         );
     }
 
-    public function show(string $slug): JsonResponse
+    public function show(string $uuid): JsonResponse
     {
         $this->apiJsonCacheService->ensureSignalCache();
 
-        $signal = $this->apiJsonCacheService->findBySlug(
+        $signal = $this->apiJsonCacheService->findByUuid(
             $this->apiJsonCacheService->signalItems(),
-            $slug
+            $uuid
         );
 
         abort_if($signal === null, 404);

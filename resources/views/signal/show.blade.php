@@ -79,8 +79,8 @@
                             <p class="mt-1 font-medium text-ivory">{{ $signal->timeframe }}</p>
                         </div>
                         <div>
-                            <p class="text-xs uppercase tracking-[0.16em] text-smoke/60">Slug</p>
-                            <p class="mt-1 font-mono text-champagne/80">{{ $signal->slug }}</p>
+                            <p class="text-xs uppercase tracking-[0.16em] text-smoke/60">UUID</p>
+                            <p class="mt-1 font-mono text-champagne/80">{{ $signal->uuid }}</p>
                         </div>
                         <div>
                             <p class="text-xs uppercase tracking-[0.16em] text-smoke/60">Dibuat</p>

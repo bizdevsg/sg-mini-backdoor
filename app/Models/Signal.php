@@ -14,7 +14,6 @@ use Illuminate\Support\Str;
 
 #[Fillable([
     'category_id',
-    'slug',
     'potensi',
     'timeframe',
     'confident',
@@ -61,29 +60,14 @@ class Signal extends Model
 
     public function getRouteKeyName(): string
     {
-        return 'slug';
+        return 'uuid';
     }
 
-    public static function generateSlug(string $categoryName, string $potensi, string $timeframe, ?self $ignore = null): string
+    protected static function booted(): void
     {
-        $baseSlug = Str::slug($categoryName . '-' . $potensi . '-' . $timeframe);
-
-        if ($baseSlug === '') {
-            $baseSlug = 'signal';
-        }
-
-        $slug = $baseSlug;
-        $counter = 2;
-
-        while (static::query()
-            ->when($ignore, fn ($query) => $query->whereKeyNot($ignore->getKey()))
-            ->where('slug', $slug)
-            ->exists()) {
-            $slug = $baseSlug . '-' . $counter;
-            $counter++;
-        }
-
-        return $slug;
+        static::creating(function (Signal $signal): void {
+            $signal->uuid ??= (string) Str::uuid();
+        });
     }
 
     public function category(): BelongsTo

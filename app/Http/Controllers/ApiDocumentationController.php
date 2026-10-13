@@ -191,7 +191,7 @@ class ApiDocumentationController extends Controller
                 'description' => 'List API Signal',
                 'endpoints' => [
                     ['method' => 'GET', 'path' => '/signal', 'notes' => 'List signal, dukung `search` dan pagination.'],
-                    ['method' => 'GET', 'path' => '/signal/{slug}', 'notes' => 'Detail signal.'],
+                    ['method' => 'GET', 'path' => '/signal/{uuid}', 'notes' => 'Detail signal berdasarkan UUID.'],
                     ['method' => 'GET', 'path' => '/signal/categories', 'notes' => 'List kategori signal.'],
                     ['method' => 'GET', 'path' => '/signal/categories/{slug}', 'notes' => 'Signal berdasarkan kategori.'],
                     ['method' => 'GET', 'path' => '/signal/categories/{slug}/detail', 'notes' => 'Detail kategori signal.'],

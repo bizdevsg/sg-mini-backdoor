@@ -5,6 +5,7 @@ use App\Models\SignalCategory;
 use App\Support\ApiJsonCacheService;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 uses(LazilyRefreshDatabase::class);
 
@@ -46,7 +47,6 @@ test('signal api returns expiry metadata for list detail and category detail end
 
     $expiredSignal = Signal::query()->create([
         'category_id' => $category->id,
-        'slug' => 'gold-buy-15m',
         'potensi' => 'buy',
         'timeframe' => '15M',
         'confident' => 'High',
@@ -62,7 +62,6 @@ test('signal api returns expiry metadata for list detail and category detail end
 
     $activeSignal = Signal::query()->create([
         'category_id' => $category->id,
-        'slug' => 'gold-sell-1d',
         'potensi' => 'sell',
         'timeframe' => '1D',
         'confident' => 'Medium',
@@ -83,7 +82,7 @@ test('signal api returns expiry metadata for list detail and category detail end
         ->assertSuccessful()
         ->assertJsonPath('meta.total', 2)
         ->assertJsonPath('data.0.id', $activeSignal->id)
-        ->assertJsonPath('data.0.slug', $activeSignal->slug)
+        ->assertJsonPath('data.0.uuid', $activeSignal->uuid)
         ->assertJsonPath('data.0.expires_at', '2026-08-12T10:00:00+07:00')
         ->assertJsonPath('data.0.remaining_seconds', 79200)
         ->assertJsonPath('data.0.is_expired', false)
@@ -92,15 +91,20 @@ test('signal api returns expiry metadata for list detail and category detail end
         ->assertJsonPath('data.1.remaining_seconds', 0)
         ->assertJsonPath('data.1.is_expired', true);
 
-    $this->getJson('/api/v1/signal/'.$expiredSignal->slug, apiKeyHeaders())
+    expect(Str::isUuid($expiredSignal->uuid))->toBeTrue();
+
+    $this->getJson('/api/v1/signal/'.$expiredSignal->uuid, apiKeyHeaders())
         ->assertSuccessful()
         ->assertJsonPath('data.id', $expiredSignal->id)
-        ->assertJsonPath('data.slug', $expiredSignal->slug)
+        ->assertJsonPath('data.uuid', $expiredSignal->uuid)
         ->assertJsonPath('data.expires_at', '2026-08-11T11:00:00+07:00')
         ->assertJsonPath('data.remaining_seconds', 0)
         ->assertJsonPath('data.is_expired', true);
 
-    $this->getJson('/api/v1/signal/slug-tidak-ada', apiKeyHeaders())
+    $this->getJson('/api/v1/signal/'.Str::uuid(), apiKeyHeaders())
+        ->assertNotFound();
+
+    $this->getJson('/api/v1/signal/gold-buy-15m', apiKeyHeaders())
         ->assertNotFound();
 
     $this->getJson('/api/v1/signal/categories/'.$category->slug.'/detail', apiKeyHeaders())

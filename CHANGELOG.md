@@ -11,7 +11,7 @@
 
 ### Changed
 - Menambahkan `deploy.sh` root project ke `.gitignore` agar skrip deployment lokal tidak ikut ter-commit ke repository.
-- Endpoint detail Signal kini menggunakan slug melalui `GET /api/v1/signal/{slug}` menggantikan ID, sehingga client dapat memakai identifier yang stabil dan mudah dibaca; response Signal kini turut menyertakan field `slug`, dan cache lama tanpa slug akan diperbarui otomatis.
+- Signal kini menggunakan UUID sebagai satu-satunya identifier route admin dan endpoint detail `GET /api/v1/signal/{uuid}`; field/kolom slug Signal dihapus, data lama dibackfill melalui migration, dan cache lama tanpa UUID diperbarui otomatis.
 - Autentikasi public API kini menyimpan hash SHA-256 melalui `API_KEY_HASH` dan membandingkan hash request secara constant-time; dokumentasi HTML/PDF tidak lagi menampilkan API key asli.
 - Endpoint `GET /api/v1/wakil-pialang-berjangka/categories` kini mendukung parameter `page` dan `per_page` serta menyertakan informasi tautan request.
 - Flash message admin kini tampil sebagai toast responsif dan dapat ditutup tanpa menggeser konten halaman.

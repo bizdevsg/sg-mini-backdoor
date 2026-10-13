@@ -39,16 +39,16 @@
                     <x-forms.field-error field="category_id" />
                 </div>
 
-                @if ($signal?->slug)
+                @if ($signal?->uuid)
                     <div>
                         <label class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
-                            Slug
+                            UUID
                         </label>
                         <div class="flex items-center gap-2 rounded-xl border border-black/8 bg-onyx px-4 py-3 font-mono text-sm text-champagne/80">
-                            <i class="fa-solid fa-link text-xs text-smoke/50"></i>
-                            {{ $signal->slug }}
+                            <i class="fa-solid fa-fingerprint text-xs text-smoke/50"></i>
+                            {{ $signal->uuid }}
                         </div>
-                        <p class="mt-1.5 text-[11px] text-smoke/60">Dibuat otomatis dari kategori, potensi, dan timeframe.</p>
+                        <p class="mt-1.5 text-[11px] text-smoke/60">Identifier unik dibuat otomatis saat signal disimpan.</p>
                     </div>
                 @endif
 

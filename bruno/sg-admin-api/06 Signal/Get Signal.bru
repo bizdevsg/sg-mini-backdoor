@@ -5,15 +5,15 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/signal/:slug
+  url: {{baseUrl}}/signal/:uuid
   body: none
   auth: inherit
 }
 
 params:path {
-  slug: gold-buy-15m
+  uuid: 123e4567-e89b-42d3-a456-426614174000
 }
 
 docs {
-  Mengambil detail signal berdasarkan slug.
+  Mengambil detail signal berdasarkan UUID yang tersedia pada response daftar Signal.
 }

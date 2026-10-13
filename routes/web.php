@@ -84,10 +84,10 @@ Route::middleware(['auth', 'admin.panel.access', 'admin.data.log', 'crud.undo.ca
             Route::get('/{signalCategory}', [SignalController::class, 'index'])->name('index');
             Route::get('/{signalCategory}/create', [SignalController::class, 'create'])->name('create');
             Route::post('/{signalCategory}', [SignalController::class, 'store'])->name('store');
-            Route::get('/{signalCategory}/{signal}', [SignalController::class, 'show'])->name('show');
-            Route::get('/{signalCategory}/{signal}/edit', [SignalController::class, 'edit'])->name('edit');
-            Route::put('/{signalCategory}/{signal}', [SignalController::class, 'update'])->name('update');
-            Route::delete('/{signalCategory}/{signal}', [SignalController::class, 'destroy'])->name('destroy');
+            Route::get('/{signalCategory}/{signal}', [SignalController::class, 'show'])->whereUuid('signal')->name('show');
+            Route::get('/{signalCategory}/{signal}/edit', [SignalController::class, 'edit'])->whereUuid('signal')->name('edit');
+            Route::put('/{signalCategory}/{signal}', [SignalController::class, 'update'])->whereUuid('signal')->name('update');
+            Route::delete('/{signalCategory}/{signal}', [SignalController::class, 'destroy'])->whereUuid('signal')->name('destroy');
         });
     Route::prefix('kategori-signal')
         ->name('signal-categories.')
