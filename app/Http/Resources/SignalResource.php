@@ -16,6 +16,7 @@ class SignalResource extends JsonResource
         return [
             'id' => $this->id,
             'category_id' => $this->category_id,
+            'slug' => $this->slug,
             'title' => strtoupper($this->potensi) . ' ' . $this->timeframe,
             'potensi' => $this->potensi,
             'timeframe' => $this->timeframe,

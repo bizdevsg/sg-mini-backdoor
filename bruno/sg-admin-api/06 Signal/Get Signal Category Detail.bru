@@ -1,0 +1,19 @@
+meta {
+  name: Get Signal Category Detail
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/signal/categories/:slug/detail
+  body: none
+  auth: inherit
+}
+
+params:path {
+  slug: gold
+}
+
+docs {
+  Mengambil detail kategori beserta seluruh signal dalam kategori tersebut.
+}

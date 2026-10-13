@@ -1,0 +1,19 @@
+meta {
+  name: Get Ebook Category Detail
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/ebook/categories/:slug/detail
+  body: none
+  auth: inherit
+}
+
+params:path {
+  slug: contoh-slug-kategori
+}
+
+docs {
+  Mengambil detail kategori ebook berdasarkan slug.
+}

@@ -89,7 +89,13 @@ class ApiJsonCacheService
     public function ensureSignalCache(): void
     {
         if ($this->cacheExists('signal')) {
-            return;
+            $items = $this->readItems('signal');
+
+            if ($items === [] || collect($items)->every(
+                fn (array $item): bool => array_key_exists('slug', $item)
+            )) {
+                return;
+            }
         }
 
         $this->refreshSignal();

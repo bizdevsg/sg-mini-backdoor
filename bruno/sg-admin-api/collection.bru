@@ -1,0 +1,17 @@
+headers {
+  Accept: application/json
+  X-API-Key: {{apiKey}}
+  X-Client-Type: mobile-app
+}
+
+auth {
+  mode: none
+}
+
+docs {
+  # SG Admin Public API
+
+  Collection untuk public API SG Berjangka. Pilih environment `Production`, lalu isi secret `apiKey` di Bruno sebelum mengirim request.
+
+  Header `X-Client-Type: mobile-app` dipakai agar request dari Bruno tidak memerlukan header Origin yang masuk allowlist frontend.
+}

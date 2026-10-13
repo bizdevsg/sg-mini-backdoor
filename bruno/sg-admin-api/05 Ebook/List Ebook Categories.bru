@@ -1,0 +1,19 @@
+meta {
+  name: List Ebook Categories
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/ebook/categories
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~search:
+}
+
+docs {
+  Daftar kategori ebook.
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Get Berita Category
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/berita/categories/:slug
+  body: none
+  auth: inherit
+}
+
+params:path {
+  slug: audusd
+}
+
+docs {
+  Mengambil kategori berita berdasarkan slug.
+}

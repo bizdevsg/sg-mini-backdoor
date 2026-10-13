@@ -1,0 +1,19 @@
+meta {
+  name: Get Wakil Pialang
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/wakil-pialang-berjangka/:slug
+  body: none
+  auth: inherit
+}
+
+params:path {
+  slug: contoh-slug-wakil-pialang
+}
+
+docs {
+  Mengambil detail wakil pialang berdasarkan slug.
+}

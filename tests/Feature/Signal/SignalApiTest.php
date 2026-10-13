@@ -83,6 +83,7 @@ test('signal api returns expiry metadata for list detail and category detail end
         ->assertSuccessful()
         ->assertJsonPath('meta.total', 2)
         ->assertJsonPath('data.0.id', $activeSignal->id)
+        ->assertJsonPath('data.0.slug', $activeSignal->slug)
         ->assertJsonPath('data.0.expires_at', '2026-08-12T10:00:00+07:00')
         ->assertJsonPath('data.0.remaining_seconds', 79200)
         ->assertJsonPath('data.0.is_expired', false)
@@ -91,12 +92,16 @@ test('signal api returns expiry metadata for list detail and category detail end
         ->assertJsonPath('data.1.remaining_seconds', 0)
         ->assertJsonPath('data.1.is_expired', true);
 
-    $this->getJson('/api/v1/signal/'.$expiredSignal->id, apiKeyHeaders())
+    $this->getJson('/api/v1/signal/'.$expiredSignal->slug, apiKeyHeaders())
         ->assertSuccessful()
         ->assertJsonPath('data.id', $expiredSignal->id)
+        ->assertJsonPath('data.slug', $expiredSignal->slug)
         ->assertJsonPath('data.expires_at', '2026-08-11T11:00:00+07:00')
         ->assertJsonPath('data.remaining_seconds', 0)
         ->assertJsonPath('data.is_expired', true);
+
+    $this->getJson('/api/v1/signal/slug-tidak-ada', apiKeyHeaders())
+        ->assertNotFound();
 
     $this->getJson('/api/v1/signal/categories/'.$category->slug.'/detail', apiKeyHeaders())
         ->assertSuccessful()

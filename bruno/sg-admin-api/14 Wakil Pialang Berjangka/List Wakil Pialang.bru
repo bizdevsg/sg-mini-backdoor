@@ -1,0 +1,23 @@
+meta {
+  name: List Wakil Pialang
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/wakil-pialang-berjangka
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~search:
+  ~category:
+  ~status: aktif
+  ~page: 1
+  ~per_page: 20
+}
+
+docs {
+  Daftar wakil pialang. `category` berisi slug kategori, `status` berisi `aktif` atau `tidak_aktif`, dan `per_page` dibatasi 1 sampai 100.
+}

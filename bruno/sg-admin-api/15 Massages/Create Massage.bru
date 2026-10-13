@@ -1,0 +1,29 @@
+meta {
+  name: Create Massage
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/massages
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "nama": "Nama Pengirim",
+    "email": "pengirim@example.com",
+    "no_tlp": "081234567890",
+    "subjek": "Pertanyaan Produk",
+    "massage": "Tuliskan pesan di sini."
+  }
+}
+
+docs {
+  Membuat pesan kontak baru di production dan mengembalikan status 201. Seluruh field wajib. Endpoint dibatasi 10 request per menit per IP.
+}

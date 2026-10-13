@@ -1,0 +1,20 @@
+meta {
+  name: Get Produk
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/produk/:section/:slug
+  body: none
+  auth: inherit
+}
+
+params:path {
+  section: spa
+  slug: contoh-slug-produk
+}
+
+docs {
+  Mengambil detail produk berdasarkan section (`spa` atau `jfx`) dan slug.
+}

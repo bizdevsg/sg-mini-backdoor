@@ -1,0 +1,22 @@
+meta {
+  name: List Ebooks
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/ebook
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~search:
+  ~category:
+  ~page: 1
+  ~per_page: 20
+}
+
+docs {
+  Daftar ebook. `category` berisi slug kategori dan `per_page` dibatasi 1 sampai 100.
+}

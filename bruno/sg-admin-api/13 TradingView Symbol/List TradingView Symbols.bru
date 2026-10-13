@@ -1,0 +1,21 @@
+meta {
+  name: List TradingView Symbols
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/tradingview-symbol
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~search:
+  ~page: 1
+  ~per_page: 20
+}
+
+docs {
+  Daftar pemetaan simbol TradingView. `per_page` dibatasi 1 sampai 100.
+}

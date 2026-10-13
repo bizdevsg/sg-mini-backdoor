@@ -1,0 +1,25 @@
+meta {
+  name: List Produk
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/produk/:section
+  body: none
+  auth: inherit
+}
+
+params:path {
+  section: spa
+}
+
+params:query {
+  ~search:
+  ~page: 1
+  ~per_page: 20
+}
+
+docs {
+  Daftar produk. Nilai `section` yang valid adalah `spa` atau `jfx`; `per_page` dibatasi 1 sampai 100.
+}

@@ -1,0 +1,10 @@
+{
+  "version": "1",
+  "name": "SG Admin Public API",
+  "type": "collection",
+  "defaultEnvironment": "Production",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

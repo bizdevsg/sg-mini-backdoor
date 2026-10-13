@@ -1,0 +1,19 @@
+meta {
+  name: Get Signal
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/signal/:slug
+  body: none
+  auth: inherit
+}
+
+params:path {
+  slug: gold-buy-15m
+}
+
+docs {
+  Mengambil detail signal berdasarkan slug.
+}

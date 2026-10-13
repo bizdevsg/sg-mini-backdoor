@@ -1,0 +1,19 @@
+meta {
+  name: Get Ebook
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/ebook/:slug
+  body: none
+  auth: inherit
+}
+
+params:path {
+  slug: contoh-slug-ebook
+}
+
+docs {
+  Mengambil detail ebook berdasarkan slug.
+}

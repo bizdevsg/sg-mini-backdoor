@@ -1,0 +1,21 @@
+meta {
+  name: List Categories
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/wakil-pialang-berjangka/categories
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~search:
+  ~page: 1
+  ~per_page: 20
+}
+
+docs {
+  Daftar kategori wakil pialang beserta alamat, telepon, dan tautan Google Maps.
+}

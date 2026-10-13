@@ -46,12 +46,14 @@ class SignalApiController extends Controller
         );
     }
 
-    public function show(int $signalId): JsonResponse
+    public function show(string $slug): JsonResponse
     {
         $this->apiJsonCacheService->ensureSignalCache();
 
-        $signal = collect($this->apiJsonCacheService->signalItems())
-            ->first(fn (array $item): bool => (int) data_get($item, 'id') === $signalId);
+        $signal = $this->apiJsonCacheService->findBySlug(
+            $this->apiJsonCacheService->signalItems(),
+            $slug
+        );
 
         abort_if($signal === null, 404);
 

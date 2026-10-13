@@ -1,0 +1,19 @@
+meta {
+  name: Get Berita Category Detail
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/berita/categories/:slug/detail
+  body: none
+  auth: inherit
+}
+
+params:path {
+  slug: gold
+}
+
+docs {
+  Mengambil detail kategori beserta seluruh berita dalam kategori tersebut.
+}
