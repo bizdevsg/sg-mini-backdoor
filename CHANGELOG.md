@@ -18,6 +18,7 @@
 - Scheduler cleanup Undo dijadwalkan setiap hari pukul 03:15 dan dilindungi `withoutOverlapping()`.
 
 ### Fixed
+- Menyamakan field `confident` Signal sebagai input wajib pada form tambah/edit dan validasi backend agar nilai kosong ditolak sebelum mencapai kolom database yang tidak menerima `NULL`.
 - Memperbaiki CRUD admin Signal dengan explicit UUID route binding untuk halaman detail, edit, update, dan hapus tanpa mengubah route key global model; URL numerik lama kini ditolak.
 - Memperbaiki penyimpanan `retention_until` pada snapshot Undo agar tidak dibuang oleh mass assignment dan tidak menyebabkan error MySQL pada insert aksi Undo.
 

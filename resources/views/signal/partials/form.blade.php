@@ -64,11 +64,11 @@
 
                 <div>
                     <label for="confident" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
-                        Confident
+                        Confident <span class="text-gold-soft">*</span>
                     </label>
                     <input type="text" id="confident" name="confident" value="{{ old('confident', $signal?->confident) }}"
                         class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('confident') ? 'border-red-400/60' : 'border-black/8' }}"
-                        placeholder="Contoh: High / 80%">
+                        placeholder="Contoh: High / 80%" required>
                     <x-forms.field-error field="confident" />
                 </div>
             </div>
