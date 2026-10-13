@@ -28,7 +28,7 @@
                     <h1 class="text-2xl font-semibold text-ivory lg:text-3xl">{{ $signalLabel }}</h1>
                     <p class="text-sm text-smoke">Detail setup signal untuk kategori {{ $signalCategory->name }}.</p>
                 </div>
-                <a href="{{ route('signal.edit', ['signalCategory' => $signalCategory, 'signal' => $signal]) }}"
+                <a href="{{ route('signal.edit', ['signalCategory' => $signalCategory, 'signal' => $signal->uuid]) }}"
                     class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-500 px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-blue-600">
                     <i class="fa-solid fa-pen text-xs"></i>
                     Edit Signal

@@ -138,20 +138,20 @@
                     </div>
 
                     <div class="mt-4 flex items-center justify-between border-t border-black/6 pt-3.5">
-                        <a href="{{ route('signal.show', ['signalCategory' => $signalCategory, 'signal' => $signal]) }}"
+                        <a href="{{ route('signal.show', ['signalCategory' => $signalCategory, 'signal' => $signal->uuid]) }}"
                             class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs font-medium text-smoke hover:border-white/15 hover:text-ivory">
                             <i class="fa-solid fa-eye text-[10px]"></i>
                             Detail
                         </a>
 
                         <div class="flex items-center gap-1.5">
-                            <a href="{{ route('signal.edit', ['signalCategory' => $signalCategory, 'signal' => $signal]) }}"
+                            <a href="{{ route('signal.edit', ['signalCategory' => $signalCategory, 'signal' => $signal->uuid]) }}"
                                 class="inline-flex items-center gap-1.5 rounded-lg border {{ $theme['badge_border'] }} {{ $theme['badge_bg'] }} px-2.5 py-1.5 text-xs font-medium {{ $theme['badge_text'] }} hover:opacity-80">
                                 <i class="fa-solid fa-pen text-[10px]"></i>
                                 Edit
                             </a>
                             <form
-                                action="{{ route('signal.destroy', ['signalCategory' => $signalCategory, 'signal' => $signal]) }}"
+                                action="{{ route('signal.destroy', ['signalCategory' => $signalCategory, 'signal' => $signal->uuid]) }}"
                                 method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')

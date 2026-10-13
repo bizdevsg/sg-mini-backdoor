@@ -10,7 +10,7 @@
             <p class="mt-2 text-sm text-smoke">Perbarui signal <span class="text-blue-700">{{ $signalLabel }}</span>.</p>
         </div>
 
-        <form action="{{ route('signal.update', ['signalCategory' => $signalCategory, 'signal' => $signal]) }}" method="POST"
+        <form action="{{ route('signal.update', ['signalCategory' => $signalCategory, 'signal' => $signal->uuid]) }}" method="POST"
             enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')

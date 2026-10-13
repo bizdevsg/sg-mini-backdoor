@@ -11,13 +11,14 @@
 
 ### Changed
 - Menambahkan `deploy.sh` root project ke `.gitignore` agar skrip deployment lokal tidak ikut ter-commit ke repository.
-- Signal kini menggunakan UUID sebagai satu-satunya identifier route admin dan endpoint detail `GET /api/v1/signal/{uuid}`; field/kolom slug Signal dihapus, data lama dibackfill melalui migration, dan cache lama tanpa UUID diperbarui otomatis.
+- Endpoint detail publik Signal kini menggunakan UUID melalui `GET /api/v1/signal/{uuid}`; field/kolom slug Signal dihapus, data lama dibackfill melalui migration, dan cache lama tanpa UUID diperbarui otomatis.
 - Autentikasi public API kini menyimpan hash SHA-256 melalui `API_KEY_HASH` dan membandingkan hash request secara constant-time; dokumentasi HTML/PDF tidak lagi menampilkan API key asli.
 - Endpoint `GET /api/v1/wakil-pialang-berjangka/categories` kini mendukung parameter `page` dan `per_page` serta menyertakan informasi tautan request.
 - Flash message admin kini tampil sebagai toast responsif dan dapat ditutup tanpa menggeser konten halaman.
 - Scheduler cleanup Undo dijadwalkan setiap hari pukul 03:15 dan dilindungi `withoutOverlapping()`.
 
 ### Fixed
+- Memperbaiki CRUD admin Signal dengan explicit UUID route binding untuk halaman detail, edit, update, dan hapus tanpa mengubah route key global model; URL numerik lama kini ditolak.
 - Memperbaiki penyimpanan `retention_until` pada snapshot Undo agar tidak dibuang oleh mass assignment dan tidak menyebabkan error MySQL pada insert aksi Undo.
 
 ### Removed

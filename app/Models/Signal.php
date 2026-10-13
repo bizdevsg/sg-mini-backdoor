@@ -58,11 +58,6 @@ class Signal extends Model
         'kategori',
     ];
 
-    public function getRouteKeyName(): string
-    {
-        return 'uuid';
-    }
-
     protected static function booted(): void
     {
         static::creating(function (Signal $signal): void {
