@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs -I{} sh -c 'grep -l \"function name\" {}')",
+      "Bash(php artisan *)",
+      "Bash(php -m)",
+      "Bash(php -v)",
+      "Bash(php --ini)",
+      "Bash(php -l app/Http/Controllers/ApiDocumentationController.php)",
+      "Bash(php -l app/Http/Requests/ApiDocumentation/DownloadApiDocumentationRequest.php)",
+      "Bash(php -l app/Support/SystemActivitySubjectCatalog.php)",
+      "Bash(php -l app/Http/Middleware/LogAdminDataActivity.php)",
+      "Bash(php -l routes/web.php)",
+      "Bash(where php *)",
+      "Read(//c/laragon/bin/php//**)",
+      "Bash(php -l tests/Feature/ApiDocumentation/ApiDocumentationPageTest.php)"
+    ]
+  }
+}

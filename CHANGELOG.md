@@ -1,6 +1,7 @@
 ## [Unreleased]
 
 ### Added
+- Menambahkan konfigurasi izin command lokal Claude untuk mendukung inspeksi dan workflow pengembangan project.
 - Menambahkan Bruno collection `bruno/sg-admin-api` untuk seluruh endpoint public API v1, lengkap dengan environment production, autentikasi API key, parameter contoh, body form kontak, dan dokumentasi penggunaan.
 - Menambahkan halaman Tambah Sekaligus pada Wakil Pialang Berjangka untuk menambahkan hingga 100 wakil pialang dalam satu kategori, lengkap dengan baris formulir dinamis dan validasi nomor identitas unik.
 - Menambahkan metadata pagination JSON pada endpoint daftar kategori Wakil Pialang Berjangka agar client dapat membaca halaman aktif, jumlah item per halaman, total data, rentang data, dan halaman terakhir.
