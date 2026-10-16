@@ -103,6 +103,12 @@
                     'href' => route('produk.index', ['section' => 'spa']),
                     'active' => request()->routeIs('produk.*') && $produkSection === 'spa',
                 ],
+                [
+                    'label' => 'Akun Prime',
+                    'icon' => 'fa-solid fa-crown',
+                    'href' => route('produk.index', ['section' => 'prime']),
+                    'active' => request()->routeIs('produk.*') && $produkSection === 'prime',
+                ],
             ],
         ]);
 

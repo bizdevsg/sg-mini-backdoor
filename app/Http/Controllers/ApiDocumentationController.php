@@ -165,6 +165,8 @@ class ApiDocumentationController extends Controller
                     ['method' => 'GET', 'path' => '/produk/spa/{slug}', 'notes' => 'Detail produk SPA.'],
                     ['method' => 'GET', 'path' => '/produk/jfx', 'notes' => 'List produk multilateral JFX.'],
                     ['method' => 'GET', 'path' => '/produk/jfx/{slug}', 'notes' => 'Detail produk JFX.'],
+                    ['method' => 'GET', 'path' => '/produk/prime', 'notes' => 'List produk Akun Prime.'],
+                    ['method' => 'GET', 'path' => '/produk/prime/{slug}', 'notes' => 'Detail produk Akun Prime.'],
                 ],
             ],
             [

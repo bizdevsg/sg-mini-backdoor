@@ -32,7 +32,7 @@ Route::prefix('v1')->middleware(['api.activity.log', 'api.settings', 'api.key'])
     });
 
     Route::prefix('produk/{section}')
-        ->whereIn('section', ['spa', 'jfx'])
+        ->whereIn('section', ['spa', 'jfx', 'prime'])
         ->group(function () {
             Route::get('/', [ProdukApiController::class, 'index']);
             Route::get('/{slug}', [ProdukApiController::class, 'show']);

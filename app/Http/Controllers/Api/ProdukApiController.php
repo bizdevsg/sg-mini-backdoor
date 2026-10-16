@@ -61,6 +61,7 @@ class ProdukApiController extends Controller
         return match ($section) {
             'spa' => 'spa',
             'jfx' => 'jfx',
+            'prime' => 'prime',
             default => 'spa',
         };
     }

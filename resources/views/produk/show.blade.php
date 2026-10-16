@@ -48,6 +48,12 @@
                                 <span class="h-1 w-1 rounded-full bg-blue-400/70"></span>
                                 Bilateral
                             </span>
+                        @elseif ($produk->kategori === 'PRIME')
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-md border border-purple-400/20 bg-purple-400/8 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-purple-700/80">
+                                <span class="h-1 w-1 rounded-full bg-purple-400/70"></span>
+                                Akun Prime
+                            </span>
                         @else
                             <span
                                 class="inline-flex items-center rounded-md border border-black/10 bg-black/5 px-2.5 py-1 text-[10px] font-medium text-smoke">
@@ -144,20 +150,38 @@
             {{-- RIGHT CONTENT --}}
             <div class="space-y-4 motion-safe:motion-preset-slide-left-sm motion-safe:motion-delay-[140ms]">
 
-                {{-- Deskripsi card --}}
-                <div class="rounded-2xl border border-black/8 bg-black/3 p-6">
-                    <div class="mb-4 flex items-center gap-3 border-b border-black/6 pb-4">
-                        <div
-                            class="flex h-8 w-8 items-center justify-center rounded-xl border border-black/10 bg-black/5 text-smoke">
-                            <i class="fa-solid fa-align-left text-xs"></i>
+                {{-- Deskripsi cards --}}
+                <div class="grid gap-4 xl:grid-cols-2">
+                    <div class="rounded-2xl border border-black/8 bg-black/3 p-6">
+                        <div class="mb-4 flex items-center gap-3 border-b border-black/6 pb-4">
+                            <div
+                                class="flex h-8 w-8 items-center justify-center rounded-xl border border-black/10 bg-black/5 text-smoke">
+                                <i class="fa-solid fa-align-left text-xs"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/60">Bahasa Indonesia</p>
+                                <h3 class="text-sm font-semibold text-ivory">Deskripsi Produk ID</h3>
+                            </div>
                         </div>
-                        <div>
-                            <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/60">Konten</p>
-                            <h3 class="text-sm font-semibold text-ivory">Deskripsi Produk</h3>
+                        <div class="whitespace-pre-line text-sm leading-7 text-smoke">
+                            {{ $produk->deskripsi_produk }}
                         </div>
                     </div>
-                    <div class="whitespace-pre-line text-sm leading-7 text-smoke">
-                        {{ $produk->deskripsi_produk }}
+
+                    <div class="rounded-2xl border border-black/8 bg-black/3 p-6">
+                        <div class="mb-4 flex items-center gap-3 border-b border-black/6 pb-4">
+                            <div
+                                class="flex h-8 w-8 items-center justify-center rounded-xl border border-black/10 bg-black/5 text-smoke">
+                                <i class="fa-solid fa-language text-xs"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-smoke/60">English</p>
+                                <h3 class="text-sm font-semibold text-ivory">Deskripsi Produk EN</h3>
+                            </div>
+                        </div>
+                        <div class="whitespace-pre-line text-sm leading-7 text-smoke">
+                            {{ $produk->deskripsi_produk_en }}
+                        </div>
                     </div>
                 </div>
 

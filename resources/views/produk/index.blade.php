@@ -164,6 +164,12 @@
                                                 <span class="h-1 w-1 rounded-full bg-blue-400/70"></span>
                                                 Bilateral
                                             </span>
+                                        @elseif ($produk->kategori === 'PRIME')
+                                            <span
+                                                class="inline-flex items-center gap-1.5 rounded-md border border-purple-400/20 bg-purple-400/8 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-purple-700/80">
+                                                <span class="h-1 w-1 rounded-full bg-purple-400/70"></span>
+                                                Akun Prime
+                                            </span>
                                         @else
                                             <span
                                                 class="inline-flex items-center rounded-md border border-black/10 bg-black/5 px-2.5 py-1 text-[10px] font-medium text-smoke">

@@ -1,6 +1,7 @@
 ## [Unreleased]
 
 ### Added
+- Menambahkan menu Produk Akun Prime beserta route CRUD admin dan endpoint public API list/detail pada `/api/v1/produk/prime`, termasuk cache JSON, dokumentasi API, dan validasi kategori `PRIME`.
 - Menambahkan konfigurasi izin command lokal Claude untuk mendukung inspeksi dan workflow pengembangan project.
 - Menambahkan Bruno collection `bruno/sg-admin-api` untuk seluruh endpoint public API v1, lengkap dengan environment production, autentikasi API key, parameter contoh, body form kontak, dan dokumentasi penggunaan.
 - Menambahkan halaman Tambah Sekaligus pada Wakil Pialang Berjangka untuk menambahkan hingga 100 wakil pialang dalam satu kategori, lengkap dengan baris formulir dinamis dan validasi nomor identitas unik.
@@ -10,6 +11,7 @@
 - Menambahkan retensi snapshot Undo selama 24 jam dan command terjadwal `crud-undo:prune` untuk menghapus permanen snapshot serta backup file yang sudah melewati retensi.
 
 ### Changed
+- Deskripsi Produk kini mendukung input Bahasa Indonesia dan English; respons API menambahkan `deskripsi_produk_id` dan `deskripsi_produk_en` sambil mempertahankan `deskripsi_produk` untuk kompatibilitas client lama.
 - Menambahkan `deploy.sh` root project ke `.gitignore` agar skrip deployment lokal tidak ikut ter-commit ke repository.
 - Endpoint detail publik Signal kini menggunakan UUID melalui `GET /api/v1/signal/{uuid}`; field/kolom slug Signal dihapus, data lama dibackfill melalui migration, dan cache lama tanpa UUID diperbarui otomatis.
 - Autentikasi public API kini menyimpan hash SHA-256 melalui `API_KEY_HASH` dan membandingkan hash request secara constant-time; dokumentasi HTML/PDF tidak lagi menampilkan API key asli.

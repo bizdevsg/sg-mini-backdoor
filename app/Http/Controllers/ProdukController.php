@@ -172,6 +172,7 @@ class ProdukController extends Controller
         return match ($section) {
             'spa' => 'spa',
             'jfx' => 'jfx',
+            'prime' => 'prime',
             default => 'spa',
         };
     }
@@ -180,6 +181,7 @@ class ProdukController extends Controller
     {
         return match ($section) {
             'jfx' => 'JFX',
+            'prime' => 'PRIME',
             default => 'SPA',
         };
     }
@@ -193,6 +195,7 @@ class ProdukController extends Controller
     {
         return match ($section) {
             'jfx' => 'Multilateral',
+            'prime' => 'Akun Prime',
             default => 'Bilateral',
         };
     }

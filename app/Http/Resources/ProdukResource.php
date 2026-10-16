@@ -18,6 +18,8 @@ class ProdukResource extends JsonResource
             'nama_produk' => $this->nama_produk,
             'slug' => $this->slug,
             'deskripsi_produk' => $this->deskripsi_produk,
+            'deskripsi_produk_id' => $this->deskripsi_produk,
+            'deskripsi_produk_en' => $this->deskripsi_produk_en,
             'specs' => $this->specs_for_display,
             'image' => $this->image,
             'image_url' => $this->image_url,

@@ -22,9 +22,10 @@ class StoreProdukRequest extends FormRequest
             'nama_produk' => ['required', 'string', 'max:100'],
             'slug' => ['nullable', 'string', 'max:500', Rule::unique('produks', 'slug')],
             'deskripsi_produk' => ['required', 'string'],
+            'deskripsi_produk_en' => ['required', 'string'],
             'specs' => ['required', 'string'],
             'image' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,avif', 'max:5120'],
-            'kategori' => ['required', Rule::in(['SPA', 'JFX'])],
+            'kategori' => ['required', Rule::in(['SPA', 'JFX', 'PRIME'])],
         ];
     }
 

@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
     'nama_produk',
     'slug',
     'deskripsi_produk',
+    'deskripsi_produk_en',
     'specs',
     'image',
     'kategori',
@@ -58,6 +59,13 @@ class Produk extends Model
     {
         return Attribute::make(
             get: fn () => $this->cleanSpecsHtml($this->specs),
+        );
+    }
+
+    protected function deskripsiProdukEn(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value, array $attributes) => $value ?? $attributes['deskripsi_produk'] ?? null,
         );
     }
 

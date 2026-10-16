@@ -43,6 +43,7 @@ test('superadmin can access endpoints documentation page', function () {
         ->get(route('api-documentation.section', ['section' => 'endpoints']))
         ->assertSuccessful()
         ->assertSee('/banner')
+        ->assertSee('/produk/prime')
         ->assertSee('/privacy-policy');
 });
 

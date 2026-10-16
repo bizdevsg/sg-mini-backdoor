@@ -27,9 +27,10 @@ class UpdateProdukRequest extends FormRequest
                 Rule::unique('produks', 'slug')->ignore($this->route('produk')),
             ],
             'deskripsi_produk' => ['required', 'string'],
+            'deskripsi_produk_en' => ['required', 'string'],
             'specs' => ['required', 'string'],
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,avif', 'max:5120'],
-            'kategori' => ['required', Rule::in(['SPA', 'JFX'])],
+            'kategori' => ['required', Rule::in(['SPA', 'JFX', 'PRIME'])],
         ];
     }
 

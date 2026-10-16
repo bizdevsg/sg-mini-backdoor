@@ -24,6 +24,7 @@ class ProdukFactory extends Factory
             'nama_produk' => Str::title($namaProduk),
             'slug' => Str::slug($namaProduk).'-'.fake()->unique()->numberBetween(100, 999),
             'deskripsi_produk' => fake()->paragraphs(3, true),
+            'deskripsi_produk_en' => fake()->paragraphs(3, true),
             'specs' => fake()->sentences(4, true),
             'image' => 'https://picsum.photos/seed/'.fake()->unique()->slug().'/1200/800',
             'kategori' => fake()->randomElement(['SPA', 'JFX']),

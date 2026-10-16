@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 uses(LazilyRefreshDatabase::class);
 
 test('guests are redirected to login when accessing product pages', function () {
-    $produk = Produk::factory()->create();
+    $produk = Produk::factory()->create(['kategori' => 'SPA']);
 
     $this->get(route('produk.index', ['section' => 'spa']))->assertRedirect(route('login'));
     $this->get(route('produk.create', ['section' => 'spa']))->assertRedirect(route('login'));
@@ -20,7 +20,7 @@ test('guests are redirected to login when accessing product pages', function () 
 
 test('authenticated users can view product pages', function () {
     $user = User::factory()->create();
-    $produk = Produk::factory()->create();
+    $produk = Produk::factory()->create(['kategori' => 'SPA']);
 
     $this->actingAs($user);
 
@@ -28,6 +28,28 @@ test('authenticated users can view product pages', function () {
     $this->get(route('produk.create', ['section' => 'spa']))->assertSuccessful()->assertSee('Tambah produk bilateral');
     $this->get(route('produk.show', ['section' => 'spa', 'produk' => $produk]))->assertSuccessful()->assertSee($produk->nama_produk);
     $this->get(route('produk.edit', ['section' => 'spa', 'produk' => $produk]))->assertSuccessful()->assertSee('Edit');
+});
+
+test('authenticated users can access prime product pages from the product menu', function () {
+    $user = User::factory()->create();
+    $produk = Produk::factory()->create([
+        'nama_produk' => 'Prime Gold',
+        'kategori' => 'PRIME',
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('produk.index', ['section' => 'prime']))
+        ->assertSuccessful()
+        ->assertSee('Akun Prime')
+        ->assertSee('Prime Gold');
+
+    $this->get(route('produk.show', ['section' => 'prime', 'produk' => $produk]))
+        ->assertSuccessful()
+        ->assertSee('Akun Prime')
+        ->assertSee($produk->nama_produk);
+
+    $this->get(route('produk.show', ['section' => 'spa', 'produk' => $produk]))
+        ->assertNotFound();
 });
 
 test('authenticated users can create and update products', function () {
@@ -58,6 +80,7 @@ test('authenticated users can create and update products', function () {
     $this->post(route('produk.store', ['section' => 'spa']), [
         'nama_produk' => 'Produk Demo',
         'deskripsi_produk' => 'Deskripsi produk demo.',
+        'deskripsi_produk_en' => 'Demo product description.',
         'specs' => 'Spesifikasi produk demo.',
         'image' => UploadedFile::fake()->image('demo.jpg'),
         'kategori' => 'SPA',
@@ -69,6 +92,8 @@ test('authenticated users can create and update products', function () {
 
     expect($produk->nama_produk)->toBe('Produk Demo')
         ->and($produk->slug)->toBe('produk-demo')
+        ->and($produk->deskripsi_produk)->toBe('Deskripsi produk demo.')
+        ->and($produk->deskripsi_produk_en)->toBe('Demo product description.')
         ->and($produk->image)->toEndWith('.webp')
         ->and($produk->kategori)->toBe('SPA');
 
@@ -77,6 +102,7 @@ test('authenticated users can create and update products', function () {
     $this->put(route('produk.update', ['section' => 'spa', 'produk' => $produk]), [
         'nama_produk' => 'Produk Demo Update',
         'deskripsi_produk' => 'Deskripsi produk demo update.',
+        'deskripsi_produk_en' => 'Updated demo product description.',
         'specs' => 'Spesifikasi produk demo update.',
         'image' => UploadedFile::fake()->image('demo-update.png'),
         'kategori' => 'SPA',
@@ -86,6 +112,8 @@ test('authenticated users can create and update products', function () {
 
     expect($produk->nama_produk)->toBe('Produk Demo Update')
         ->and($produk->slug)->toBe('produk-demo-update')
+        ->and($produk->deskripsi_produk)->toBe('Deskripsi produk demo update.')
+        ->and($produk->deskripsi_produk_en)->toBe('Updated demo product description.')
         ->and($produk->image)->toEndWith('.webp')
         ->and($produk->kategori)->toBe('SPA');
 

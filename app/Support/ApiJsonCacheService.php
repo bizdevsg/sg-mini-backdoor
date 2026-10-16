@@ -52,7 +52,9 @@ class ApiJsonCacheService
 
     public function ensureProdukCache(): void
     {
-        if ($this->cacheExists('produk-spa') && $this->cacheExists('produk-jfx')) {
+        if ($this->cacheExists('produk-spa')
+            && $this->cacheExists('produk-jfx')
+            && $this->cacheExists('produk-prime')) {
             return;
         }
 
@@ -216,8 +218,16 @@ class ApiJsonCacheService
             ->map(fn (Produk $produk) => (new ProdukResource($produk))->resolve())
             ->all();
 
+        $primeItems = Produk::query()
+            ->where('kategori', 'PRIME')
+            ->latest()
+            ->get()
+            ->map(fn (Produk $produk) => (new ProdukResource($produk))->resolve())
+            ->all();
+
         $this->write('produk-spa', $spaItems);
         $this->write('produk-jfx', $jfxItems);
+        $this->write('produk-prime', $primeItems);
     }
 
     public function refreshBanner(): void
@@ -736,6 +746,9 @@ class ApiJsonCacheService
             $item['specs'] = $item['specs_html'] ?: ($item['specs'] ?? '');
             unset($item['specs_html']);
         }
+
+        $item['deskripsi_produk_id'] ??= $item['deskripsi_produk'] ?? null;
+        $item['deskripsi_produk_en'] ??= $item['deskripsi_produk_id'];
 
         return $item;
     }

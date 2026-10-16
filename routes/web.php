@@ -45,7 +45,7 @@ Route::middleware(['auth', 'admin.panel.access', 'admin.data.log', 'crud.undo.ca
             Route::delete('/{banner}', [BannerController::class, 'destroy'])->name('destroy');
         });
     Route::prefix('produk/{section}')
-        ->whereIn('section', ['spa', 'jfx'])
+        ->whereIn('section', ['spa', 'jfx', 'prime'])
         ->name('produk.')
         ->group(function () {
             Route::get('/', [ProdukController::class, 'index'])->name('index');
