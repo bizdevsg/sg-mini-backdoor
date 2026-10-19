@@ -18,7 +18,14 @@ class UpdateClientAreaSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'target' => ['required', 'string', Rule::in(['dev', 'prod', 'tawk_to_dev', 'tawk_to_prod'])],
+            'target' => ['required', 'string', Rule::in([
+                'dev',
+                'prod',
+                'tawk_to_dev',
+                'tawk_to_prod',
+                'trade_pilot_dev',
+                'trade_pilot_prod',
+            ])],
             'enabled' => ['required', 'boolean'],
         ];
     }

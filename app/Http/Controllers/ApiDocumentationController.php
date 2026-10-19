@@ -146,7 +146,7 @@ class ApiDocumentationController extends Controller
                 'title' => 'System Settings',
                 'description' => 'List API System Settings',
                 'endpoints' => [
-                    ['method' => 'GET', 'path' => '/client-area', 'notes' => 'Status client area dan Tawk.to. Web wajib kirim Origin yang terdaftar. Mobile app wajib kirim X-Client-Type: mobile-app.'],
+                    ['method' => 'GET', 'path' => '/client-area', 'notes' => 'Status client area, Tawk.to, dan Trade Pilot Development/Production. Web wajib kirim Origin yang terdaftar. Mobile app wajib kirim X-Client-Type: mobile-app.'],
                 ],
             ],
             [

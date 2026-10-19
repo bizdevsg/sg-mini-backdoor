@@ -115,6 +115,16 @@ class ClientAreaSettingController extends Controller
                 'label' => 'Tawk.to Production',
                 'event' => 'tawk_to_toggle',
             ],
+            'trade_pilot_dev' => [
+                'field' => 'trade_pilot_dev',
+                'label' => 'Trade Pilot Development',
+                'event' => 'trade_pilot_toggle',
+            ],
+            'trade_pilot_prod' => [
+                'field' => 'trade_pilot_prod',
+                'label' => 'Trade Pilot Production',
+                'event' => 'trade_pilot_toggle',
+            ],
             default => [
                 'field' => 'client_area_dev',
                 'label' => 'Client Area Development',

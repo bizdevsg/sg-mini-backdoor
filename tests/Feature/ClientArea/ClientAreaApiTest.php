@@ -15,6 +15,9 @@ test('client area api returns dev and prod statuses', function () {
         'tawk_to_enabled' => true,
         'tawk_to_dev' => true,
         'tawk_to_prod' => false,
+        'trade_pilot_enabled' => true,
+        'trade_pilot_dev' => true,
+        'trade_pilot_prod' => false,
         'api_enabled' => true,
         'api_key_rotation_notice' => 'Rotasi API key dijadwalkan 15 Agustus 2026.',
         'allowed_origin_frontend' => 'https://frontend-prod.test',
@@ -31,6 +34,9 @@ test('client area api returns dev and prod statuses', function () {
         ->assertJsonPath('data.prod', false)
         ->assertJsonPath('data.tawk_to_dev', true)
         ->assertJsonPath('data.tawk_to_prod', false)
+        ->assertJsonPath('data.trade_pilot_dev', true)
+        ->assertJsonPath('data.trade_pilot_prod', false)
+        ->assertJsonMissingPath('data.trade_pilot')
         ->assertHeader('X-API-Key-Rotation-Notice', 'Rotasi API key dijadwalkan 15 Agustus 2026.');
 
     $log = SystemActivityLog::query()
@@ -43,6 +49,28 @@ test('client area api returns dev and prod statuses', function () {
         ->and($log?->event)->toBe('api_request')
         ->and($log?->context['path'] ?? null)->toBe('/api/v1/client-area')
         ->and($log?->context['status_code'] ?? null)->toBe(200);
+});
+
+test('client area api falls back to legacy trade pilot status', function () {
+    config()->set('api-auth.key_hash', hash('sha256', 'test-api-key'));
+
+    ClientAreaSetting::query()->create([
+        'trade_pilot_enabled' => true,
+        'trade_pilot_dev' => null,
+        'trade_pilot_prod' => null,
+        'api_enabled' => true,
+    ]);
+
+    $this->withServerVariables(['REMOTE_ADDR' => '127.0.0.18'])
+        ->withHeaders([
+            ...apiKeyHeaders(),
+            'X-Client-Type' => 'mobile-app',
+        ])
+        ->getJson('/api/v1/client-area')
+        ->assertSuccessful()
+        ->assertJsonPath('data.trade_pilot_dev', true)
+        ->assertJsonPath('data.trade_pilot_prod', true)
+        ->assertJsonMissingPath('data.trade_pilot');
 });
 
 test('client area api rejects missing origin when allowed origins are configured', function () {

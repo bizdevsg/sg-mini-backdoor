@@ -13,6 +13,8 @@ class ClientAreaSettingStore
      *     client_area_prod: bool,
      *     tawk_to_dev: bool,
      *     tawk_to_prod: bool,
+     *     trade_pilot_dev: bool,
+     *     trade_pilot_prod: bool,
      *     api_enabled: bool,
      *     api_key_rotation_notice: string|null,
      *     allowed_origin_frontend: string|null
@@ -25,12 +27,20 @@ class ClientAreaSettingStore
         $supportsSplitTawkSettings = Schema::hasTable('client_area_settings')
             && Schema::hasColumn('client_area_settings', 'tawk_to_dev')
             && Schema::hasColumn('client_area_settings', 'tawk_to_prod');
+        $supportsLegacyTradePilotSetting = Schema::hasTable('client_area_settings')
+            && Schema::hasColumn('client_area_settings', 'trade_pilot_enabled');
+        $supportsSplitTradePilotSettings = Schema::hasTable('client_area_settings')
+            && Schema::hasColumn('client_area_settings', 'trade_pilot_dev')
+            && Schema::hasColumn('client_area_settings', 'trade_pilot_prod');
 
         $defaults = [
             'client_area_dev' => false,
             'client_area_prod' => false,
             'tawk_to_dev' => false,
             'tawk_to_prod' => false,
+            'trade_pilot_enabled' => false,
+            'trade_pilot_dev' => false,
+            'trade_pilot_prod' => false,
             'api_enabled' => true,
             'api_key_rotation_notice' => null,
             'allowed_origin_frontend' => null,
@@ -47,17 +57,27 @@ class ClientAreaSettingStore
             return $this->normalize($defaults);
         }
 
-        return $this->normalize([
-            ...$defaults,
-            ...$settings->only([
+        $storedSettings = $settings->only([
                 'client_area_dev',
                 'client_area_prod',
                 ...($supportsLegacyTawkSetting ? ['tawk_to_enabled'] : []),
                 ...($supportsSplitTawkSettings ? ['tawk_to_dev', 'tawk_to_prod'] : []),
+                ...($supportsLegacyTradePilotSetting ? ['trade_pilot_enabled'] : []),
+                ...($supportsSplitTradePilotSettings ? ['trade_pilot_dev', 'trade_pilot_prod'] : []),
                 'api_enabled',
                 'api_key_rotation_notice',
                 'allowed_origin_frontend',
-            ]),
+            ]);
+
+        if ($supportsLegacyTradePilotSetting && ! $supportsSplitTradePilotSettings) {
+            $legacyTradePilotEnabled = (bool) $settings->trade_pilot_enabled;
+            $storedSettings['trade_pilot_dev'] = $legacyTradePilotEnabled;
+            $storedSettings['trade_pilot_prod'] = $legacyTradePilotEnabled;
+        }
+
+        return $this->normalize([
+            ...$defaults,
+            ...$storedSettings,
         ]);
     }
 
@@ -73,6 +93,9 @@ class ClientAreaSettingStore
         $supportsLegacyTawkSetting = Schema::hasColumn('client_area_settings', 'tawk_to_enabled');
         $supportsSplitTawkSettings = Schema::hasColumn('client_area_settings', 'tawk_to_dev')
             && Schema::hasColumn('client_area_settings', 'tawk_to_prod');
+        $supportsLegacyTradePilotSetting = Schema::hasColumn('client_area_settings', 'trade_pilot_enabled');
+        $supportsSplitTradePilotSettings = Schema::hasColumn('client_area_settings', 'trade_pilot_dev')
+            && Schema::hasColumn('client_area_settings', 'trade_pilot_prod');
         $supportsApiSecuritySettings = Schema::hasColumn('client_area_settings', 'api_enabled')
             && Schema::hasColumn('client_area_settings', 'api_key_rotation_notice')
             && Schema::hasColumn('client_area_settings', 'allowed_origin_frontend');
@@ -103,6 +126,15 @@ class ClientAreaSettingStore
             $fillable['tawk_to_prod'] = $settings['tawk_to_prod'];
         }
 
+        if ($supportsLegacyTradePilotSetting) {
+            $fillable['trade_pilot_enabled'] = $settings['trade_pilot_prod'];
+        }
+
+        if ($supportsSplitTradePilotSettings) {
+            $fillable['trade_pilot_dev'] = $settings['trade_pilot_dev'];
+            $fillable['trade_pilot_prod'] = $settings['trade_pilot_prod'];
+        }
+
         $record->fill($fillable);
         $record->save();
     }
@@ -113,6 +145,8 @@ class ClientAreaSettingStore
             'prod' => 'client_area_prod',
             'tawk_to_dev' => 'tawk_to_dev',
             'tawk_to_prod' => 'tawk_to_prod',
+            'trade_pilot_dev' => 'trade_pilot_dev',
+            'trade_pilot_prod' => 'trade_pilot_prod',
             default => 'client_area_dev',
         };
 
@@ -128,6 +162,8 @@ class ClientAreaSettingStore
      *     client_area_prod: bool,
      *     tawk_to_dev: bool,
      *     tawk_to_prod: bool,
+     *     trade_pilot_dev: bool,
+     *     trade_pilot_prod: bool,
      *     api_enabled: bool,
      *     api_key_rotation_notice: string|null,
      *     allowed_origin_frontend: string|null
@@ -136,6 +172,7 @@ class ClientAreaSettingStore
     private function normalize(array $settings): array
     {
         $legacyTawkEnabled = (bool) ($settings['tawk_to_enabled'] ?? false);
+        $legacyTradePilotEnabled = (bool) ($settings['trade_pilot_enabled'] ?? false);
         $apiKeyRotationNotice = $this->normalizeNullableString($settings['api_key_rotation_notice'] ?? null);
         $allowedOriginFrontend = $this->normalizeNullableString($settings['allowed_origin_frontend'] ?? null);
 
@@ -148,6 +185,12 @@ class ClientAreaSettingStore
             'tawk_to_prod' => array_key_exists('tawk_to_prod', $settings) && $settings['tawk_to_prod'] !== null
                 ? (bool) $settings['tawk_to_prod']
                 : $legacyTawkEnabled,
+            'trade_pilot_dev' => array_key_exists('trade_pilot_dev', $settings) && $settings['trade_pilot_dev'] !== null
+                ? (bool) $settings['trade_pilot_dev']
+                : $legacyTradePilotEnabled,
+            'trade_pilot_prod' => array_key_exists('trade_pilot_prod', $settings) && $settings['trade_pilot_prod'] !== null
+                ? (bool) $settings['trade_pilot_prod']
+                : $legacyTradePilotEnabled,
             'api_enabled' => (bool) ($settings['api_enabled'] ?? true),
             'api_key_rotation_notice' => $apiKeyRotationNotice,
             'allowed_origin_frontend' => $allowedOriginFrontend,

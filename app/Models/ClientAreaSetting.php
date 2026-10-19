@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Model;
     'tawk_to_enabled',
     'tawk_to_dev',
     'tawk_to_prod',
+    'trade_pilot_enabled',
+    'trade_pilot_dev',
+    'trade_pilot_prod',
     'api_enabled',
     'api_key_rotation_notice',
     'allowed_origin_frontend',
@@ -28,6 +31,9 @@ class ClientAreaSetting extends Model
             'tawk_to_enabled' => 'boolean',
             'tawk_to_dev' => 'boolean',
             'tawk_to_prod' => 'boolean',
+            'trade_pilot_enabled' => 'boolean',
+            'trade_pilot_dev' => 'boolean',
+            'trade_pilot_prod' => 'boolean',
             'api_enabled' => 'boolean',
         ];
     }

@@ -23,6 +23,8 @@ class ClientAreaApiController extends Controller
                 'prod' => $settings['client_area_prod'],
                 'tawk_to_dev' => $settings['tawk_to_dev'],
                 'tawk_to_prod' => $settings['tawk_to_prod'],
+                'trade_pilot_dev' => $settings['trade_pilot_dev'],
+                'trade_pilot_prod' => $settings['trade_pilot_prod'],
             ],
         ]);
     }

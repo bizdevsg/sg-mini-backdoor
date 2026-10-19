@@ -23,6 +23,8 @@ test('superadmin can access client area setting page', function () {
         ->assertSee('Client Area Production')
         ->assertSee('Tawk.to Development')
         ->assertSee('Tawk.to Production')
+        ->assertSee('Trade Pilot Development')
+        ->assertSee('Trade Pilot Production')
         ->assertSee('API & Security')
         ->assertDontSee('System Log');
 });
@@ -59,11 +61,26 @@ test('superadmin can toggle client area statuses independently', function () {
         ->assertRedirect(route('client-area.show'));
 
     $this->actingAs($user)
+        ->put(route('client-area.update'), [
+            'target' => 'trade_pilot_dev',
+            'enabled' => true,
+        ])
+        ->assertRedirect(route('client-area.show'));
+
+    $this->actingAs($user)
+        ->put(route('client-area.update'), [
+            'target' => 'trade_pilot_prod',
+            'enabled' => false,
+        ])
+        ->assertRedirect(route('client-area.show'));
+
+    $this->actingAs($user)
         ->get(route('client-area.show'))
         ->assertSuccessful()
         ->assertSee('Client Area Aktif')
         ->assertSee('Client Area Nonaktif')
-        ->assertSee('Tawk.to Aktif');
+        ->assertSee('Tawk.to Aktif')
+        ->assertSee('Trade Pilot Aktif');
 
     $settings = ClientAreaSetting::query()->firstOrFail();
     $log = SystemActivityLog::query()->where('category', 'data')->latest()->first();
@@ -72,8 +89,10 @@ test('superadmin can toggle client area statuses independently', function () {
         ->and($settings->client_area_prod)->toBeFalse()
         ->and($settings->tawk_to_dev)->toBeTrue()
         ->and($settings->tawk_to_prod)->toBeFalse()
-        ->and($log?->event)->toBe('tawk_to_toggle')
-        ->and($log?->context['target'] ?? null)->toBe('tawk_to_prod');
+        ->and($settings->trade_pilot_dev)->toBeTrue()
+        ->and($settings->trade_pilot_prod)->toBeFalse()
+        ->and($log?->event)->toBe('trade_pilot_toggle')
+        ->and($log?->context['target'] ?? null)->toBe('trade_pilot_prod');
 });
 
 test('superadmin can update api security settings', function () {

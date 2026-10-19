@@ -1,7 +1,6 @@
 @php
-    $statusLabel = str_starts_with($item['label'], 'Tawk.to')
-        ? ($item['enabled'] ? 'Tawk.to Aktif' : 'Tawk.to Nonaktif')
-        : ($item['enabled'] ? 'Client Area Aktif' : 'Client Area Nonaktif');
+    $statusPrefix = $item['status_label'];
+    $statusLabel = $item['enabled'] ? "{$statusPrefix} Aktif" : "{$statusPrefix} Nonaktif";
 @endphp
 
 <li class="flex items-start justify-between gap-4 px-5 py-4">

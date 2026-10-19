@@ -7,6 +7,35 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Docker
+
+Project dapat dijalankan sebagai stack lokal production-like yang terdiri dari Nginx, PHP 8.4 FPM, MySQL, phpMyAdmin, queue worker, scheduler, dan service migration satu kali.
+
+Pastikan `.env` tersedia dan `APP_KEY` sudah terisi. Port aplikasi dapat diubah melalui `APP_PORT`; nilai default-nya `8080`.
+
+```bash
+docker compose up -d --build
+```
+
+Setelah seluruh service sehat, aplikasi tersedia di `http://localhost:8080`. Migration dijalankan otomatis oleh service `migrate` sebelum aplikasi, queue, dan scheduler dimulai.
+
+phpMyAdmin tersedia hanya dari komputer lokal di `http://localhost:8081`. Login menggunakan server `database`, username `root`, dan password dari `DB_PASSWORD`; jika nilainya kosong, Docker menggunakan password lokal `local`. Port phpMyAdmin dapat diubah melalui `PHPMYADMIN_PORT`.
+
+```bash
+docker compose ps
+docker compose logs -f app
+docker compose logs -f web
+docker compose logs -f phpmyadmin
+```
+
+Untuk menghentikan stack tanpa menghapus data MySQL dan storage:
+
+```bash
+docker compose down
+```
+
+Volume `mysql-data` dan `app-storage` menyimpan database serta file aplikasi secara persisten. Jangan gunakan `docker compose down -v` kecuali data tersebut memang boleh dihapus.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

@@ -1,0 +1,130 @@
+name: sg-admin
+
+x-laravel-service: &laravel-service
+  image: sg-admin-app:local
+  pull_policy: never
+  env_file:
+    - .env
+  environment:
+    APP_URL: http://localhost:${APP_PORT:-8080}
+    DB_CONNECTION: mysql
+    DB_HOST: database
+    DB_PORT: 3306
+    DB_DATABASE: ${DB_DATABASE:-sg_admin}
+    DB_USERNAME: root
+    DB_PASSWORD: ${DB_PASSWORD:-local}
+  volumes:
+    - app-storage:/var/www/html/storage
+    - app-cache:/var/www/html/bootstrap/cache
+  networks:
+    - backend
+  security_opt:
+    - no-new-privileges:true
+  init: true
+
+services:
+  app:
+    <<: *laravel-service
+    build:
+      context: .
+      target: runtime
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  web:
+    image: sg-admin-web:local
+    build:
+      context: .
+      target: web
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - app-storage:/var/www/html/storage:ro
+    networks:
+      - backend
+    depends_on:
+      app:
+        condition: service_started
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://127.0.0.1/up"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+
+  queue:
+    <<: *laravel-service
+    command: ["php", "artisan", "queue:work", "--sleep=3", "--tries=1", "--timeout=60"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  scheduler:
+    <<: *laravel-service
+    command: ["php", "artisan", "schedule:work"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  migrate:
+    <<: *laravel-service
+    command: ["php", "artisan", "migrate", "--force"]
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: "no"
+
+  database:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-sg_admin}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-local}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.2-apache
+    ports:
+      - "127.0.0.1:${PHPMYADMIN_PORT:-8081}:80"
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 0
+      UPLOAD_LIMIT: 64M
+    networks:
+      - backend
+    depends_on:
+      database:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  app-cache:
+  app-storage:
+  mysql-data:
