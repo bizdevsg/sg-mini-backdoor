@@ -11,7 +11,7 @@ COPY vite.config.js ./
 
 RUN npm run build
 
-FROM php:8.4-fpm-bookworm AS runtime
+FROM php:8.4.27-fpm-bookworm AS runtime
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 

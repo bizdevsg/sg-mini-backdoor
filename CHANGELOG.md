@@ -14,6 +14,7 @@
 - Menambahkan retensi snapshot Undo selama 24 jam dan command terjadwal `crud-undo:prune` untuk menghapus permanen snapshot serta backup file yang sudah melewati retensi.
 
 ### Changed
+- Mengunci runtime Docker dari PHP 8.4 generik ke PHP 8.4.27 FPM untuk menutup dua celah remote code execution kritis CVE-2026-109618 dan CVE-2026-109619; seluruh service Laravel berbasis image aplikasi perlu dibangun dan dijalankan ulang agar memakai versi aman.
 - Deskripsi Produk kini mendukung input Bahasa Indonesia dan English; respons API menambahkan `deskripsi_produk_id` dan `deskripsi_produk_en` sambil mempertahankan `deskripsi_produk` untuk kompatibilitas client lama.
 - Menambahkan `deploy.sh` root project ke `.gitignore` agar skrip deployment lokal tidak ikut ter-commit ke repository.
 - Endpoint detail publik Signal kini menggunakan UUID melalui `GET /api/v1/signal/{uuid}`; field/kolom slug Signal dihapus, data lama dibackfill melalui migration, dan cache lama tanpa UUID diperbarui otomatis.

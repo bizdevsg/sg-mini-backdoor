@@ -9,7 +9,7 @@
 
 ## Docker
 
-Project dapat dijalankan sebagai stack lokal production-like yang terdiri dari Nginx, PHP 8.4 FPM, MySQL, phpMyAdmin, queue worker, scheduler, dan service migration satu kali.
+Project dapat dijalankan sebagai stack lokal production-like yang terdiri dari Nginx, PHP 8.4.27 FPM, MySQL, phpMyAdmin, queue worker, scheduler, dan service migration satu kali.
 
 Pastikan `.env` tersedia dan `APP_KEY` sudah terisi. Port aplikasi dapat diubah melalui `APP_PORT`; nilai default-nya `8080`.
 
