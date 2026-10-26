@@ -7,6 +7,19 @@ use Illuminate\Support\Facades\DB;
 
 uses(LazilyRefreshDatabase::class);
 
+test('login form provides an accessible password visibility toggle', function () {
+    $this->get(route('login'))
+        ->assertSuccessful()
+        ->assertSee('data-password-toggle', false)
+        ->assertSee('data-password-target="password"', false)
+        ->assertSee('data-password-icon', false)
+        ->assertDontSee('data-password-show-icon', false)
+        ->assertDontSee('data-password-hide-icon', false)
+        ->assertSee('aria-label="Tampilkan password"', false)
+        ->assertSee('aria-controls="password"', false)
+        ->assertSee(asset('js/password-toggle.js').'?v=', false);
+});
+
 test('guests are redirected to the login page when visiting the dashboard', function () {
     $this->get(route('dashboard'))
         ->assertRedirect(route('login'));

@@ -3,6 +3,7 @@
 use App\Models\Banner;
 use App\Models\Berita;
 use App\Models\BeritaCategory;
+use App\Models\ClientAreaTiktokVideo;
 use App\Models\CompanyProfile;
 use App\Models\Ebook;
 use App\Models\EbookCategory;
@@ -44,6 +45,7 @@ return [
         Penghargaan::class => ['label' => 'Penghargaan', 'files' => ['image']],
         Legalitas::class => ['label' => 'Legalitas', 'files' => []],
         TradingviewSymbol::class => ['label' => 'Kode TradingView', 'files' => []],
+        ClientAreaTiktokVideo::class => ['label' => 'Video TikTok', 'files' => []],
         CompanyProfile::class => ['label' => 'Profil perusahaan', 'files' => []],
         TermsAndCondition::class => ['label' => 'Syarat dan ketentuan', 'files' => []],
         PrivacyPolicy::class => ['label' => 'Kebijakan privasi', 'files' => []],

@@ -175,6 +175,12 @@
                     'active' => request()->routeIs('tradingview.*'),
                 ],
                 [
+                    'label' => 'Video TikTok',
+                    'icon' => 'fa-brands fa-tiktok',
+                    'href' => route('tiktok-videos.index'),
+                    'active' => request()->routeIs('tiktok-videos.*'),
+                ],
+                [
                     'label' => 'Monitoring Log',
                     'icon' => 'fa-solid fa-chart-line',
                     'open' => request()->routeIs('system-logs.*'),

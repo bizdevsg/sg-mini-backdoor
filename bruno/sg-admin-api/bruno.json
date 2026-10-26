@@ -2,7 +2,7 @@
   "version": "1",
   "name": "SG Admin Public API",
   "type": "collection",
-  "defaultEnvironment": "Production",
+  "defaultEnvironment": "Local",
   "ignore": [
     "node_modules",
     ".git"

@@ -11,8 +11,7 @@ class ApiDocumentationController extends Controller
 {
     public function __construct(
         private readonly SystemActivityLogger $systemActivityLogger,
-    ) {
-    }
+    ) {}
 
     public function show(): RedirectResponse
     {
@@ -243,6 +242,13 @@ class ApiDocumentationController extends Controller
                 'endpoints' => [
                     ['method' => 'GET', 'path' => '/tradingview-symbol', 'notes' => 'List pemetaan simbol, dukung `search` dan pagination.'],
                     ['method' => 'GET', 'path' => '/tradingview-symbol/{symbol_ws}', 'notes' => 'Detail pemetaan simbol berdasarkan symbol_ws.'],
+                ],
+            ],
+            [
+                'title' => 'Video TikTok',
+                'description' => 'List API Video TikTok',
+                'endpoints' => [
+                    ['method' => 'GET', 'path' => '/video-tiktok', 'notes' => 'Daftar video TikTok aktif, dukung `search` dan pagination.'],
                 ],
             ],
             [

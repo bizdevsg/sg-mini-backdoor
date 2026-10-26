@@ -32,9 +32,17 @@
 
                     <div>
                         <label for="password" class="mb-2 block text-sm font-medium text-ivory">Password</label>
-                        <input type="password" id="password" name="password"
-                            class="w-full rounded-lg border bg-onyx px-4 py-3 text-champagne placeholder:text-smoke focus:border-gold/30 focus:outline-none focus:ring-2 focus:ring-gold/15 {{ $errors->has('password') ? 'border-red-400/60' : 'border-black/8' }}"
-                            placeholder="********" autocomplete="current-password" required>
+                        <div class="relative">
+                            <input type="password" id="password" name="password"
+                                class="w-full rounded-lg border bg-onyx py-3 pl-4 pr-12 text-champagne placeholder:text-smoke focus:border-gold/30 focus:outline-none focus:ring-2 focus:ring-gold/15 {{ $errors->has('password') ? 'border-red-400/60' : 'border-black/8' }}"
+                                placeholder="********" autocomplete="current-password" required>
+                            <button type="button" data-password-toggle data-password-target="password"
+                                class="absolute inset-y-0 right-0 inline-flex w-12 cursor-pointer items-center justify-center rounded-r-lg text-smoke/70 transition-colors hover:text-gold-soft focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gold/30"
+                                aria-controls="password" aria-label="Tampilkan password" aria-pressed="false"
+                                title="Tampilkan password">
+                                <i class="fa-regular fa-eye" data-password-icon aria-hidden="true"></i>
+                            </button>
+                        </div>
                         @error('password')
                             <p class="mt-2 text-sm text-red-700">{{ $message }}</p>
                         @enderror

@@ -24,6 +24,7 @@ class SystemActivitySubjectCatalog
             'terms-and-conditions' => 'Syarat dan Ketentuan',
             'privacy-policy' => 'Kebijakan Privasi',
             'tradingview-symbol' => 'Kode TradingView',
+            'video-tiktok' => 'Video TikTok',
             'massages' => 'Massages',
             'unknown' => 'Unknown',
         ];
@@ -52,6 +53,7 @@ class SystemActivitySubjectCatalog
             'terms-and-conditions' => 'Syarat dan Ketentuan',
             'privacy-policy' => 'Kebijakan Privasi',
             'tradingview' => 'Kode TradingView',
+            'tiktok-videos' => 'Video TikTok',
             'user-management' => 'User Management',
             'client-area' => 'System Settings',
             'tinymce-images' => 'Media Editor',

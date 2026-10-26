@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Models\Banner;
 use App\Models\Berita;
 use App\Models\BeritaCategory;
+use App\Models\ClientAreaTiktokVideo;
 use App\Models\CompanyProfile;
 use App\Models\CrudUndoAction;
 use App\Models\Ebook;
@@ -30,8 +31,7 @@ class CrudUndoService
 {
     public function __construct(
         private readonly ApiJsonCacheService $apiJsonCacheService,
-    ) {
-    }
+    ) {}
 
     public function undo(string $token, int $userId): string
     {
@@ -91,7 +91,7 @@ class CrudUndoService
         }
 
         /** @var Model $model */
-        $model = new $modelClass();
+        $model = new $modelClass;
         $keyName = $model->getKeyName();
         $query = DB::table($model->getTable())->where($keyName, $undoAction->model_key);
         $current = $query->first();
@@ -172,6 +172,7 @@ class CrudUndoService
             Penghargaan::class => $this->apiJsonCacheService->refreshPenghargaan(),
             Legalitas::class => $this->apiJsonCacheService->refreshLegalitas(),
             TradingviewSymbol::class => $this->apiJsonCacheService->refreshTradingviewSymbol(),
+            ClientAreaTiktokVideo::class => $this->apiJsonCacheService->refreshClientAreaTiktokVideo(),
             CompanyProfile::class => $this->apiJsonCacheService->refreshCompanyProfile(),
             TermsAndCondition::class => $this->apiJsonCacheService->refreshTermsAndConditions(),
             PrivacyPolicy::class => $this->apiJsonCacheService->refreshPrivacyPolicy(),

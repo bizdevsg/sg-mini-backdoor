@@ -1,0 +1,27 @@
+meta {
+  name: List TikTok Videos
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/video-tiktok
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  X-API-Key: {{apiKey}}
+  X-Client-Type: mobile-app
+}
+
+params:query {
+  ~search:
+  ~page: 1
+  ~per_page: 20
+}
+
+docs {
+  Daftar video TikTok aktif. Request menggunakan environment `Local` secara default dan mengirim API key dari secret variable `apiKey`. Pencarian mencakup judul, `video_id`, dan URL; `per_page` dibatasi 1 sampai 100.
+}

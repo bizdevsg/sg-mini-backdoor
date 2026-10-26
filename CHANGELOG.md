@@ -1,6 +1,10 @@
 ## [Unreleased]
 
 ### Added
+- Menambahkan environment Bruno `Local` dengan base URL `http://sg-admin.test/api/v1` serta memperjelas petunjuk pemilihan environment agar endpoint yang belum di-deploy dapat diuji terpisah dari Production.
+- Menambahkan endpoint publik daftar Video TikTok aktif pada `/api/v1/video-tiktok`, cache JSON, dokumentasi API, pengujian Pest, serta request Bruno untuk pencarian dan pagination.
+- Menambahkan tombol dan fungsi tampil/sembunyikan password yang aksesibel pada form login, dimuat langsung tanpa bergantung pada build Vite, lengkap dengan perubahan ikon, label bantuan, dan status tombol.
+- Menambahkan menu superadmin Video TikTok untuk mengelola URL embed, judul, dan status tampil pada tabel `client_area_tiktok_videos`, termasuk ekstraksi otomatis video ID, preview, validasi URL TikTok, activity log, Undo edit/hapus, serta pengujian CRUD.
 - Menambahkan service phpMyAdmin pada stack Docker di port lokal `8081` untuk mengelola database MySQL container melalui network internal Compose.
 - Menambahkan container Docker berbasis Nginx dan PHP 8.4 FPM untuk local runtime Laravel beserta MySQL, queue worker, scheduler, migration otomatis, healthcheck, dukungan konversi gambar AVIF/WebP, asset Vite terkompilasi, serta volume persisten.
 - Menambahkan toggle Trade Pilot Development dan Production pada System Settings, penyimpanan status per environment, activity log, serta field `trade_pilot_dev` dan `trade_pilot_prod` pada endpoint `/api/v1/client-area`.
@@ -24,6 +28,8 @@
 - Scheduler cleanup Undo dijadwalkan setiap hari pukul 03:15 dan dilindungi `withoutOverlapping()`.
 
 ### Fixed
+- Memperbaiki request Bruno Video TikTok dengan menjadikan environment `Local` sebagai default, mendefinisikan header autentikasi langsung pada request, memperbaiki deklarasi variabel API key lokal, dan mengabaikan file environment lokal yang menyimpan API key agar tidak ikut ter-commit.
+- Memperbaiki tombol visibilitas password pada form login agar satu ikon berganti antara mata dan mata dicoret, serta menambahkan versi asset otomatis agar browser tidak memakai fungsi toggle lama dari cache.
 - Memulihkan autentikasi akun superadmin pada database Docker lokal dengan memastikan password tersimpan menggunakan hash bcrypt yang didukung Laravel.
 - Memperbaiki race condition `image already exists` saat `docker compose build` dengan menetapkan service `app` sebagai satu-satunya pemilik build image Laravel; queue, scheduler, dan migration memakai ulang image tersebut.
 - Menyamakan field `confident` Signal sebagai input wajib pada form tambah/edit dan validasi backend agar nilai kosong ditolak sebelum mencapai kolom database yang tidak menerima `NULL`.

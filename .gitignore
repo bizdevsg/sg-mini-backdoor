@@ -14,6 +14,7 @@
 /.zed
 /auth.json
 /deploy.sh
+/bruno/sg-admin-api/environments/Local.bru
 /node_modules
 /public/build
 /public/fonts-manifest.dev.json

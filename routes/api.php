@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\BannerApiController;
 use App\Http\Controllers\Api\BeritaApiController;
 use App\Http\Controllers\Api\BeritaCategoryApiController;
 use App\Http\Controllers\Api\ClientAreaApiController;
+use App\Http\Controllers\Api\ClientAreaTiktokVideoApiController;
 use App\Http\Controllers\Api\CompanyProfileController;
 use App\Http\Controllers\Api\EbookApiController;
 use App\Http\Controllers\Api\EbookCategoryApiController;
@@ -24,6 +25,10 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->middleware(['api.activity.log', 'api.settings', 'api.key'])->group(function () {
     Route::prefix('client-area')->group(function () {
         Route::get('/', [ClientAreaApiController::class, 'show']);
+    });
+
+    Route::prefix('video-tiktok')->group(function () {
+        Route::get('/', [ClientAreaTiktokVideoApiController::class, 'index']);
     });
 
     Route::prefix('banner')->group(function () {

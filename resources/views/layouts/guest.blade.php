@@ -24,6 +24,7 @@
         @yield('content')
     </div>
 
+    <script src="{{ asset('js/password-toggle.js') }}?v={{ filemtime(public_path('js/password-toggle.js')) }}"></script>
     @stack('scripts')
 </body>
 

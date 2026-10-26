@@ -5,33 +5,35 @@ namespace App\Support;
 use App\Http\Resources\BannerResource;
 use App\Http\Resources\BeritaCategoryResource;
 use App\Http\Resources\BeritaResource;
+use App\Http\Resources\ClientAreaTiktokVideoResource;
 use App\Http\Resources\CompanyProfileResource;
-use App\Http\Resources\EbookResource;
 use App\Http\Resources\EbookCategoryResource;
+use App\Http\Resources\EbookResource;
 use App\Http\Resources\InformasiResource;
 use App\Http\Resources\LegalitasResource;
-use App\Http\Resources\PrivacyPolicyResource;
 use App\Http\Resources\PenghargaanResource;
+use App\Http\Resources\PrivacyPolicyResource;
 use App\Http\Resources\ProdukResource;
 use App\Http\Resources\SignalCategoryResource;
 use App\Http\Resources\SignalResource;
 use App\Http\Resources\TermsAndConditionResource;
+use App\Http\Resources\TradingviewSymbolResource;
 use App\Http\Resources\WakilPialangCategoryResource;
 use App\Http\Resources\WakilPialangResource;
 use App\Models\Banner;
 use App\Models\Berita;
 use App\Models\BeritaCategory;
+use App\Models\ClientAreaTiktokVideo;
 use App\Models\CompanyProfile;
 use App\Models\Ebook;
 use App\Models\EbookCategory;
 use App\Models\Informasi;
 use App\Models\Legalitas;
-use App\Models\PrivacyPolicy;
 use App\Models\Penghargaan;
+use App\Models\PrivacyPolicy;
 use App\Models\Produk;
 use App\Models\Signal;
 use App\Models\SignalCategory;
-use App\Http\Resources\TradingviewSymbolResource;
 use App\Models\TermsAndCondition;
 use App\Models\TradingviewSymbol;
 use App\Models\WakilPialang;
@@ -41,6 +43,15 @@ use Illuminate\Support\Facades\File;
 
 class ApiJsonCacheService
 {
+    public function ensureClientAreaTiktokVideoCache(): void
+    {
+        if ($this->cacheExists('client-area-tiktok-videos')) {
+            return;
+        }
+
+        $this->refreshClientAreaTiktokVideo();
+    }
+
     public function ensureBannerCache(): void
     {
         if ($this->cacheExists('banner')) {
@@ -243,6 +254,18 @@ class ApiJsonCacheService
         $this->write('banner', $items);
     }
 
+    public function refreshClientAreaTiktokVideo(): void
+    {
+        $items = ClientAreaTiktokVideo::query()
+            ->where('is_active', true)
+            ->latest()
+            ->get()
+            ->map(fn (ClientAreaTiktokVideo $video) => (new ClientAreaTiktokVideoResource($video))->resolve())
+            ->all();
+
+        $this->write('client-area-tiktok-videos', $items);
+    }
+
     public function refreshPengumuman(): void
     {
         $items = Informasi::query()
@@ -423,7 +446,7 @@ class ApiJsonCacheService
     {
         return array_map(
             fn (array $item) => $this->normalizeProdukItem($item),
-            $this->readItems('produk-' . $section)
+            $this->readItems('produk-'.$section)
         );
     }
 
@@ -433,6 +456,14 @@ class ApiJsonCacheService
     public function bannerItems(): array
     {
         return $this->readItems('banner');
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function clientAreaTiktokVideoItems(): array
+    {
+        return $this->readItems('client-area-tiktok-videos');
     }
 
     /**
@@ -733,7 +764,7 @@ class ApiJsonCacheService
 
     private function path(string $key): string
     {
-        return $this->directory() . DIRECTORY_SEPARATOR . $key . '.json';
+        return $this->directory().DIRECTORY_SEPARATOR.$key.'.json';
     }
 
     /**

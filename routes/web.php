@@ -1,16 +1,17 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ApiDocumentationController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BeritaCategoryController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\ClientAreaSettingController;
+use App\Http\Controllers\ClientAreaTiktokVideoController;
 use App\Http\Controllers\CompanyProfileController;
 use App\Http\Controllers\CrudUndoController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\EbookController;
 use App\Http\Controllers\EbookCategoryController;
+use App\Http\Controllers\EbookController;
 use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\LegalitasController;
 use App\Http\Controllers\PenghargaanController;
@@ -225,6 +226,17 @@ Route::middleware(['auth', 'admin.panel.access', 'admin.data.log', 'crud.undo.ca
             Route::get('/', [ClientAreaSettingController::class, 'show'])->name('show');
             Route::put('/', [ClientAreaSettingController::class, 'update'])->name('update');
             Route::put('/api-security', [ClientAreaSettingController::class, 'updateApiSecurity'])->name('update-api-security');
+        });
+    Route::prefix('video-tiktok')
+        ->name('tiktok-videos.')
+        ->middleware('can:manage-user-management')
+        ->group(function () {
+            Route::get('/', [ClientAreaTiktokVideoController::class, 'index'])->name('index');
+            Route::get('/create', [ClientAreaTiktokVideoController::class, 'create'])->name('create');
+            Route::post('/', [ClientAreaTiktokVideoController::class, 'store'])->name('store');
+            Route::get('/{clientAreaTiktokVideo}/edit', [ClientAreaTiktokVideoController::class, 'edit'])->name('edit');
+            Route::put('/{clientAreaTiktokVideo}', [ClientAreaTiktokVideoController::class, 'update'])->name('update');
+            Route::delete('/{clientAreaTiktokVideo}', [ClientAreaTiktokVideoController::class, 'destroy'])->name('destroy');
         });
     Route::prefix('system-logs')
         ->name('system-logs.')
