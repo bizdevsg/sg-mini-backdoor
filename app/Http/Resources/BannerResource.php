@@ -21,6 +21,7 @@ class BannerResource extends JsonResource
             'image_url' => $this->image_url,
             'terms_and_conditions' => $this->terms_and_conditions,
             'is_active' => $this->is_active,
+            'is_notification' => $this->is_notification,
             'sort_order' => $this->sort_order,
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),

@@ -66,6 +66,7 @@ test('authenticated users can create update and delete banners', function () {
         ->post(route('banner.store'), [
             'sort_order' => 2,
             'is_active' => '1',
+            'is_notification' => '1',
             'image' => UploadedFile::fake()->image('banner.jpg'),
         ])
         ->assertRedirect(route('banner.index'));
@@ -74,6 +75,7 @@ test('authenticated users can create update and delete banners', function () {
 
     expect($banner->sort_order)->toBe(2)
         ->and($banner->is_active)->toBeTrue()
+        ->and($banner->is_notification)->toBeTrue()
         ->and($banner->image)->toEndWith('.webp');
 
     Storage::disk('public')->assertExists($banner->image);
@@ -82,6 +84,7 @@ test('authenticated users can create update and delete banners', function () {
         ->put(route('banner.update', $banner), [
             'sort_order' => 5,
             'is_active' => '0',
+            'is_notification' => '0',
             'image' => UploadedFile::fake()->image('banner-update.jpg'),
         ])
         ->assertRedirect(route('banner.index'));
@@ -90,6 +93,7 @@ test('authenticated users can create update and delete banners', function () {
 
     expect($banner->sort_order)->toBe(5)
         ->and($banner->is_active)->toBeFalse()
+        ->and($banner->is_notification)->toBeFalse()
         ->and($banner->image)->toEndWith('.webp');
 
     Storage::disk('public')->assertExists($banner->image);

@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Schema;
     'content_id',
     'content_en',
     'image',
+    'is_notification',
 ])]
 class Berita extends Model
 {
@@ -33,11 +34,22 @@ class Berita extends Model
 
     protected static array $columnExists = [];
 
+    protected $attributes = [
+        'is_notification' => false,
+    ];
+
     protected $table = 'beritas';
 
     protected $appends = [
         'kategori',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_notification' => 'boolean',
+        ];
+    }
 
     public function getRouteKeyName(): string
     {

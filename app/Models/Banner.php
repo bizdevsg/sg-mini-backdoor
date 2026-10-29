@@ -18,12 +18,17 @@ use Illuminate\Support\Str;
     'image',
     'terms_and_conditions',
     'is_active',
+    'is_notification',
     'sort_order',
 ])]
 class Banner extends Model
 {
     /** @use HasFactory<BannerFactory> */
     use HasFactory;
+
+    protected $attributes = [
+        'is_notification' => false,
+    ];
 
     public function getRouteKeyName(): string
     {
@@ -84,6 +89,7 @@ class Banner extends Model
     {
         return [
             'is_active' => 'boolean',
+            'is_notification' => 'boolean',
             'sort_order' => 'integer',
         ];
     }

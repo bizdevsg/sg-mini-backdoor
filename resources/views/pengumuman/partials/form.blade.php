@@ -5,7 +5,8 @@
 @php($confirmActionLabel = $confirmActionLabel ?? 'Ya, simpan')
 
 @if ($errors->any())
-    <div class="flex items-center gap-3 rounded-xl border border-red-500/30 bg-red-50/40 px-4 py-3 text-sm text-red-800 shadow-lg">
+    <div
+        class="flex items-center gap-3 rounded-xl border border-red-500/30 bg-red-50/40 px-4 py-3 text-sm text-red-800 shadow-lg">
         <i class="fa-solid fa-triangle-exclamation text-base text-red-600"></i>
         <div>
             <p class="font-medium text-red-700">Terdapat kesalahan pengisian:</p>
@@ -43,7 +44,7 @@
                 <label for="content" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
                     Isi Konten <span class="text-gold-soft">*</span>
                 </label>
-                <x-forms.tinymce-editor id="content" name="content" :value="old('content', $informasi?->content)" :height="500"
+                <x-forms.tinymce-editor id="content" name="content" :value="old('content', $informasi?->content)" :height="720"
                     placeholder="Tuliskan materi pengumuman di sini..." required
                     helper="Gunakan toolbar TinyMCE untuk menyusun format paragraf, daftar list, tabel, link, atau kutipan." />
             </div>
@@ -52,7 +53,7 @@
 
     {{-- RIGHT COLUMN: Image Upload & Preview --}}
     <div class="space-y-6">
-        
+
         {{-- Image Upload Card --}}
         <div class="rounded-2xl border border-black/8 bg-black/3 p-5 space-y-4">
             <div>
@@ -78,12 +79,15 @@
                 <div class="rounded-xl border border-black/8 bg-onyx p-3 space-y-2">
                     <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-smoke/60">Gambar Saat Ini</p>
                     <div class="overflow-hidden rounded-lg border border-black/8">
-                        <img src="{{ $currentImageUrl }}" alt="{{ $informasi->title }}" class="h-44 w-full object-cover">
+                        <img src="{{ $currentImageUrl }}" alt="{{ $informasi->title }}"
+                            class="h-44 w-full object-cover">
                     </div>
-                    <p class="break-all font-mono text-[10px] text-smoke/70" title="{{ $informasi->image }}">{{ $informasi->image }}</p>
+                    <p class="break-all font-mono text-[10px] text-smoke/70" title="{{ $informasi->image }}">
+                        {{ $informasi->image }}</p>
                 </div>
             @else
-                <div class="flex min-h-36 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-black/12 bg-onyx/50 p-4 text-center">
+                <div
+                    class="flex min-h-36 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-black/12 bg-onyx/50 p-4 text-center">
                     <i class="fa-solid fa-image text-lg text-smoke/40"></i>
                     <p class="text-xs text-smoke/50">Belum ada gambar yang diunggah.</p>
                 </div>
@@ -107,12 +111,8 @@
         class="inline-flex items-center justify-center gap-2 rounded-xl border border-black/10 bg-black/5 px-5 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-black/18 hover:bg-black/8 hover:text-ivory">
         Batal
     </a>
-    <button type="submit"
-        data-confirm-submit
-        data-confirm-intent="save"
-        data-confirm-title="{{ $confirmTitle }}"
-        data-confirm-message="{{ $confirmMessage }}"
-        data-confirm-action-label="{{ $confirmActionLabel }}"
+    <button type="submit" data-confirm-submit data-confirm-intent="save" data-confirm-title="{{ $confirmTitle }}"
+        data-confirm-message="{{ $confirmMessage }}" data-confirm-action-label="{{ $confirmActionLabel }}"
         class="inline-flex items-center justify-center gap-2 rounded-xl bg-gold px-6 py-2.5 text-sm font-semibold text-obsidian shadow-[0_4px_18px_rgba(199,161,90,0.28)] transition-all duration-200 hover:bg-gold-soft hover:shadow-[0_6px_24px_rgba(199,161,90,0.4)]">
         <i class="fa-solid fa-check text-xs"></i>
         {{ $submitLabel }}

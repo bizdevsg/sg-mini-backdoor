@@ -1,6 +1,7 @@
 ## [Unreleased]
 
 ### Added
+- Menambahkan field boolean `is_notification` pada berita dan banner sebagai penanda kebutuhan notifikasi, termasuk migration, input form admin, validasi dan cast model, serta output pada respons API dengan nilai awal `false`.
 - Menambahkan environment Bruno `Local` dengan base URL `http://sg-admin.test/api/v1` serta memperjelas petunjuk pemilihan environment agar endpoint yang belum di-deploy dapat diuji terpisah dari Production.
 - Menambahkan endpoint publik daftar Video TikTok aktif pada `/api/v1/video-tiktok`, cache JSON, dokumentasi API, pengujian Pest, serta request Bruno untuk pencarian dan pagination.
 - Menambahkan tombol dan fungsi tampil/sembunyikan password yang aksesibel pada form login, dimuat langsung tanpa bergantung pada build Vite, lengkap dengan perubahan ikon, label bantuan, dan status tombol.

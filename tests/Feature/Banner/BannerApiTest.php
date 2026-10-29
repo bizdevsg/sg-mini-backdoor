@@ -14,6 +14,7 @@ test('banner api only returns active banners ordered by sort order', function ()
     $firstBanner = Banner::factory()->create([
         'sort_order' => 1,
         'is_active' => true,
+        'is_notification' => true,
     ]);
     Banner::factory()->create([
         'sort_order' => 0,
@@ -27,6 +28,7 @@ test('banner api only returns active banners ordered by sort order', function ()
     $response->assertSuccessful()
         ->assertJsonPath('meta.total', 2)
         ->assertJsonPath('data.0.id', $firstBanner->id)
+        ->assertJsonPath('data.0.is_notification', true)
         ->assertJsonPath('data.0.sort_order', 1);
 });
 

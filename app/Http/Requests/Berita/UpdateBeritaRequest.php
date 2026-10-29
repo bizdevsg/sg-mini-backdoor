@@ -29,6 +29,7 @@ class UpdateBeritaRequest extends FormRequest
             'content_id' => ['required', 'string'],
             'content_en' => ['required', 'string'],
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,avif', 'max:5120'],
+            'is_notification' => ['nullable', 'boolean'],
         ];
     }
 
@@ -39,6 +40,7 @@ class UpdateBeritaRequest extends FormRequest
                 $this->string('title_id')->toString(),
                 $this->route('berita')
             ),
+            'is_notification' => $this->boolean('is_notification'),
         ]);
     }
 }

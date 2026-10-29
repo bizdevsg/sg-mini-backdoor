@@ -25,6 +25,7 @@ class BannerFactory extends Factory
             'image' => 'https://picsum.photos/seed/' . fake()->unique()->slug() . '/1600/900',
             'terms_and_conditions' => '<ul><li>Promo berlaku untuk nasabah terverifikasi.</li><li>Periode promo mengikuti informasi resmi perusahaan.</li><li>Syarat dan ketentuan dapat berubah sewaktu-waktu.</li></ul>',
             'is_active' => true,
+            'is_notification' => false,
             'sort_order' => fake()->numberBetween(0, 20),
         ];
     }

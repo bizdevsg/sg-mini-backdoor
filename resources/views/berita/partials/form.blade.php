@@ -138,6 +138,26 @@
                 </div>
             @endif
         </div>
+
+        <div class="rounded-2xl border border-black/8 bg-black/3 p-5">
+            <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-smoke/70">Kebutuhan Notifikasi</p>
+
+            <div class="mt-3 flex items-start gap-3 rounded-xl border border-black/6 bg-onyx/60 p-4">
+                <input type="hidden" name="is_notification" value="0">
+                <input type="checkbox" id="is_notification" name="is_notification" value="1"
+                    @checked(old('is_notification', $berita?->is_notification ?? false))
+                    class="mt-0.5 h-4 w-4 cursor-pointer rounded border-black/20 bg-onyx text-gold focus:ring-gold/30">
+                <div>
+                    <label for="is_notification" class="cursor-pointer select-none text-sm font-semibold text-ivory">
+                        Tandai untuk Notifikasi
+                    </label>
+                    <p class="mt-1 text-xs leading-5 text-smoke/80">
+                        Penanda ini disertakan pada API untuk kebutuhan notifikasi dan belum mengirim push secara otomatis.
+                    </p>
+                </div>
+            </div>
+            <x-forms.field-error field="is_notification" />
+        </div>
     </div>
 </div>
 

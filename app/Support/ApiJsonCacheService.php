@@ -55,7 +55,13 @@ class ApiJsonCacheService
     public function ensureBannerCache(): void
     {
         if ($this->cacheExists('banner')) {
-            return;
+            $items = $this->readItems('banner');
+
+            if ($items === [] || collect($items)->every(
+                fn (array $item): bool => array_key_exists('is_notification', $item)
+            )) {
+                return;
+            }
         }
 
         $this->refreshBanner();
@@ -126,7 +132,13 @@ class ApiJsonCacheService
     public function ensureBeritaCache(): void
     {
         if ($this->cacheExists('berita')) {
-            return;
+            $items = $this->readItems('berita');
+
+            if ($items === [] || collect($items)->every(
+                fn (array $item): bool => array_key_exists('is_notification', $item)
+            )) {
+                return;
+            }
         }
 
         $this->refreshBerita();

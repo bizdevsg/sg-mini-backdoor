@@ -24,6 +24,7 @@ class StoreBeritaRequest extends FormRequest
             'content_id' => ['required', 'string'],
             'content_en' => ['required', 'string'],
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,avif', 'max:5120'],
+            'is_notification' => ['nullable', 'boolean'],
         ];
     }
 
@@ -31,6 +32,7 @@ class StoreBeritaRequest extends FormRequest
     {
         $this->merge([
             'slug' => Berita::generateSlug($this->string('title_id')->toString()),
+            'is_notification' => $this->boolean('is_notification'),
         ]);
     }
 }

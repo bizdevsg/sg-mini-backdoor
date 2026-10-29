@@ -29,6 +29,7 @@ class UpdateBannerRequest extends FormRequest
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,avif', 'max:5120'],
             'terms_and_conditions' => ['nullable', 'string', 'max:10000'],
             'is_active' => ['nullable', 'boolean'],
+            'is_notification' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
         ];
     }
@@ -41,6 +42,7 @@ class UpdateBannerRequest extends FormRequest
                 $this->route('banner')
             ),
             'is_active' => $this->boolean('is_active'),
+            'is_notification' => $this->boolean('is_notification'),
             'sort_order' => $this->filled('sort_order') ? (int) $this->input('sort_order') : 0,
         ]);
     }

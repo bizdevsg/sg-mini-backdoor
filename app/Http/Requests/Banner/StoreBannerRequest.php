@@ -24,6 +24,7 @@ class StoreBannerRequest extends FormRequest
             'image' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,avif', 'max:5120'],
             'terms_and_conditions' => ['nullable', 'string', 'max:10000'],
             'is_active' => ['nullable', 'boolean'],
+            'is_notification' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
         ];
     }
@@ -33,6 +34,7 @@ class StoreBannerRequest extends FormRequest
         $this->merge([
             'slug' => Banner::generateSlug($this->string('title')->toString()),
             'is_active' => $this->boolean('is_active'),
+            'is_notification' => $this->boolean('is_notification'),
             'sort_order' => $this->filled('sort_order') ? (int) $this->input('sort_order') : 0,
         ]);
     }
