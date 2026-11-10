@@ -1,6 +1,7 @@
 ## [Unreleased]
 
 ### Fixed
+- Mengembalikan API banner lama untuk Mini Micro, menambahkan API khusus banner reguler, serta menyiapkan pemindahan banner yang sudah ada ke Mini Micro dan pembaruan cache.
 - Memperbaiki pengiriman push notification agar error dalam `headers.statusCode` pada respons Mini Micro tidak ditandai berhasil meskipun HTTP 200, serta memperbaiki migration signals pada SQLite agar pengujian dapat dijalankan.
 - Memperbaiki pesan respons 404 pengiriman notifikasi Mini Micro agar tidak langsung menyimpulkan device token hilang dan mengarahkan admin memeriksa alamat serta endpoint UAT, sambil mempertahankan pesan dari server.
 
@@ -10,7 +11,7 @@
 
 ### Added
 - Menambahkan koleksi Postman untuk daftar dan detail API banner reguler serta Mini Micro, dengan variabel URL dan API key untuk pengujian.
-- Memisahkan menu dan API banner reguler dan Mini Micro agar masing-masing kanal mengelola serta menampilkan banner sendiri; menu Banner memiliki submenu seperti Produk, dan banner lama tetap menjadi reguler.
+- Memisahkan menu dan API banner reguler dan Mini Micro agar masing-masing kanal mengelola serta menampilkan banner sendiri; menu Banner memiliki submenu seperti Produk.
 - Menambahkan dokumentasi tindak lanjut integrasi notifikasi Mini Micro UAT, termasuk implementasi SG Admin, hasil pengujian dan pertanyaan untuk tim API.
 - Menambahkan override Compose untuk menggunakan database MySQL bersama `global-mysql` dan menjalankan aplikasi di port 8082, sehingga phpMyAdmin bersama tetap tersedia di port 8080.
 - Menambahkan menu superadmin Notifikasi Push untuk broadcast Announcement/Promotion ke seluruh pengguna aplikasi melalui endpoint Mini Micro `POST /system/private/send-manual-notification`, termasuk form manual dengan penghitung karakter (judul 40, isi 150) dan preview tampilan HP, tombol broadcast dari detail Berita (`news_id`) dan kartu Banner (`promotion_id`) yang ditandai untuk notifikasi, konfirmasi ketik `KIRIM`, riwayat pengiriman pada tabel `push_notifications`, kirim ulang notifikasi gagal, activity log, serta pengujian Pest.

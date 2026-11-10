@@ -54,8 +54,8 @@ class ApiJsonCacheService
 
     public function ensureBannerCache(): void
     {
-        if ($this->cacheExists('banner')) {
-            $items = $this->readItems('banner');
+        if ($this->cacheExists('banner-v2')) {
+            $items = $this->readItems('banner-v2');
 
             if ($items === [] || collect($items)->every(
                 fn (array $item): bool => array_key_exists('is_notification', $item) && array_key_exists('type', $item)
@@ -263,7 +263,7 @@ class ApiJsonCacheService
             ->map(fn (Banner $banner) => (new BannerResource($banner))->resolve())
             ->all();
 
-        $this->write('banner', $items);
+        $this->write('banner-v2', $items);
     }
 
     public function refreshClientAreaTiktokVideo(): void
@@ -467,7 +467,7 @@ class ApiJsonCacheService
      */
     public function bannerItems(): array
     {
-        return $this->readItems('banner');
+        return $this->readItems('banner-v2');
     }
 
     /**

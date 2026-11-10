@@ -32,8 +32,13 @@ Route::prefix('v1')->middleware(['api.activity.log', 'api.settings', 'api.key'])
     });
 
     Route::prefix('banner')->group(function () {
-        Route::get('/', [BannerApiController::class, 'index']);
-        Route::get('/{slug}', [BannerApiController::class, 'show']);
+        Route::get('/', [BannerApiController::class, 'index'])->defaults('bannerType', 'mini_micro');
+        Route::get('/{slug}', [BannerApiController::class, 'show'])->defaults('bannerType', 'mini_micro');
+    });
+
+    Route::prefix('banner-reguler')->group(function () {
+        Route::get('/', [BannerApiController::class, 'index'])->defaults('bannerType', 'regular');
+        Route::get('/{slug}', [BannerApiController::class, 'show'])->defaults('bannerType', 'regular');
     });
 
     Route::prefix('banner-mini-micro')->group(function () {

@@ -52,11 +52,11 @@ class BannerApiController extends Controller
 
     private function itemsForType(Request $request): array
     {
-        $type = $request->route('bannerType', Banner::TYPE_REGULAR);
+        $type = $request->route('bannerType', Banner::TYPE_MINI_MICRO);
 
         return array_values(array_filter(
             $this->apiJsonCacheService->bannerItems(),
-            fn (array $item): bool => ($item['type'] ?? Banner::TYPE_REGULAR) === $type,
+            fn (array $item): bool => ($item['type'] ?? Banner::TYPE_MINI_MICRO) === $type,
         ));
     }
 }
