@@ -6,11 +6,15 @@
 - Memperbaiki pesan respons 404 pengiriman notifikasi Mini Micro agar tidak langsung menyimpulkan device token hilang dan mengarahkan admin memeriksa alamat serta endpoint UAT, sambil mempertahankan pesan dari server.
 
 ### Changed
+- Mengirim notifikasi Berita dan Banner secara langsung saat konten baru ditandai atau penanda baru diaktifkan, tanpa worker antrean; semua admin yang dapat menyimpan konten dapat memicu pengiriman, dengan hasil dan mode dry run ditampilkan.
+- Melengkapi koleksi Postman dengan request terpisah untuk setiap kategori Produk agar seluruh variasi API publik lebih mudah ditemukan.
+- Memperbarui koleksi Postman dan menyediakan environment lokal serta production agar pengujian API dapat berpindah target tanpa menyertakan API key asli.
 - Menghapus alias API `/banner-mini-micro` agar hanya `/banner` untuk Mini Micro dan `/banner-reguler` untuk banner reguler yang tersedia.
 - Melengkapi koleksi Postman dengan seluruh endpoint HTTP API publik SG Admin, sehingga pengujian lintas modul tersedia dalam satu koleksi.
 - Mengabaikan folder koleksi Bruno dan Postman yang belum dilacak Git agar koleksi lokal tidak ikut ditambahkan ke repository.
 
 ### Added
+- Menambahkan contoh konfigurasi Supervisor dan panduan Linux untuk menjalankan worker antrean secara otomatis, termasuk pemeriksaan job yang sudah menunggu sebelum worker dimulai.
 - Menambahkan koleksi Postman untuk daftar dan detail API banner reguler serta Mini Micro, dengan variabel URL dan API key untuk pengujian.
 - Memisahkan menu dan API banner reguler dan Mini Micro agar masing-masing kanal mengelola serta menampilkan banner sendiri; menu Banner memiliki submenu seperti Produk.
 - Menambahkan dokumentasi tindak lanjut integrasi notifikasi Mini Micro UAT, termasuk implementasi SG Admin, hasil pengujian dan pertanyaan untuk tim API.

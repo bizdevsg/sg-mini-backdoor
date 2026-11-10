@@ -90,7 +90,7 @@
                             @else
                                 <p class="text-xs leading-5 text-smoke">
                                     <i class="fa-solid fa-bell text-gold-soft"></i>
-                                    Siap dinotifikasi sebagai <span class="font-mono text-champagne/80">Announcement</span> ke semua pengguna aplikasi.
+                                    Periksa riwayat notifikasi untuk melihat hasil pengiriman otomatis.
                                 </p>
                             @endif
                             <a href="{{ route('push-notifications.create', ['source_type' => 'berita', 'source_id' => $berita->id]) }}"
@@ -100,7 +100,7 @@
                             </a>
                         @else
                             <p class="text-xs leading-5 text-smoke">
-                                Centang <span class="font-semibold text-ivory">"Tandai untuk Notifikasi"</span> di halaman Edit untuk mengaktifkan broadcast berita ini.
+                                Centang <span class="font-semibold text-ivory">"Tandai untuk Notifikasi"</span> di halaman Edit untuk mengirim notifikasi otomatis saat disimpan.
                             </p>
                         @endif
                     </div>

@@ -6,6 +6,7 @@ use App\Support\OptimizedImageStorage;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 uses(LazilyRefreshDatabase::class);
 
@@ -76,6 +77,7 @@ test('authenticated users can access banner pages', function () {
 
 test('authenticated users can create update and delete banners', function () {
     $user = User::factory()->create();
+    Http::fake();
 
     Storage::fake('public');
 

@@ -9,6 +9,7 @@ use App\Models\BeritaCategory;
 use App\Support\ApiJsonCacheService;
 use App\Support\DuplicateEntryGuard;
 use App\Support\OptimizedImageStorage;
+use App\Support\PushNotificationService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
@@ -20,6 +21,7 @@ class BeritaController extends Controller
     public function __construct(
         private readonly OptimizedImageStorage $optimizedImageStorage,
         private readonly ApiJsonCacheService $apiJsonCacheService,
+        private readonly PushNotificationService $pushNotificationService,
     ) {
     }
 
@@ -64,7 +66,7 @@ class BeritaController extends Controller
         }
 
         try {
-            Berita::create(Berita::prepareForPersistence([
+            $berita = Berita::create(Berita::prepareForPersistence([
                 ...$validated,
                 'berita_category_id' => $beritaCategory->id,
                 'image' => $imagePath,
@@ -80,9 +82,12 @@ class BeritaController extends Controller
         $this->apiJsonCacheService->refreshBerita();
         $this->apiJsonCacheService->refreshBeritaCategories();
 
+        $result = $this->pushNotificationService->contentSaveMessage('Berita berhasil ditambahkan.', $request->user(), $berita, $berita->is_notification);
+
         return redirect()
             ->route('berita.index', $beritaCategory)
-            ->with('status', 'Berita berhasil ditambahkan.');
+            ->with('status', $result['message'])
+            ->with('status_type', $result['type']);
     }
 
     public function show(BeritaCategory $beritaCategory, Berita $berita): View
@@ -110,6 +115,7 @@ class BeritaController extends Controller
     public function update(UpdateBeritaRequest $request, BeritaCategory $beritaCategory, Berita $berita): RedirectResponse
     {
         $this->ensureCategoryMatchesBerita($beritaCategory, $berita);
+        $wasNotificationEnabled = $berita->is_notification;
         $validated = $request->safe()->except('image');
         $imagePath = $berita->image;
 
@@ -142,9 +148,12 @@ class BeritaController extends Controller
         $this->apiJsonCacheService->refreshBerita();
         $this->apiJsonCacheService->refreshBeritaCategories();
 
+        $result = $this->pushNotificationService->contentSaveMessage('Berita berhasil diperbarui.', $request->user(), $berita, ! $wasNotificationEnabled && $berita->is_notification);
+
         return redirect()
             ->route('berita.index', $beritaCategory)
-            ->with('status', 'Berita berhasil diperbarui.');
+            ->with('status', $result['message'])
+            ->with('status_type', $result['type']);
     }
 
     public function destroy(BeritaCategory $beritaCategory, Berita $berita): RedirectResponse

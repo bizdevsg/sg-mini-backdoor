@@ -152,7 +152,10 @@
                         Tandai untuk Notifikasi
                     </label>
                     <p class="mt-1 text-xs leading-5 text-smoke/80">
-                        Penanda ini tidak mengirim push otomatis. Setelah disimpan, Superadmin dapat broadcast notifikasi dari tombol Notifikasi.
+                        Saat berita baru disimpan atau penanda ini baru diaktifkan, notifikasi dikirim otomatis ke semua pengguna aplikasi. Edit berikutnya tidak mengirim ulang.
+                        @if (\App\Support\MiniMicroNotificationClient::isDryRun())
+                            Mode uji aktif: notifikasi tidak dikirim ke perangkat pengguna.
+                        @endif
                     </p>
                 </div>
             </div>

@@ -8,6 +8,7 @@ use App\Models\Banner;
 use App\Support\ApiJsonCacheService;
 use App\Support\DuplicateEntryGuard;
 use App\Support\OptimizedImageStorage;
+use App\Support\PushNotificationService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
@@ -18,6 +19,7 @@ class BannerController extends Controller
     public function __construct(
         private readonly OptimizedImageStorage $optimizedImageStorage,
         private readonly ApiJsonCacheService $apiJsonCacheService,
+        private readonly PushNotificationService $pushNotificationService,
     ) {
     }
 
@@ -55,7 +57,7 @@ class BannerController extends Controller
         }
 
         try {
-            Banner::create([
+            $banner = Banner::create([
                 ...$validated,
                 'image' => $imagePath,
                 'type' => $this->bannerType(),
@@ -70,9 +72,12 @@ class BannerController extends Controller
 
         $this->apiJsonCacheService->refreshBanner();
 
+        $result = $this->pushNotificationService->contentSaveMessage('Banner berhasil ditambahkan.', $request->user(), $banner, $banner->is_notification);
+
         return redirect()
             ->route($this->routePrefix().'.index')
-            ->with('status', 'Banner berhasil ditambahkan.');
+            ->with('status', $result['message'])
+            ->with('status_type', $result['type']);
     }
 
     public function edit(Banner $banner): View
@@ -88,6 +93,7 @@ class BannerController extends Controller
     public function update(UpdateBannerRequest $request, Banner $banner): RedirectResponse
     {
         $this->ensureType($banner);
+        $wasNotificationEnabled = $banner->is_notification;
         $validated = $request->safe()->except('image');
         $imagePath = $banner->image;
 
@@ -118,9 +124,12 @@ class BannerController extends Controller
 
         $this->apiJsonCacheService->refreshBanner();
 
+        $result = $this->pushNotificationService->contentSaveMessage('Banner berhasil diperbarui.', $request->user(), $banner, ! $wasNotificationEnabled && $banner->is_notification);
+
         return redirect()
             ->route($this->routePrefix().'.index')
-            ->with('status', 'Banner berhasil diperbarui.');
+            ->with('status', $result['message'])
+            ->with('status_type', $result['type']);
     }
 
     public function destroy(Banner $banner): RedirectResponse

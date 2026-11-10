@@ -62,7 +62,7 @@ class PushNotificationService
     /**
      * @param  array{topic: string, title: string, description: string, source_type?: string|null, source_id?: int|null}  $data
      */
-    public function dispatchBroadcast(User $user, array $data): PushNotification
+    public function dispatchBroadcast(User $user, array $data, bool $synchronous = false): PushNotification
     {
         $topic = PushNotificationTopic::from($data['topic']);
         $sourceType = $data['source_type'] ?? null;
@@ -95,9 +95,50 @@ class PushNotificationService
             'status' => PushNotificationStatus::Queued,
         ]);
 
-        SendPushNotification::dispatch($notification->id);
+        if ($synchronous) {
+            SendPushNotification::dispatchSync($notification->id);
+        } else {
+            SendPushNotification::dispatch($notification->id);
+        }
 
         return $notification;
+    }
+
+    public function sendFromContent(User $user, Berita|Banner $source): PushNotification
+    {
+        $sourceType = $source instanceof Berita ? PushNotification::SOURCE_BERITA : PushNotification::SOURCE_BANNER;
+        $draft = $this->draftFromSource($sourceType, $source->id);
+        $title = $draft['title'];
+        $description = $draft['description'] !== '' ? $draft['description'] : $title;
+
+        return $this->dispatchBroadcast($user, [
+            'topic' => $draft['topic']->value,
+            'title' => $title,
+            'description' => $description,
+            'source_type' => $sourceType,
+            'source_id' => $source->id,
+        ], synchronous: true)->refresh();
+    }
+
+    public function contentSaveMessage(string $message, User $user, Berita|Banner $source, bool $send): array
+    {
+        if (! $send) {
+            return ['message' => $message, 'type' => null];
+        }
+
+        try {
+            $notification = $this->sendFromContent($user, $source);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return ['message' => $message.' Pengiriman notifikasi gagal. Periksa riwayat notifikasi atau log server.', 'type' => 'error'];
+        }
+
+        return match ($notification->status) {
+            PushNotificationStatus::Sent => ['message' => $message.' Notifikasi berhasil dikirim.', 'type' => null],
+            PushNotificationStatus::DryRun => ['message' => $message.' Dry run notifikasi berhasil; tidak dikirim ke pengguna.', 'type' => null],
+            default => ['message' => $message.' Notifikasi gagal: '.($notification->error_message ?: 'Periksa riwayat notifikasi.'), 'type' => 'error'],
+        };
     }
 
     public function retry(PushNotification $notification): void
