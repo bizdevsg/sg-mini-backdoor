@@ -152,8 +152,10 @@ class ApiDocumentationController extends Controller
                 'title' => 'Banner',
                 'description' => 'List API Banner',
                 'endpoints' => [
-                    ['method' => 'GET', 'path' => '/banner', 'notes' => 'List banner aktif.'],
-                    ['method' => 'GET', 'path' => '/banner/{slug}', 'notes' => 'Detail banner.'],
+                    ['method' => 'GET', 'path' => '/banner', 'notes' => 'List banner reguler aktif.'],
+                    ['method' => 'GET', 'path' => '/banner/{slug}', 'notes' => 'Detail banner reguler.'],
+                    ['method' => 'GET', 'path' => '/banner-mini-micro', 'notes' => 'List banner Mini Micro aktif.'],
+                    ['method' => 'GET', 'path' => '/banner-mini-micro/{slug}', 'notes' => 'Detail banner Mini Micro.'],
                 ],
             ],
             [

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Banner')
+@section('title', 'Edit Banner '.$bannerTypeLabel)
 
 @section('content')
     <section class="space-y-6">
@@ -23,7 +23,7 @@
                         Update Image Banner
                     </span>
                     <h1 class="text-2xl font-semibold tracking-[-0.04em] text-ivory lg:text-3xl">
-                        Edit:
+                        Edit Banner {{ $bannerTypeLabel }}:
                         <span
                             class="bg-gradient-to-r from-gold-soft to-champagne bg-clip-text text-transparent">{{ $banner->title ?: 'Banner #' . $banner->id }}</span>
                     </h1>
@@ -31,7 +31,7 @@
                         Perbarui informasi, gambar, urutan slide, atau status aktif banner ini.
                     </p>
                 </div>
-                <a href="{{ route('banner.index') }}"
+                <a href="{{ route($routePrefix.'.index') }}"
                     class="inline-flex w-fit items-center gap-1.5 rounded-xl border border-black/10 bg-black/5 px-4 py-2.5 text-sm font-medium text-smoke transition-all duration-200 hover:border-black/18 hover:bg-black/8 hover:text-ivory motion-safe:motion-preset-slide-left-sm motion-safe:motion-delay-[80ms]">
                     <i class="fa-solid fa-arrow-left text-[10px]"></i>
                     Kembali
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <form action="{{ route('banner.update', $banner) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <form action="{{ route($routePrefix.'.update', $banner) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
             @include('banner.partials.form', [
@@ -48,7 +48,7 @@
                 'confirmMessage' => 'Perubahan akan langsung diterapkan di beranda setelah disimpan.',
                 'confirmActionLabel' => 'Ya, update',
                 'submitLabel' => 'Update Banner',
-                'cancelUrl' => route('banner.index'),
+                'cancelUrl' => route($routePrefix.'.index'),
             ])
         </form>
     </section>

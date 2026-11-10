@@ -24,20 +24,22 @@ class BannerController extends Controller
     public function index(): View
     {
         $banners = Banner::query()
+            ->where('type', $this->bannerType())
             ->orderBy('sort_order')
             ->latest('id')
             ->paginate(20);
 
         return view('banner.index', [
             'banners' => $banners,
-            'activeCount' => Banner::query()->where('is_active', true)->count('*'),
-            'inactiveCount' => Banner::query()->where('is_active', false)->count('*'),
+            'activeCount' => Banner::query()->where('type', $this->bannerType())->where('is_active', true)->count('*'),
+            'inactiveCount' => Banner::query()->where('type', $this->bannerType())->where('is_active', false)->count('*'),
+            ...$this->viewContext(),
         ]);
     }
 
     public function create(): View
     {
-        return view('banner.create');
+        return view('banner.create', $this->viewContext());
     }
 
     public function store(StoreBannerRequest $request): RedirectResponse
@@ -56,6 +58,7 @@ class BannerController extends Controller
             Banner::create([
                 ...$validated,
                 'image' => $imagePath,
+                'type' => $this->bannerType(),
             ]);
         } catch (QueryException $exception) {
             throw DuplicateEntryGuard::translate(
@@ -68,19 +71,23 @@ class BannerController extends Controller
         $this->apiJsonCacheService->refreshBanner();
 
         return redirect()
-            ->route('banner.index')
+            ->route($this->routePrefix().'.index')
             ->with('status', 'Banner berhasil ditambahkan.');
     }
 
     public function edit(Banner $banner): View
     {
+        $this->ensureType($banner);
+
         return view('banner.edit', [
             'banner' => $banner,
+            ...$this->viewContext(),
         ]);
     }
 
     public function update(UpdateBannerRequest $request, Banner $banner): RedirectResponse
     {
+        $this->ensureType($banner);
         $validated = $request->safe()->except('image');
         $imagePath = $banner->image;
 
@@ -112,19 +119,43 @@ class BannerController extends Controller
         $this->apiJsonCacheService->refreshBanner();
 
         return redirect()
-            ->route('banner.index')
+            ->route($this->routePrefix().'.index')
             ->with('status', 'Banner berhasil diperbarui.');
     }
 
     public function destroy(Banner $banner): RedirectResponse
     {
+        $this->ensureType($banner);
         $this->optimizedImageStorage->delete($banner->image);
         $banner->delete();
 
         $this->apiJsonCacheService->refreshBanner();
 
         return redirect()
-            ->route('banner.index')
+            ->route($this->routePrefix().'.index')
             ->with('status', 'Banner berhasil dihapus.');
+    }
+
+    private function routePrefix(): string
+    {
+        return request()->routeIs('banner-mini-micro.*') ? 'banner-mini-micro' : 'banner';
+    }
+
+    private function bannerType(): string
+    {
+        return $this->routePrefix() === 'banner-mini-micro' ? Banner::TYPE_MINI_MICRO : Banner::TYPE_REGULAR;
+    }
+
+    private function ensureType(Banner $banner): void
+    {
+        abort_unless($banner->type === $this->bannerType(), 404);
+    }
+
+    private function viewContext(): array
+    {
+        return [
+            'routePrefix' => $this->routePrefix(),
+            'bannerTypeLabel' => $this->bannerType() === Banner::TYPE_MINI_MICRO ? 'Mini Micro' : 'Reguler',
+        ];
     }
 }

@@ -17,6 +17,7 @@ use App\Http\Controllers\LegalitasController;
 use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\SignalCategoryController;
 use App\Http\Controllers\SignalController;
 use App\Http\Controllers\SystemLogController;
@@ -37,6 +38,16 @@ Route::middleware(['auth', 'admin.panel.access', 'admin.data.log', 'crud.undo.ca
     Route::post('/crud-undo', CrudUndoController::class)->name('crud-undo.perform');
     Route::prefix('banner')
         ->name('banner.')
+        ->group(function () {
+            Route::get('/', [BannerController::class, 'index'])->name('index');
+            Route::get('/create', [BannerController::class, 'create'])->name('create');
+            Route::post('/', [BannerController::class, 'store'])->name('store');
+            Route::get('/{banner}/edit', [BannerController::class, 'edit'])->name('edit');
+            Route::put('/{banner}', [BannerController::class, 'update'])->name('update');
+            Route::delete('/{banner}', [BannerController::class, 'destroy'])->name('destroy');
+        });
+    Route::prefix('banner-mini-micro')
+        ->name('banner-mini-micro.')
         ->group(function () {
             Route::get('/', [BannerController::class, 'index'])->name('index');
             Route::get('/create', [BannerController::class, 'create'])->name('create');
@@ -237,6 +248,15 @@ Route::middleware(['auth', 'admin.panel.access', 'admin.data.log', 'crud.undo.ca
             Route::get('/{clientAreaTiktokVideo}/edit', [ClientAreaTiktokVideoController::class, 'edit'])->name('edit');
             Route::put('/{clientAreaTiktokVideo}', [ClientAreaTiktokVideoController::class, 'update'])->name('update');
             Route::delete('/{clientAreaTiktokVideo}', [ClientAreaTiktokVideoController::class, 'destroy'])->name('destroy');
+        });
+    Route::prefix('notifikasi')
+        ->name('push-notifications.')
+        ->middleware('can:send-push-notification')
+        ->group(function () {
+            Route::get('/', [PushNotificationController::class, 'index'])->name('index');
+            Route::get('/create', [PushNotificationController::class, 'create'])->name('create');
+            Route::post('/', [PushNotificationController::class, 'store'])->name('store');
+            Route::post('/{pushNotification}/retry', [PushNotificationController::class, 'retry'])->name('retry');
         });
     Route::prefix('system-logs')
         ->name('system-logs.')

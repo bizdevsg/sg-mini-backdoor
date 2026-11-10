@@ -77,6 +77,35 @@
                     </div>
                 </div>
 
+                @can('send-push-notification')
+                    <div class="rounded-2xl border border-black/8 bg-black/3 p-5 space-y-3">
+                        <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-smoke/70">Notifikasi Push</p>
+                        @if ($berita->is_notification)
+                            @php($lastPush = app(\App\Support\PushNotificationService::class)->lastLiveSendFor('berita', $berita->id))
+                            @if ($lastPush)
+                                <p class="text-xs leading-5 text-smoke">
+                                    <i class="fa-solid fa-circle-check text-emerald-700"></i>
+                                    Sudah di-broadcast {{ $lastPush->created_at?->format('d M Y H:i') }} oleh {{ $lastPush->user?->name ?? '-' }}.
+                                </p>
+                            @else
+                                <p class="text-xs leading-5 text-smoke">
+                                    <i class="fa-solid fa-bell text-gold-soft"></i>
+                                    Siap dinotifikasi sebagai <span class="font-mono text-champagne/80">Announcement</span> ke semua pengguna aplikasi.
+                                </p>
+                            @endif
+                            <a href="{{ route('push-notifications.create', ['source_type' => 'berita', 'source_id' => $berita->id]) }}"
+                                class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-4 py-2.5 text-sm font-semibold text-obsidian hover:bg-gold-soft">
+                                <i class="fa-solid fa-paper-plane text-xs"></i>
+                                {{ $lastPush ? 'Kirim Ulang Notifikasi' : 'Broadcast Notifikasi' }}
+                            </a>
+                        @else
+                            <p class="text-xs leading-5 text-smoke">
+                                Centang <span class="font-semibold text-ivory">"Tandai untuk Notifikasi"</span> di halaman Edit untuk mengaktifkan broadcast berita ini.
+                            </p>
+                        @endif
+                    </div>
+                @endcan
+
                 @if ($berita->image_url)
                     <div class="rounded-2xl border border-black/8 bg-black/3 p-5 space-y-3">
                         <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-smoke/70">Gambar Sampul</p>

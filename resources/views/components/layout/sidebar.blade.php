@@ -56,8 +56,21 @@
             [
                 'label' => 'Banner',
                 'icon' => 'fa-solid fa-images',
-                'href' => route('banner.index'),
-                'active' => request()->routeIs('banner.*'),
+                'open' => request()->routeIs('banner.*') || request()->routeIs('banner-mini-micro.*'),
+                'children' => [
+                    [
+                        'label' => 'Reguler',
+                        'icon' => 'fa-solid fa-image',
+                        'href' => route('banner.index'),
+                        'active' => request()->routeIs('banner.*'),
+                    ],
+                    [
+                        'label' => 'Mini Micro',
+                        'icon' => 'fa-solid fa-mobile-screen',
+                        'href' => route('banner-mini-micro.index'),
+                        'active' => request()->routeIs('banner-mini-micro.*'),
+                    ],
+                ],
             ],
             [
                 'label' => 'Pengumuman',
@@ -179,6 +192,12 @@
                     'icon' => 'fa-brands fa-tiktok',
                     'href' => route('tiktok-videos.index'),
                     'active' => request()->routeIs('tiktok-videos.*'),
+                ],
+                [
+                    'label' => 'Notifikasi Push',
+                    'icon' => 'fa-solid fa-bell',
+                    'href' => route('push-notifications.index'),
+                    'active' => request()->routeIs('push-notifications.*'),
                 ],
                 [
                     'label' => 'Monitoring Log',

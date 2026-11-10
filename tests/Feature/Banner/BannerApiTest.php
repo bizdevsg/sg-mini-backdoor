@@ -6,6 +6,10 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
 uses(LazilyRefreshDatabase::class);
 
+beforeEach(function () {
+    $this->withHeaders(['X-Client-Type' => 'mobile-app']);
+});
+
 test('banner api only returns active banners ordered by sort order', function () {
     Banner::factory()->create([
         'sort_order' => 3,
@@ -43,4 +47,21 @@ test('banner api can show single active banner by id', function () {
         ->assertSuccessful()
         ->assertJsonPath('data.id', $banner->id)
         ->assertJsonPath('data.image', $banner->image);
+});
+
+test('regular and mini micro banner APIs isolate lists and details', function () {
+    $regular = Banner::factory()->create(['type' => Banner::TYPE_REGULAR, 'is_active' => true]);
+    $mini = Banner::factory()->create(['type' => Banner::TYPE_MINI_MICRO, 'is_active' => true]);
+    Banner::factory()->create(['type' => Banner::TYPE_MINI_MICRO, 'is_active' => false]);
+
+    app(ApiJsonCacheService::class)->refreshBanner();
+
+    $this->getJson('/api/v1/banner', apiKeyHeaders())
+        ->assertSuccessful()->assertJsonPath('meta.total', 1)->assertJsonPath('data.0.id', $regular->id);
+    $this->getJson('/api/v1/banner-mini-micro', apiKeyHeaders())
+        ->assertSuccessful()->assertJsonPath('meta.total', 1)->assertJsonPath('data.0.id', $mini->id);
+    $this->getJson('/api/v1/banner/'.$mini->slug, apiKeyHeaders())->assertNotFound();
+    $this->getJson('/api/v1/banner-mini-micro/'.$regular->slug, apiKeyHeaders())->assertNotFound();
+    $this->getJson('/api/v1/banner-mini-micro/'.$mini->slug, apiKeyHeaders())
+        ->assertSuccessful()->assertJsonPath('data.id', $mini->id);
 });

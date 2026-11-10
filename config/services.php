@@ -28,6 +28,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'mini_micro' => [
+        'base_url' => env('MINI_MICRO_BASE_URL', 'https://mmapiuat.sgberjangka.id'),
+        'api_key' => env('MINI_MICRO_API_KEY'),
+        'dry_run' => (bool) env('MINI_MICRO_DRY_RUN', true),
+        'broadcast_cooldown_minutes' => (int) env('MINI_MICRO_BROADCAST_COOLDOWN_MINUTES', 5),
+        'timeout' => (int) env('MINI_MICRO_TIMEOUT', 15),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

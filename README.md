@@ -9,23 +9,22 @@
 
 ## Docker
 
-Project dapat dijalankan sebagai stack lokal production-like yang terdiri dari Nginx, PHP 8.4.27 FPM, MySQL, phpMyAdmin, queue worker, scheduler, dan service migration satu kali.
+Project dapat dijalankan sebagai stack lokal production-like yang terdiri dari Nginx, PHP 8.4.27 FPM, queue worker, scheduler, dan service migration satu kali. Override Compose menghubungkan aplikasi ke `global-mysql` melalui network eksternal `global-db-network`; pastikan keduanya sudah berjalan dan database `sg_admin` tersedia.
 
-Pastikan `.env` tersedia dan `APP_KEY` sudah terisi. Port aplikasi dapat diubah melalui `APP_PORT`; nilai default-nya `8080`.
+Pastikan `.env` tersedia, `APP_KEY` sudah terisi, dan `DB_PASSWORD` sesuai dengan password MySQL bersama. Port aplikasi dapat diubah melalui `APP_PORT`; nilai default-nya `8082`.
 
 ```bash
 docker compose up -d --build
 ```
 
-Setelah seluruh service sehat, aplikasi tersedia di `http://localhost:8080`. Migration dijalankan otomatis oleh service `migrate` sebelum aplikasi, queue, dan scheduler dimulai.
+Setelah seluruh service sehat, aplikasi tersedia di `http://localhost:8082`. Migration dijalankan otomatis pada database bersama oleh service `migrate` sebelum aplikasi, queue, dan scheduler dimulai.
 
-phpMyAdmin tersedia hanya dari komputer lokal di `http://localhost:8081`. Login menggunakan server `database`, username `root`, dan password dari `DB_PASSWORD`; jika nilainya kosong, Docker menggunakan password lokal `local`. Port phpMyAdmin dapat diubah melalui `PHPMYADMIN_PORT`.
+phpMyAdmin bersama tersedia di `http://localhost:8080` sesuai konfigurasi stack global.
 
 ```bash
 docker compose ps
 docker compose logs -f app
 docker compose logs -f web
-docker compose logs -f phpmyadmin
 ```
 
 Untuk menghentikan stack tanpa menghapus data MySQL dan storage:
@@ -34,7 +33,7 @@ Untuk menghentikan stack tanpa menghapus data MySQL dan storage:
 docker compose down
 ```
 
-Volume `mysql-data` dan `app-storage` menyimpan database serta file aplikasi secara persisten. Jangan gunakan `docker compose down -v` kecuali data tersebut memang boleh dihapus.
+Database bersama dikelola oleh stack global; volume `app-storage` menyimpan file aplikasi. Jangan gunakan `docker compose down -v` kecuali volume project memang boleh dihapus.
 
 ## About Laravel
 

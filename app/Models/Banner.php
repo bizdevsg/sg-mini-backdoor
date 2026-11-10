@@ -20,14 +20,20 @@ use Illuminate\Support\Str;
     'is_active',
     'is_notification',
     'sort_order',
+    'type',
 ])]
 class Banner extends Model
 {
+    public const TYPE_REGULAR = 'regular';
+
+    public const TYPE_MINI_MICRO = 'mini_micro';
+
     /** @use HasFactory<BannerFactory> */
     use HasFactory;
 
     protected $attributes = [
         'is_notification' => false,
+        'type' => self::TYPE_REGULAR,
     ];
 
     public function getRouteKeyName(): string

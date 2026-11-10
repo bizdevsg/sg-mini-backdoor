@@ -102,24 +102,6 @@ services:
       start_period: 20s
     restart: unless-stopped
 
-  phpmyadmin:
-    image: phpmyadmin:5.2.2-apache
-    ports:
-      - "127.0.0.1:${PHPMYADMIN_PORT:-8081}:80"
-    environment:
-      PMA_HOST: database
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 0
-      UPLOAD_LIMIT: 64M
-    networks:
-      - backend
-    depends_on:
-      database:
-        condition: service_healthy
-    security_opt:
-      - no-new-privileges:true
-    restart: unless-stopped
-
 networks:
   backend:
     driver: bridge

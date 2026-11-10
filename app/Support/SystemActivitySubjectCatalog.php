@@ -58,6 +58,7 @@ class SystemActivitySubjectCatalog
             'client-area' => 'System Settings',
             'tinymce-images' => 'Media Editor',
             'api-documentation' => 'Dokumentasi API',
+            'push-notifications' => 'Notifikasi Push',
             'unknown' => 'Unknown',
         ];
     }

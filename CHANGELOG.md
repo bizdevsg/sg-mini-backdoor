@@ -1,6 +1,20 @@
 ## [Unreleased]
 
+### Fixed
+- Memperbaiki pengiriman push notification agar error dalam `headers.statusCode` pada respons Mini Micro tidak ditandai berhasil meskipun HTTP 200, serta memperbaiki migration signals pada SQLite agar pengujian dapat dijalankan.
+- Memperbaiki pesan respons 404 pengiriman notifikasi Mini Micro agar tidak langsung menyimpulkan device token hilang dan mengarahkan admin memeriksa alamat serta endpoint UAT, sambil mempertahankan pesan dari server.
+
+### Changed
+- Melengkapi koleksi Postman dengan seluruh endpoint HTTP API publik SG Admin, sehingga pengujian lintas modul tersedia dalam satu koleksi.
+- Mengabaikan folder koleksi Bruno dan Postman yang belum dilacak Git agar koleksi lokal tidak ikut ditambahkan ke repository.
+
 ### Added
+- Menambahkan koleksi Postman untuk daftar dan detail API banner reguler serta Mini Micro, dengan variabel URL dan API key untuk pengujian.
+- Memisahkan menu dan API banner reguler dan Mini Micro agar masing-masing kanal mengelola serta menampilkan banner sendiri; menu Banner memiliki submenu seperti Produk, dan banner lama tetap menjadi reguler.
+- Menambahkan dokumentasi tindak lanjut integrasi notifikasi Mini Micro UAT, termasuk implementasi SG Admin, hasil pengujian dan pertanyaan untuk tim API.
+- Menambahkan override Compose untuk menggunakan database MySQL bersama `global-mysql` dan menjalankan aplikasi di port 8082, sehingga phpMyAdmin bersama tetap tersedia di port 8080.
+- Menambahkan menu superadmin Notifikasi Push untuk broadcast Announcement/Promotion ke seluruh pengguna aplikasi melalui endpoint Mini Micro `POST /system/private/send-manual-notification`, termasuk form manual dengan penghitung karakter (judul 40, isi 150) dan preview tampilan HP, tombol broadcast dari detail Berita (`news_id`) dan kartu Banner (`promotion_id`) yang ditandai untuk notifikasi, konfirmasi ketik `KIRIM`, riwayat pengiriman pada tabel `push_notifications`, kirim ulang notifikasi gagal, activity log, serta pengujian Pest.
+- Menambahkan pengaman broadcast notifikasi: mode dry run aktif secara default (`MINI_MICRO_DRY_RUN=true`, request dikirim dengan `?logOnly=true` sehingga FCM tidak dipanggil), jeda antar broadcast live (`MINI_MICRO_BROADCAST_COOLDOWN_MINUTES`), penolakan broadcast ulang konten yang sama tanpa centang Kirim ulang, pengiriman lewat queue dengan retry otomatis untuk error 5xx, dan API key yang hanya dibaca dari `.env`.
 - Menambahkan field boolean `is_notification` pada berita dan banner sebagai penanda kebutuhan notifikasi, termasuk migration, input form admin, validasi dan cast model, serta output pada respons API dengan nilai awal `false`.
 - Menambahkan environment Bruno `Local` dengan base URL `http://sg-admin.test/api/v1` serta memperjelas petunjuk pemilihan environment agar endpoint yang belum di-deploy dapat diuji terpisah dari Production.
 - Menambahkan endpoint publik daftar Video TikTok aktif pada `/api/v1/video-tiktok`, cache JSON, dokumentasi API, pengujian Pest, serta request Bruno untuk pencarian dan pagination.
@@ -19,6 +33,7 @@
 - Menambahkan retensi snapshot Undo selama 24 jam dan command terjadwal `crud-undo:prune` untuk menghapus permanen snapshot serta backup file yang sudah melewati retensi.
 
 ### Changed
+- Memperbarui keterangan penanda notifikasi pada form Berita dan Banner agar menjelaskan bahwa broadcast dilakukan oleh Superadmin dari tombol Notifikasi.
 - Mengunci runtime Docker dari PHP 8.4 generik ke PHP 8.4.27 FPM untuk menutup dua celah remote code execution kritis CVE-2026-109618 dan CVE-2026-109619; seluruh service Laravel berbasis image aplikasi perlu dibangun dan dijalankan ulang agar memakai versi aman.
 - Deskripsi Produk kini mendukung input Bahasa Indonesia dan English; respons API menambahkan `deskripsi_produk_id` dan `deskripsi_produk_en` sambil mempertahankan `deskripsi_produk` untuk kompatibilitas client lama.
 - Menambahkan `deploy.sh` root project ke `.gitignore` agar skrip deployment lokal tidak ikut ter-commit ke repository.
@@ -38,5 +53,6 @@
 - Memperbaiki penyimpanan `retention_until` pada snapshot Undo agar tidak dibuang oleh mass assignment dan tidak menyebabkan error MySQL pada insert aksi Undo.
 
 ### Removed
+- Menghapus service phpMyAdmin terpisah di port 8081; pengelolaan database bersama menggunakan phpMyAdmin yang tersedia di port 8080.
 - Menghapus field gabungan `trade_pilot` dari respons API System Settings agar status Trade Pilot hanya dibaca secara eksplisit melalui `trade_pilot_dev` dan `trade_pilot_prod`.
 - Menghapus alur tambah satuan Wakil Pialang Berjangka (tombol, halaman, route, controller, dan request) sehingga penambahan data baru dilakukan melalui Tambah Sekaligus.

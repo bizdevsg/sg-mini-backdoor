@@ -58,7 +58,7 @@ class ApiJsonCacheService
             $items = $this->readItems('banner');
 
             if ($items === [] || collect($items)->every(
-                fn (array $item): bool => array_key_exists('is_notification', $item)
+                fn (array $item): bool => array_key_exists('is_notification', $item) && array_key_exists('type', $item)
             )) {
                 return;
             }

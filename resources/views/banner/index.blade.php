@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Banner')
+@section('title', 'Banner '.$bannerTypeLabel)
 
 @section('content')
     @php
@@ -43,7 +43,7 @@
                         <h1 class="text-2xl font-semibold tracking-[-0.04em] text-ivory lg:text-3xl">
                             Kelola Banner
                             <span
-                                class="bg-gradient-to-r {{ $theme['gradient_text'] }} bg-clip-text text-transparent">Website</span>
+                                class="bg-gradient-to-r {{ $theme['gradient_text'] }} bg-clip-text text-transparent">{{ $bannerTypeLabel }}</span>
                         </h1>
                         <p class="mt-2 max-w-xl text-sm leading-6 text-smoke">
                             Atur gambar carousel, urutan slide, status publikasi, serta syarat dan ketentuan promosi.
@@ -53,7 +53,7 @@
 
                 <div
                     class="flex items-center gap-3 motion-safe:motion-preset-slide-left-sm motion-safe:motion-delay-[100ms]">
-                    <a href="{{ route('banner.create') }}"
+                    <a href="{{ route($routePrefix.'.create') }}"
                         class="inline-flex items-center gap-2 rounded-xl {{ $theme['btn_primary'] }} px-5 py-2.5 text-sm font-semibold transition-all duration-200">
                         <i class="fa-solid fa-plus text-xs"></i>
                         Tambah Banner
@@ -119,9 +119,9 @@
                     </div>
                     <h3 class="mt-6 text-xl font-semibold text-ivory">Belum ada banner</h3>
                     <p class="mt-2 max-w-sm text-sm leading-6 text-smoke">
-                        Mulai dengan menambahkan image pertama untuk carousel website.
+                        Mulai dengan menambahkan gambar banner pertama.
                     </p>
-                    <a href="{{ route('banner.create') }}"
+                    <a href="{{ route($routePrefix.'.create') }}"
                         class="mt-6 inline-flex items-center gap-2 rounded-xl bg-gold px-5 py-2.5 text-sm font-semibold text-obsidian shadow-[0_4px_18px_rgba(199,161,90,0.28)] transition-all duration-200 hover:bg-gold-soft">
                         <i class="fa-solid fa-plus text-xs"></i>
                         Tambah Banner
@@ -216,12 +216,21 @@
 
                         {{-- Card Actions Footer --}}
                         <div class="mt-5 flex items-center justify-end gap-2 border-t border-black/6 pt-4">
-                            <a href="{{ route('banner.edit', $banner) }}"
+                            @if ($banner->is_notification)
+                                @can('send-push-notification')
+                                    <a href="{{ route('push-notifications.create', ['source_type' => 'banner', 'source_id' => $banner->id]) }}"
+                                        class="inline-flex items-center gap-1.5 rounded-lg border border-blue-500/30 bg-blue-500/10 px-3.5 py-1.5 text-xs font-medium text-blue-700 transition-all duration-150 hover:bg-blue-500/15">
+                                        <i class="fa-solid fa-bell text-[10px]"></i>
+                                        Notifikasi
+                                    </a>
+                                @endcan
+                            @endif
+                            <a href="{{ route($routePrefix.'.edit', $banner) }}"
                                 class="inline-flex items-center gap-1.5 rounded-lg border border-gold/20 bg-gold/8 px-3.5 py-1.5 text-xs font-medium text-gold-soft transition-all duration-150 hover:border-gold/35 hover:bg-gold/15">
                                 <i class="fa-solid fa-pen text-[10px]"></i>
                                 Edit
                             </a>
-                            <form action="{{ route('banner.destroy', $banner) }}" method="POST" class="inline">
+                            <form action="{{ route($routePrefix.'.destroy', $banner) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" data-confirm-submit data-confirm-intent="delete"

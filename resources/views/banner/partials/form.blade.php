@@ -131,8 +131,8 @@
                         Tandai untuk Notifikasi
                     </label>
                     <p class="mt-1 text-xs leading-5 text-smoke/80">
-                        Penanda ini disertakan pada API untuk kebutuhan notifikasi dan belum mengirim push secara
-                        otomatis.
+                        Penanda ini tidak mengirim push otomatis. Setelah disimpan, Superadmin dapat broadcast
+                        notifikasi dari tombol Notifikasi.
                     </p>
                 </div>
             </div>
@@ -171,8 +171,7 @@
             <div class="flex items-center gap-2 font-semibold text-gold-soft mb-1">
                 <i class="fa-solid fa-circle-info"></i> Info Pengelolaan
             </div>
-            Modul banner digunakan untuk mengatur gambar visual promosi utama pada beranda website. Pastikan rasio
-            gambar sesuai standar.
+            Modul banner {{ $bannerTypeLabel }} digunakan untuk mengatur gambar promosi. Pastikan rasio gambar sesuai standar.
         </div>
 
     </div>

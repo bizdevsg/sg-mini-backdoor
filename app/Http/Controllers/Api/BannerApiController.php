@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Support\ApiJsonCacheService;
+use App\Models\Banner;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class BannerApiController extends Controller
         $perPage = min(max((int) $request->integer('per_page', 20), 1), 100);
         $search = $request->string('search')->toString();
         $page = max(1, (int) $request->integer('page', 1));
-        $items = $this->apiJsonCacheService->bannerItems();
+        $items = $this->itemsForType($request);
         $items = $this->apiJsonCacheService->search($items, $search, ['title', 'slug']);
 
         return response()->json(
@@ -34,11 +35,11 @@ class BannerApiController extends Controller
         );
     }
 
-    public function show(string $slug): JsonResponse
+    public function show(Request $request, string $slug): JsonResponse
     {
         $this->apiJsonCacheService->ensureBannerCache();
         $item = $this->apiJsonCacheService->findBySlug(
-            $this->apiJsonCacheService->bannerItems(),
+            $this->itemsForType($request),
             $slug
         );
 
@@ -47,5 +48,15 @@ class BannerApiController extends Controller
         return response()->json([
             'data' => $item,
         ]);
+    }
+
+    private function itemsForType(Request $request): array
+    {
+        $type = $request->route('bannerType', Banner::TYPE_REGULAR);
+
+        return array_values(array_filter(
+            $this->apiJsonCacheService->bannerItems(),
+            fn (array $item): bool => ($item['type'] ?? Banner::TYPE_REGULAR) === $type,
+        ));
     }
 }

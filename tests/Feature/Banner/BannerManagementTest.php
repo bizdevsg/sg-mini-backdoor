@@ -9,6 +9,41 @@ use Illuminate\Support\Facades\Storage;
 
 uses(LazilyRefreshDatabase::class);
 
+test('banner menus isolate types and reject cross-type edits and deletes', function () {
+    $regular = Banner::factory()->create(['type' => Banner::TYPE_REGULAR]);
+    $mini = Banner::factory()->create(['type' => Banner::TYPE_MINI_MICRO]);
+    $this->actingAs(User::factory()->create());
+
+    $this->get(route('banner.index'))->assertSuccessful()->assertSee($regular->title)->assertDontSee($mini->title);
+    $this->get(route('banner-mini-micro.index'))->assertSuccessful()->assertSee($mini->title)->assertDontSee($regular->title);
+    $this->get(route('banner-mini-micro.create'))->assertSuccessful()->assertSee('Banner Mini Micro');
+    $this->get(route('banner.edit', $mini))->assertNotFound();
+    $this->get(route('banner-mini-micro.edit', $regular))->assertNotFound();
+    $this->delete(route('banner-mini-micro.destroy', $regular))->assertNotFound();
+    $this->assertModelExists($regular);
+});
+
+test('creating a mini micro banner assigns its type from the route', function () {
+    Storage::fake('public');
+    $this->app->instance(OptimizedImageStorage::class, new class extends OptimizedImageStorage
+    {
+        public function store(UploadedFile $file, string $directory = 'uploads/banner'): string
+        {
+            return 'uploads/banner/test.webp';
+        }
+    });
+
+    $this->actingAs(User::factory()->create())
+        ->post(route('banner-mini-micro.store'), [
+            'title' => 'Banner Mini Micro',
+            'type' => Banner::TYPE_REGULAR,
+            'is_active' => '1',
+            'image' => UploadedFile::fake()->image('banner.jpg'),
+        ])->assertRedirect(route('banner-mini-micro.index'));
+
+    expect(Banner::query()->sole()->type)->toBe(Banner::TYPE_MINI_MICRO);
+});
+
 test('guests are redirected to login when accessing banner pages', function () {
     $banner = Banner::factory()->create();
 
@@ -30,13 +65,13 @@ test('authenticated users can access banner pages', function () {
 
     $this->get(route('banner.create'))
         ->assertSuccessful()
-        ->assertSee('Tambah image banner')
-        ->assertSee('Image banner');
+        ->assertSee('Banner Reguler')
+        ->assertSee('Judul Banner');
 
     $this->get(route('banner.edit', $banner))
         ->assertSuccessful()
-        ->assertSee('Banner #'.$banner->id)
-        ->assertSee('Update image banner');
+        ->assertSee($banner->title)
+        ->assertSee('Update Image Banner');
 });
 
 test('authenticated users can create update and delete banners', function () {
@@ -64,6 +99,7 @@ test('authenticated users can create update and delete banners', function () {
 
     $this->actingAs($user)
         ->post(route('banner.store'), [
+            'title' => 'Banner reguler',
             'sort_order' => 2,
             'is_active' => '1',
             'is_notification' => '1',
@@ -82,6 +118,7 @@ test('authenticated users can create update and delete banners', function () {
 
     $this->actingAs($user)
         ->put(route('banner.update', $banner), [
+            'title' => 'Banner reguler diperbarui',
             'sort_order' => 5,
             'is_active' => '0',
             'is_notification' => '0',

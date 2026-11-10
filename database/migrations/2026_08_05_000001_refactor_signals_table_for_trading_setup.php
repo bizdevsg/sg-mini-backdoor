@@ -70,6 +70,12 @@ return new class extends Migration
         }
 
         if (Schema::hasColumn('signals', 'signal_category_id')) {
+            if (DB::getDriverName() === 'sqlite' && Schema::hasIndex('signals', 'signals_signal_category_id_created_at_index')) {
+                Schema::table('signals', function (Blueprint $table) {
+                    $table->dropIndex('signals_signal_category_id_created_at_index');
+                });
+            }
+
             try {
                 Schema::table('signals', function (Blueprint $table) {
                     $table->dropForeign(['signal_category_id']);
@@ -91,6 +97,12 @@ return new class extends Migration
         ]));
 
         if ($columnsToDrop !== []) {
+            if (DB::getDriverName() === 'sqlite' && in_array('slug', $columnsToDrop, true) && Schema::hasIndex('signals', 'signals_slug_unique')) {
+                Schema::table('signals', function (Blueprint $table) {
+                    $table->dropUnique('signals_slug_unique');
+                });
+            }
+
             Schema::table('signals', function (Blueprint $table) use ($columnsToDrop) {
                 $table->dropColumn($columnsToDrop);
             });

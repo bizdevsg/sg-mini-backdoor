@@ -26,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('manage-user-management', fn (User $user): bool => $user->isSuperadmin());
+        Gate::define('send-push-notification', fn (User $user): bool => $user->isSuperadmin());
 
         RateLimiter::for('login', function (Request $request): Limit {
             $email = Str::lower((string) $request->string('email'));

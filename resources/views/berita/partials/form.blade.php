@@ -152,7 +152,7 @@
                         Tandai untuk Notifikasi
                     </label>
                     <p class="mt-1 text-xs leading-5 text-smoke/80">
-                        Penanda ini disertakan pada API untuk kebutuhan notifikasi dan belum mengirim push secara otomatis.
+                        Penanda ini tidak mengirim push otomatis. Setelah disimpan, Superadmin dapat broadcast notifikasi dari tombol Notifikasi.
                     </p>
                 </div>
             </div>
