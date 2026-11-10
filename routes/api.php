@@ -41,11 +41,6 @@ Route::prefix('v1')->middleware(['api.activity.log', 'api.settings', 'api.key'])
         Route::get('/{slug}', [BannerApiController::class, 'show'])->defaults('bannerType', 'regular');
     });
 
-    Route::prefix('banner-mini-micro')->group(function () {
-        Route::get('/', [BannerApiController::class, 'index'])->defaults('bannerType', 'mini_micro');
-        Route::get('/{slug}', [BannerApiController::class, 'show'])->defaults('bannerType', 'mini_micro');
-    });
-
     Route::prefix('produk/{section}')
         ->whereIn('section', ['spa', 'jfx', 'prime'])
         ->group(function () {

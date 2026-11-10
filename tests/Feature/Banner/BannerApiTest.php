@@ -64,13 +64,9 @@ test('regular and mini micro banner APIs isolate lists and details', function ()
         ->assertSuccessful()->assertJsonPath('meta.total', 1)->assertJsonPath('data.0.id', $regular->id);
     $this->getJson('/api/v1/banner', apiKeyHeaders())
         ->assertSuccessful()->assertJsonPath('meta.total', 1)->assertJsonPath('data.0.id', $mini->id);
-    $this->getJson('/api/v1/banner-mini-micro', apiKeyHeaders())
-        ->assertSuccessful()->assertJsonPath('meta.total', 1)->assertJsonPath('data.0.id', $mini->id);
     $this->getJson('/api/v1/banner-reguler/'.$mini->slug, apiKeyHeaders())->assertNotFound();
     $this->getJson('/api/v1/banner/'.$regular->slug, apiKeyHeaders())->assertNotFound();
-    $this->getJson('/api/v1/banner-mini-micro/'.$regular->slug, apiKeyHeaders())->assertNotFound();
-    $this->getJson('/api/v1/banner-mini-micro/'.$mini->slug, apiKeyHeaders())
-        ->assertSuccessful()->assertJsonPath('data.id', $mini->id);
+    $this->getJson('/api/v1/banner-mini-micro', apiKeyHeaders())->assertNotFound();
     $this->getJson('/api/v1/banner/'.$mini->slug, apiKeyHeaders())
         ->assertSuccessful()->assertJsonPath('data.id', $mini->id);
     $this->getJson('/api/v1/banner-reguler/'.$regular->slug, apiKeyHeaders())

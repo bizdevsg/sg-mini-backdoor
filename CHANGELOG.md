@@ -6,6 +6,7 @@
 - Memperbaiki pesan respons 404 pengiriman notifikasi Mini Micro agar tidak langsung menyimpulkan device token hilang dan mengarahkan admin memeriksa alamat serta endpoint UAT, sambil mempertahankan pesan dari server.
 
 ### Changed
+- Menghapus alias API `/banner-mini-micro` agar hanya `/banner` untuk Mini Micro dan `/banner-reguler` untuk banner reguler yang tersedia.
 - Melengkapi koleksi Postman dengan seluruh endpoint HTTP API publik SG Admin, sehingga pengujian lintas modul tersedia dalam satu koleksi.
 - Mengabaikan folder koleksi Bruno dan Postman yang belum dilacak Git agar koleksi lokal tidak ikut ditambahkan ke repository.
 
