@@ -86,7 +86,7 @@ class Banner extends Model
             $builder->where('slug', $value);
 
             if (is_numeric($value)) {
-                $builder->orWhereKey($value);
+                $builder->orWhere($this->getQualifiedKeyName(), $value);
             }
         });
     }
