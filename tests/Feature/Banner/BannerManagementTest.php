@@ -146,3 +146,18 @@ test('authenticated users can create update and delete banners', function () {
     $this->assertModelMissing($banner);
     Storage::disk('public')->assertMissing($imagePath);
 });
+
+test('route binding prefers slug over numeric id and falls back to id', function () {
+    $mini = Banner::factory()->create(['type' => Banner::TYPE_MINI_MICRO, 'slug' => null]);
+    $regular = Banner::factory()->create(['type' => Banner::TYPE_REGULAR, 'slug' => (string) $mini->getKey()]);
+    $slugless = Banner::factory()->create(['type' => Banner::TYPE_REGULAR, 'slug' => null]);
+    $this->actingAs(User::factory()->create());
+
+    expect((new Banner)->resolveRouteBinding((string) $mini->getKey())->is($regular))->toBeTrue();
+    expect((new Banner)->resolveRouteBinding((string) $slugless->getKey())->is($slugless))->toBeTrue();
+    expect($regular->getRouteKey())->toBe($regular->getKey());
+
+    $this->delete(route('banner.destroy', $slugless))->assertRedirect(route('banner.index'));
+    $this->assertModelMissing($slugless);
+    expect(Banner::generateSlug('123'))->toBe('banner-123');
+});

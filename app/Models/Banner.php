@@ -43,7 +43,7 @@ class Banner extends Model
 
     public function getRouteKey(): mixed
     {
-        if ($this->usesSlugRouteKey() && filled($this->slug)) {
+        if ($this->usesSlugRouteKey() && filled($this->slug) && ! ctype_digit((string) $this->slug)) {
             return $this->slug;
         }
 
@@ -56,6 +56,11 @@ class Banner extends Model
 
         if ($baseSlug === '') {
             $baseSlug = 'banner';
+        }
+
+        // Purely numeric slugs collide with ID-based route binding.
+        if (ctype_digit($baseSlug)) {
+            $baseSlug = 'banner-'.$baseSlug;
         }
 
         $slug = $baseSlug;
@@ -82,13 +87,18 @@ class Banner extends Model
             return $query->whereKey($value);
         }
 
-        return $query->where(function (Builder $builder) use ($value): void {
-            $builder->where('slug', $value);
+        $slugColumn = $this->qualifyColumn('slug');
 
-            if (is_numeric($value)) {
-                $builder->orWhere($this->getQualifiedKeyName(), $value);
-            }
-        });
+        // Slug wins; the numeric ID is only a fallback when no slug matches.
+        return $query
+            ->where(function (Builder $builder) use ($value, $slugColumn): void {
+                $builder->where($slugColumn, $value);
+
+                if (is_numeric($value)) {
+                    $builder->orWhere($this->getQualifiedKeyName(), $value);
+                }
+            })
+            ->orderByRaw("case when {$slugColumn} = ? then 0 else 1 end", [(string) $value]);
     }
 
     protected function casts(): array
