@@ -25,7 +25,7 @@
 
 @once
     @push('styles')
-        <script src="https://cdn.tiny.cloud/1/xv7eemu094bxfmbh4f4ff4wubpe7jydmpwxj699930in6w7e/tinymce/8/tinymce.min.js"
+        <script src="https://cdn.tiny.cloud/1/o2k13l3m7y3juk260tk27soa5ubq6tm0jxwwdulmmiv3igew/tinymce/8/tinymce.min.js"
             referrerpolicy="origin" crossorigin="anonymous"></script>
 
         <style>
