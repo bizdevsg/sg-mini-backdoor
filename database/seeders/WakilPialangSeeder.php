@@ -12,7 +12,7 @@ class WakilPialangSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    private const CATEGORY_NAME = 'PT. Solid Gold Berjangka - Jakarta';
+    private const CATEGORY_NAME = 'Kantor Pusat Jakarta';
 
     /**
      * @var list<array{nama: string, no_identitas: string, status: string}>
@@ -33,10 +33,14 @@ class WakilPialangSeeder extends Seeder
         $category = WakilPialangCategory::query()->where('nama_kategori', self::CATEGORY_NAME)->first();
 
         if (! $category) {
-            $this->command?->error('Kategori "'.self::CATEGORY_NAME.'" belum ada. Buat dulu di menu kategori wakil pialang.');
+            $existing = WakilPialangCategory::query()->pluck('nama_kategori')->implode(', ');
+
+            $this->command?->error('Kategori "'.self::CATEGORY_NAME.'" tidak ditemukan. Kategori yang ada: '.($existing ?: '(kosong)').'.');
 
             return;
         }
+
+        $this->command?->info('Memakai kategori: '.$category->nama_kategori);
 
         foreach ($this->wakilPialangs as $item) {
             $wakilPialang = WakilPialang::query()->firstOrNew(['no_identitas' => $item['no_identitas']]);
