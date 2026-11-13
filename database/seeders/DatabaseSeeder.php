@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             BannerSeeder::class,
             EbookCategorySeeder::class,
             EbookSeeder::class,
+            WakilPialangSeeder::class,
         ]);
     }
 }
