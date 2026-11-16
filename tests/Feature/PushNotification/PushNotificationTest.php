@@ -129,6 +129,7 @@ test('create form is prefilled and truncated from a berita', function () {
 });
 
 test('manual broadcast runs as dry run with logOnly and the api key header', function () {
+    config(['queue.default' => 'database']);
     fakeMiniMicroSuccess();
     $user = User::factory()->superadmin()->create();
 
@@ -358,6 +359,7 @@ test('a missing api key fails without calling the server', function () {
 });
 
 test('a failed notification can be retried', function () {
+    config(['queue.default' => 'database']);
     Http::fakeSequence(MINI_MICRO_TEST_URL)
         ->push(['headers' => ['statusCode' => 502, 'message' => 'FCM error']], 502)
         ->push(['headers' => ['statusCode' => 200], 'data' => ['fcmTopic' => 'Announcement_UAT']]);

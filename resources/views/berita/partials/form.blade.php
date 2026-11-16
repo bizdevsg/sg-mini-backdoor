@@ -73,17 +73,6 @@
 
             <div class="grid gap-4 md:grid-cols-2">
                 <div>
-                    <label for="title_id"
-                        class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
-                        Judul ID <span class="text-gold-soft">*</span>
-                    </label>
-                    <input type="text" id="title_id" name="title_id"
-                        value="{{ old('title_id', $berita?->title_id) }}"
-                        class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('title_id') ? 'border-red-400/60' : 'border-black/8' }}"
-                        placeholder="Contoh: Update Pergerakan Emas Hari Ini" required>
-                    <x-forms.field-error field="title_id" />
-                </div>
-                <div>
                     <label for="title_en"
                         class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
                         Judul EN <span class="text-gold-soft">*</span>
@@ -94,6 +83,26 @@
                         placeholder="Example: Gold Movement Update Today" required>
                     <x-forms.field-error field="title_en" />
                 </div>
+                <div>
+                    <label for="title_id"
+                        class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
+                        Judul ID <span class="text-gold-soft">*</span>
+                    </label>
+                    <input type="text" id="title_id" name="title_id"
+                        value="{{ old('title_id', $berita?->title_id) }}"
+                        class="w-full rounded-xl border bg-onyx px-4 py-3 text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('title_id') ? 'border-red-400/60' : 'border-black/8' }}"
+                        placeholder="Contoh: Update Pergerakan Emas Hari Ini" required>
+                    <x-forms.field-error field="title_id" />
+                </div>
+            </div>
+
+            <div>
+                <label for="content_en" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
+                    Konten EN <span class="text-gold-soft">*</span>
+                </label>
+                <x-forms.tinymce-editor id="content_en" name="content_en" :value="old('content_en', $berita?->content_en)" :height="540"
+                    placeholder="Write the English news content..." required
+                    helper="Use the editor for the English version of the news content." />
             </div>
 
             <div>
@@ -105,14 +114,6 @@
                     helper="Gunakan editor untuk menyusun konten berita versi Indonesia." />
             </div>
 
-            <div>
-                <label for="content_en" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
-                    Konten EN <span class="text-gold-soft">*</span>
-                </label>
-                <x-forms.tinymce-editor id="content_en" name="content_en" :value="old('content_en', $berita?->content_en)" :height="540"
-                    placeholder="Write the English news content..." required
-                    helper="Use the editor for the English version of the news content." />
-            </div>
         </div>
     </div>
 

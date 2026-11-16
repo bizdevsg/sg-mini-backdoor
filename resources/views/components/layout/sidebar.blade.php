@@ -196,13 +196,13 @@
                 [
                     'label' => 'Notifikasi Push',
                     'icon' => 'fa-solid fa-bell',
-                    'href' => route('push-notifications.index'),
-                    'active' => request()->routeIs('push-notifications.*'),
+                    'href' => route('push-notifications.create'),
+                    'active' => request()->routeIs('push-notifications.create'),
                 ],
                 [
                     'label' => 'Monitoring Log',
                     'icon' => 'fa-solid fa-chart-line',
-                    'open' => request()->routeIs('system-logs.*'),
+                    'open' => request()->routeIs('system-logs.*', 'push-notifications.index'),
                     'children' => [
                         [
                             'label' => 'Login',
@@ -221,6 +221,12 @@
                             'icon' => 'fa-solid fa-database',
                             'href' => route('system-logs.show', ['category' => 'data']),
                             'active' => request()->routeIs('system-logs.*') && request()->route('category') === 'data',
+                        ],
+                        [
+                            'label' => 'Notifikasi Push',
+                            'icon' => 'fa-solid fa-bell',
+                            'href' => route('push-notifications.index'),
+                            'active' => request()->routeIs('push-notifications.index'),
                         ],
                     ],
                 ],

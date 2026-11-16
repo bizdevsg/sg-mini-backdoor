@@ -88,6 +88,7 @@ class PushNotificationController extends Controller
         $notification = $this->pushNotificationService->dispatchBroadcast(
             $request->user(),
             $request->safe()->only(['topic', 'title', 'description', 'source_type', 'source_id']),
+            synchronous: true,
         );
 
         return redirect()

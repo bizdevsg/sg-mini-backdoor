@@ -149,7 +149,7 @@ class PushNotificationService
             'error_message' => null,
         ])->save();
 
-        SendPushNotification::dispatch($notification->id);
+        SendPushNotification::dispatchSync($notification->id);
     }
 
     /**

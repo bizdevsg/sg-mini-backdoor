@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Notifikasi Push')
+@section('title', 'Log Notifikasi Push')
 
 @section('content')
     @use('App\Enums\PushNotificationStatus')
@@ -10,9 +10,9 @@
             <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                     <span class="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-soft">Aplikasi Mini Micro</span>
-                    <h1 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-ivory lg:text-3xl">Notifikasi Push</h1>
+                    <h1 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-ivory lg:text-3xl">Log Notifikasi Push</h1>
                     <p class="mt-2 max-w-2xl text-sm leading-6 text-smoke">
-                        Broadcast pengumuman dan promosi ke semua pengguna aplikasi, lalu pantau riwayat pengirimannya.
+                        Pantau riwayat pengiriman notifikasi kepada pengguna aplikasi.
                     </p>
                 </div>
                 <a href="{{ route('push-notifications.create') }}"

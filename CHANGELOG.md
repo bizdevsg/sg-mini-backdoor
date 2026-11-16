@@ -1,11 +1,14 @@
 ## [Unreleased]
 
 ### Fixed
+- Mengirim notifikasi manual dan kirim ulang secara langsung tanpa worker antrean, sehingga admin segera melihat hasil pengiriman di riwayat.
 - Mengembalikan API banner lama untuk Mini Micro, menambahkan API khusus banner reguler, serta menyiapkan pemindahan banner yang sudah ada ke Mini Micro dan pembaruan cache.
 - Memperbaiki pengiriman push notification agar error dalam `headers.statusCode` pada respons Mini Micro tidak ditandai berhasil meskipun HTTP 200, serta memperbaiki migration signals pada SQLite agar pengujian dapat dijalankan.
 - Memperbaiki pesan respons 404 pengiriman notifikasi Mini Micro agar tidak langsung menyimpulkan device token hilang dan mengarahkan admin memeriksa alamat serta endpoint UAT, sambil mempertahankan pesan dari server.
 
 ### Changed
+- Menukar urutan input judul dan konten pada form tambah dan edit berita, sehingga bahasa Inggris tampil sebelum bahasa Indonesia.
+- Memindahkan akses riwayat pengiriman notifikasi ke Monitoring Log dan mengarahkan menu Notifikasi Push langsung ke formulir pengiriman; filter dan kirim ulang tetap tersedia di log.
 - Mengirim notifikasi Berita dan Banner secara langsung saat konten baru ditandai atau penanda baru diaktifkan, tanpa worker antrean; semua admin yang dapat menyimpan konten dapat memicu pengiriman, dengan hasil dan mode dry run ditampilkan.
 - Melengkapi koleksi Postman dengan request terpisah untuk setiap kategori Produk agar seluruh variasi API publik lebih mudah ditemukan.
 - Memperbarui koleksi Postman dan menyediakan environment lokal serta production agar pengujian API dapat berpindah target tanpa menyertakan API key asli.
