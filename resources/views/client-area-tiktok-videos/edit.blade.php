@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <form action="{{ route('tiktok-videos.update', $video) }}" method="POST" class="space-y-6">
+        <form action="{{ route('tiktok-videos.update', $video) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
             @include('client-area-tiktok-videos.partials.form', [

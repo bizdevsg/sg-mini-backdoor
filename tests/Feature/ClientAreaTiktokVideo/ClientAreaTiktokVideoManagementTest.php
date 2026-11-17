@@ -3,8 +3,33 @@
 use App\Models\ClientAreaTiktokVideo;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 uses(LazilyRefreshDatabase::class);
+
+test('superadmin can upload and replace an mp4 video', function () {
+    Storage::fake('public');
+    $user = User::factory()->superadmin()->create();
+    $data = ['video_url' => 'https://www.tiktok.com/@solid.prime/video/7700863615682858247', 'title' => 'Video', 'is_active' => '1'];
+
+    $this->actingAs($user)->post(route('tiktok-videos.store'), $data + [
+        'video_file' => UploadedFile::fake()->create('video.mp4', 100, 'video/mp4'),
+    ])->assertRedirect(route('tiktok-videos.index'));
+    $video = ClientAreaTiktokVideo::query()->firstOrFail();
+    $oldPath = $video->file_path;
+    Storage::disk('public')->assertExists($oldPath);
+
+    $this->put(route('tiktok-videos.update', $video), $data + [
+        'video_file' => UploadedFile::fake()->create('new.mp4', 100, 'video/mp4'),
+    ])->assertRedirect(route('tiktok-videos.index'));
+    $video->refresh();
+    Storage::disk('public')->assertMissing($oldPath);
+    Storage::disk('public')->assertExists($video->file_path);
+
+    $this->delete(route('tiktok-videos.destroy', $video))->assertRedirect(route('tiktok-videos.index'));
+    Storage::disk('public')->assertMissing($video->file_path);
+});
 
 test('guests are redirected to login when accessing tiktok video pages', function () {
     $video = ClientAreaTiktokVideo::factory()->create();

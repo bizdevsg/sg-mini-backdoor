@@ -17,6 +17,7 @@
 - Mengabaikan folder koleksi Bruno dan Postman yang belum dilacak Git agar koleksi lokal tidak ikut ditambahkan ke repository.
 
 ### Added
+- Menambahkan upload MP4 opsional hingga 100 MB pada Video TikTok dan `file_url` di API, termasuk penggantian file, dukungan Undo, serta pembaruan cache untuk data lama.
 - Menambahkan contoh konfigurasi Supervisor dan panduan Linux untuk menjalankan worker antrean secara otomatis, termasuk pemeriksaan job yang sudah menunggu sebelum worker dimulai.
 - Menambahkan koleksi Postman untuk daftar dan detail API banner reguler serta Mini Micro, dengan variabel URL dan API key untuk pengujian.
 - Memisahkan menu dan API banner reguler dan Mini Micro agar masing-masing kanal mengelola serta menampilkan banner sendiri; menu Banner memiliki submenu seperti Produk.

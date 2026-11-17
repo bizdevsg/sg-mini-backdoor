@@ -13,6 +13,7 @@ test('tiktok video api only returns active videos ordered newest first', functio
     ]);
     $newerVideo = ClientAreaTiktokVideo::factory()->active()->create([
         'video_id' => '7700863615682858242',
+        'file_path' => 'videos/contoh.mp4',
         'created_at' => now(),
     ]);
     ClientAreaTiktokVideo::factory()->create([
@@ -27,7 +28,9 @@ test('tiktok video api only returns active videos ordered newest first', functio
         ->assertJsonPath('meta.total', 2)
         ->assertJsonPath('data.0.id', $newerVideo->id)
         ->assertJsonPath('data.1.id', $olderVideo->id)
-        ->assertJsonPath('data.0.embed_url', 'https://www.tiktok.com/player/v1/'.$newerVideo->video_id);
+        ->assertJsonPath('data.0.embed_url', 'https://www.tiktok.com/player/v1/'.$newerVideo->video_id)
+        ->assertJsonPath('data.0.file_url', \Illuminate\Support\Facades\Storage::disk('public')->url('videos/contoh.mp4'))
+        ->assertJsonPath('data.1.file_url', null);
 });
 
 test('tiktok video api can search active videos', function () {

@@ -31,6 +31,8 @@ class StoreClientAreaTiktokVideoRequest extends FormRequest
                 },
             ],
             'title' => ['required', 'string', 'max:150'],
+            'video_file' => ['nullable', 'file', 'mimes:mp4', 'extensions:mp4', 'max:102400'],
+            'video_file' => ['nullable', 'file', 'mimes:mp4', 'extensions:mp4', 'max:102400'],
             'is_active' => ['nullable', 'boolean'],
         ];
     }

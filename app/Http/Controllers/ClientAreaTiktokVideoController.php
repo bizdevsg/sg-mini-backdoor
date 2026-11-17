@@ -9,6 +9,8 @@ use App\Support\ApiJsonCacheService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class ClientAreaTiktokVideoController extends Controller
 {
@@ -50,7 +52,11 @@ class ClientAreaTiktokVideoController extends Controller
 
     public function store(StoreClientAreaTiktokVideoRequest $request): RedirectResponse
     {
-        ClientAreaTiktokVideo::query()->create($request->validated());
+        $data = $request->safe()->except('video_file');
+        if ($request->hasFile('video_file')) {
+            $data['file_path'] = $this->storeVideoFile($request);
+        }
+        ClientAreaTiktokVideo::query()->create($data);
         $this->apiJsonCacheService->refreshClientAreaTiktokVideo();
 
         return redirect()
@@ -69,7 +75,15 @@ class ClientAreaTiktokVideoController extends Controller
         UpdateClientAreaTiktokVideoRequest $request,
         ClientAreaTiktokVideo $clientAreaTiktokVideo,
     ): RedirectResponse {
-        $clientAreaTiktokVideo->update($request->validated());
+        $data = $request->safe()->except('video_file');
+        $oldFile = $clientAreaTiktokVideo->file_path;
+        if ($request->hasFile('video_file')) {
+            $data['file_path'] = $this->storeVideoFile($request);
+        }
+        $clientAreaTiktokVideo->update($data);
+        if (isset($data['file_path']) && $oldFile) {
+            Storage::disk('public')->delete($oldFile);
+        }
         $this->apiJsonCacheService->refreshClientAreaTiktokVideo();
 
         return redirect()
@@ -79,11 +93,26 @@ class ClientAreaTiktokVideoController extends Controller
 
     public function destroy(ClientAreaTiktokVideo $clientAreaTiktokVideo): RedirectResponse
     {
+        $filePath = $clientAreaTiktokVideo->file_path;
         $clientAreaTiktokVideo->delete();
+        if ($filePath) {
+            Storage::disk('public')->delete($filePath);
+        }
         $this->apiJsonCacheService->refreshClientAreaTiktokVideo();
 
         return redirect()
             ->route('tiktok-videos.index')
             ->with('status', 'Video TikTok berhasil dihapus.');
+    }
+
+    private function storeVideoFile(Request $request): string
+    {
+        $path = $request->file('video_file')->store('videos', 'public');
+
+        if ($path === false) {
+            throw ValidationException::withMessages(['video_file' => 'File video gagal disimpan.']);
+        }
+
+        return $path;
     }
 }

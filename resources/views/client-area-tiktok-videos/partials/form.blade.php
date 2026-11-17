@@ -47,6 +47,18 @@
                     <p class="mt-1.5 text-xs font-medium text-red-700">{{ $message }}</p>
                 @enderror
             </div>
+            <div>
+                <label for="video_file" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">File Video MP4</label>
+                <input id="video_file" name="video_file" type="file" accept="video/mp4,.mp4"
+                    class="w-full rounded-xl border border-black/8 bg-onyx px-4 py-3 text-sm text-champagne">
+                <p class="mt-2 text-xs text-smoke/70">Opsional, maksimal 100 MB. Unggah file baru untuk mengganti file yang tersimpan.</p>
+                @if ($video?->file_path)
+                    <a href="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($video->file_path) }}" target="_blank" rel="noreferrer" class="mt-2 inline-block text-xs text-gold">Lihat file video saat ini</a>
+                @endif
+                @error('video_file')
+                    <p class="mt-1.5 text-xs font-medium text-red-700">{{ $message }}</p>
+                @enderror
+            </div>
         </div>
     </div>
 

@@ -45,7 +45,7 @@ return [
         Penghargaan::class => ['label' => 'Penghargaan', 'files' => ['image']],
         Legalitas::class => ['label' => 'Legalitas', 'files' => []],
         TradingviewSymbol::class => ['label' => 'Kode TradingView', 'files' => []],
-        ClientAreaTiktokVideo::class => ['label' => 'Video TikTok', 'files' => []],
+        ClientAreaTiktokVideo::class => ['label' => 'Video TikTok', 'files' => ['file_path']],
         CompanyProfile::class => ['label' => 'Profil perusahaan', 'files' => []],
         TermsAndCondition::class => ['label' => 'Syarat dan ketentuan', 'files' => []],
         PrivacyPolicy::class => ['label' => 'Kebijakan privasi', 'files' => []],
