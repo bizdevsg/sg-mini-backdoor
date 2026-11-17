@@ -6,7 +6,6 @@ use App\Models\ClientAreaTiktokVideo;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Storage;
 
 /** @mixin ClientAreaTiktokVideo */
 class ClientAreaTiktokVideoResource extends JsonResource
@@ -21,7 +20,6 @@ class ClientAreaTiktokVideoResource extends JsonResource
             'video_id' => $this->video_id,
             'video_url' => $this->video_url,
             'embed_url' => "https://www.tiktok.com/player/v1/{$this->video_id}",
-            'file_url' => $this->file_path ? Storage::disk('public')->url($this->file_path) : null,
             'file_url' => $this->file_path ? Storage::disk('public')->url($this->file_path) : null,
             'title' => $this->title,
             'is_active' => $this->is_active,

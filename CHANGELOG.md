@@ -1,6 +1,7 @@
 ## [Unreleased]
 
 ### Fixed
+- Memperbaiki error 500 pada API Video TikTok akibat import Storage ganda serta menghapus deklarasi duplikat terkait upload.
 - Mengirim notifikasi manual dan kirim ulang secara langsung tanpa worker antrean, sehingga admin segera melihat hasil pengiriman di riwayat.
 - Mengembalikan API banner lama untuk Mini Micro, menambahkan API khusus banner reguler, serta menyiapkan pemindahan banner yang sudah ada ke Mini Micro dan pembaruan cache.
 - Memperbaiki pengiriman push notification agar error dalam `headers.statusCode` pada respons Mini Micro tidak ditandai berhasil meskipun HTTP 200, serta memperbaiki migration signals pada SQLite agar pengujian dapat dijalankan.

@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
     'video_id',
     'video_url',
     'file_path',
-    'file_path',
     'title',
     'is_active',
 ])]
