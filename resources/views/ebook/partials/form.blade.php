@@ -83,12 +83,16 @@
 
             {{-- Current Image Preview --}}
             @if ($currentImageUrl)
-                <div class="rounded-xl border border-black/8 bg-onyx p-3 space-y-2">
-                    <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-smoke/60">Cover Saat Ini</p>
-                    <div class="overflow-hidden rounded-lg border border-black/8">
-                        <img src="{{ $currentImageUrl }}" alt="{{ $ebook->title }}" class="h-44 w-full object-cover">
+                <div class="flex items-center gap-4 rounded-2xl border border-black/8 bg-white/60 p-4">
+                    <a href="{{ $currentImageUrl }}" target="_blank" rel="noreferrer" title="Buka gambar penuh"
+                        class="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-black/8 bg-black/5">
+                        <img src="{{ $currentImageUrl }}" alt="{{ $ebook->title }}" class="h-full w-full object-contain">
+                    </a>
+                    <div class="min-w-0">
+                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-obsidian">Cover saat ini</p>
+                        <p class="mt-1.5 truncate text-xs text-smoke/80" title="{{ $ebook->image }}">{{ basename($ebook->image) }}</p>
+                        <p class="mt-2 text-xs leading-relaxed text-smoke/70">Unggah gambar baru untuk menggantinya.</p>
                     </div>
-                    <p class="break-all font-mono text-[10px] text-smoke/70" title="{{ $ebook->image }}">{{ $ebook->image }}</p>
                 </div>
             @else
                 <div class="flex min-h-32 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-black/12 bg-onyx/50 p-4 text-center">

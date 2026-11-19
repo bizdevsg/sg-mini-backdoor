@@ -130,11 +130,16 @@
             <x-forms.field-error field="image" />
 
             @if ($currentImageUrl)
-                <div class="rounded-xl border border-black/8 bg-onyx p-3 space-y-2">
-                    <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-smoke/60">Gambar Saat Ini</p>
-                    <div class="overflow-hidden rounded-lg border border-black/8">
+                <div class="flex items-center gap-4 rounded-2xl border border-black/8 bg-white/60 p-4">
+                    <a href="{{ $currentImageUrl }}" target="_blank" rel="noreferrer" title="Buka gambar penuh"
+                        class="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-black/8 bg-black/5">
                         <img src="{{ $currentImageUrl }}" alt="{{ $berita->title_id }}"
-                            class="h-44 w-full object-cover">
+                            class="h-full w-full object-contain">
+                    </a>
+                    <div class="min-w-0">
+                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-obsidian">Gambar saat ini</p>
+                        <p class="mt-1.5 truncate text-xs text-smoke/80">{{ basename(parse_url($currentImageUrl, PHP_URL_PATH)) }}</p>
+                        <p class="mt-2 text-xs leading-relaxed text-smoke/70">Unggah gambar baru untuk menggantinya.</p>
                     </div>
                 </div>
             @endif

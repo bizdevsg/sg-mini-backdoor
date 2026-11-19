@@ -25,21 +25,28 @@
                         accept=".jpg,.jpeg,.png,.webp,.avif,image/jpeg,image/png,image/webp,image/avif"
                         class="block w-full rounded-lg border bg-onyx px-4 py-3 text-sm text-champagne file:mr-4 file:rounded-md file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-obsidian hover:file:bg-slate-200 focus:border-gold/30 focus:outline-none focus:ring-2 focus:ring-gold/15 {{ $errors->has('image') ? 'border-red-400/60' : 'border-black/8' }}"
                         {{ $produk ? '' : 'required' }}>
-                    <p class="mt-2 text-xs text-smoke">Upload JPG, PNG, WebP, atau AVIF. File akan disimpan sebagai AVIF
-                        atau WebP.</p>
+                    <p class="mt-2 text-xs text-smoke">Upload JPG, PNG, WebP, atau AVIF (maks. 5 MB). File akan disimpan
+                        sebagai AVIF atau WebP.</p>
                     @error('image')
                         <p class="mt-2 text-sm text-red-700">{{ $message }}</p>
                     @enderror
                 </div>
 
                 @if ($currentImageUrl)
-                    <div class="rounded-xl border border-black/8 bg-onyx p-4">
-                        <p class="text-xs font-medium uppercase tracking-[0.18em] text-smoke">Image saat ini</p>
-                        <div class="mt-4 overflow-hidden rounded-xl border border-black/8">
+                    <div class="flex items-center gap-4 rounded-2xl border border-black/8 bg-white/60 p-4">
+                        <a href="{{ $currentImageUrl }}" target="_blank" rel="noreferrer"
+                            class="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-black/8 bg-black/5"
+                            title="Buka gambar penuh">
                             <img src="{{ $currentImageUrl }}" alt="{{ $produk->nama_produk }}"
-                                class="h-48 w-full object-cover">
+                                class="h-full w-full object-contain">
+                        </a>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-obsidian">Image saat ini</p>
+                            <p class="mt-1.5 truncate text-xs text-smoke/80" title="{{ $produk->image }}">
+                                {{ basename($produk->image) }}</p>
+                            <p class="mt-2 text-xs leading-relaxed text-smoke/70">Unggah gambar baru di atas untuk
+                                menggantinya. Klik thumbnail untuk melihat ukuran penuh.</p>
                         </div>
-                        <p class="mt-3 break-all text-xs text-smoke">{{ $produk->image }}</p>
                     </div>
                 @endif
             </div>
