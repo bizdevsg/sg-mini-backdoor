@@ -25,7 +25,7 @@
                         accept=".jpg,.jpeg,.png,.webp,.avif,image/jpeg,image/png,image/webp,image/avif"
                         class="block w-full rounded-lg border bg-onyx px-4 py-3 text-sm text-champagne file:mr-4 file:rounded-md file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-obsidian hover:file:bg-slate-200 focus:border-gold/30 focus:outline-none focus:ring-2 focus:ring-gold/15 {{ $errors->has('image') ? 'border-red-400/60' : 'border-black/8' }}"
                         {{ $produk ? '' : 'required' }}>
-                    <p class="mt-2 text-xs text-smoke">Upload JPG, PNG, WebP, atau AVIF (maks. 5 MB). File akan disimpan
+                    <p class="mt-2 text-xs text-smoke">Upload JPG, PNG, WebP, atau AVIF (maks. 2 MB). File akan disimpan
                         sebagai AVIF atau WebP.</p>
                     @error('image')
                         <p class="mt-2 text-sm text-red-700">{{ $message }}</p>

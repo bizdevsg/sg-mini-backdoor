@@ -253,7 +253,7 @@
     <script>
         // Dropzone + live preview untuk semua input upload gambar.
         document.addEventListener('DOMContentLoaded', () => {
-            const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // samakan dengan validasi max:5120
+            const MAX_IMAGE_BYTES = 2 * 1024 * 1024; // samakan dengan upload_max_filesize PHP di server (2M)
             document.querySelectorAll('input[type="file"]').forEach((input) => {
                 if (!(input.getAttribute('accept') || '').includes('image/')) {
                     return;
@@ -321,7 +321,7 @@
                     if (file.size > MAX_IMAGE_BYTES) {
                         input.value = '';
                         errorEl.textContent = 'Ukuran gambar terlalu besar (' + (file.size / 1048576)
-                            .toFixed(1) + ' MB). Maksimal 5 MB.';
+                            .toFixed(1) + ' MB). Maksimal 2 MB.';
                         errorEl.classList.remove('hidden');
                         zone.classList.add('border-red-400/60');
                         return;

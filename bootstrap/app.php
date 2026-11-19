@@ -38,7 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Request melebihi post_max_size PHP: tampilkan pesan yang jelas, bukan halaman 413.
         $exceptions->render(function (PostTooLargeException $e, Request $request) {
-            $message = 'Ukuran file terlalu besar. Kompres file Anda lalu coba unggah lagi (gambar maksimal 5 MB).';
+            $message = 'Ukuran file terlalu besar. Kompres file Anda lalu coba unggah lagi (gambar maksimal 2 MB).';
 
             if ($request->expectsJson()) {
                 return response()->json(['message' => $message], 413);
