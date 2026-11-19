@@ -8,6 +8,9 @@
 - Memperbaiki pesan respons 404 pengiriman notifikasi Mini Micro agar tidak langsung menyimpulkan device token hilang dan mengarahkan admin memeriksa alamat serta endpoint UAT, sambil mempertahankan pesan dari server.
 
 ### Changed
+- Mengganti input upload gambar di seluruh form dengan dropzone yang mendukung drag & drop, pratinjau gambar sebelum disimpan, serta tombol ganti dan hapus pilihan.
+- Melengkapi koleksi Bruno dengan request daftar dan detail Produk SPA, JFX, dan Prime serta daftar cakupan seluruh route API publik untuk memudahkan pengujian.
+- Memperbarui dokumentasi request Bruno Video TikTok dengan contoh respons `file_url`, termasuk nilai null dan batas upload MP4 100 MB.
 - Menukar urutan input judul dan konten pada form tambah dan edit berita, sehingga bahasa Inggris tampil sebelum bahasa Indonesia.
 - Memindahkan akses riwayat pengiriman notifikasi ke Monitoring Log dan mengarahkan menu Notifikasi Push langsung ke formulir pengiriman; filter dan kirim ulang tetap tersedia di log.
 - Mengirim notifikasi Berita dan Banner secara langsung saat konten baru ditandai atau penanda baru diaktifkan, tanpa worker antrean; semua admin yang dapat menyimpan konten dapat memicu pengiriman, dengan hasil dan mode dry run ditampilkan.
