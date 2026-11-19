@@ -247,6 +247,101 @@
             initializeCollapsibleDetails();
         });
     </script>
+    <script>
+        // Dropzone + live preview untuk semua input upload gambar.
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('input[type="file"]').forEach((input) => {
+                if (!(input.getAttribute('accept') || '').includes('image/')) {
+                    return;
+                }
+
+                const hasError = input.className.includes('border-red-400');
+
+                // Input asli tetap ada (untuk submit & validasi), hanya disembunyikan secara visual.
+                input.className = '';
+                input.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0,0,0,0);';
+
+                const zone = document.createElement('div');
+                zone.className = 'mt-3 rounded-2xl border bg-white/60 p-6 text-center transition-colors '
+                    + (hasError ? 'border-red-400/60' : 'border-black/8');
+                zone.innerHTML = `
+                    <div data-empty class="flex flex-col items-center">
+                        <svg class="h-7 w-7 text-obsidian" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 16V4m0 0L8 8m4-4l4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/>
+                        </svg>
+                        <p class="mt-3 text-sm font-semibold text-obsidian">Unggah gambar</p>
+                        <p class="mt-1 text-xs leading-relaxed text-smoke/80">Seret &amp; lepas gambar ke sini,<br>atau pilih dari perangkat Anda.</p>
+                        <button type="button" data-pick
+                            class="mt-4 rounded-xl bg-black px-10 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-black/80">Unggah</button>
+                    </div>
+                    <div data-filled class="hidden space-y-3">
+                        <div class="overflow-hidden rounded-xl border border-black/8 bg-black/5">
+                            <img alt="Preview" class="mx-auto max-h-72 w-full object-contain">
+                        </div>
+                        <p data-name class="truncate text-xs text-smoke/80"></p>
+                        <div class="flex justify-center gap-2">
+                            <button type="button" data-pick
+                                class="rounded-xl bg-black px-5 py-2 text-xs font-semibold text-white transition-colors hover:bg-black/80">Ganti</button>
+                            <button type="button" data-clear
+                                class="rounded-xl border border-red-300 px-5 py-2 text-xs font-semibold text-red-700 transition-colors hover:bg-red-50">Hapus</button>
+                        </div>
+                    </div>`;
+                input.insertAdjacentElement('afterend', zone);
+
+                const empty = zone.querySelector('[data-empty]');
+                const filled = zone.querySelector('[data-filled]');
+                const img = zone.querySelector('img');
+                const nameEl = zone.querySelector('[data-name]');
+                let objectUrl = null;
+
+                const reset = () => {
+                    if (objectUrl) {
+                        URL.revokeObjectURL(objectUrl);
+                        objectUrl = null;
+                    }
+                    img.removeAttribute('src');
+                    filled.classList.add('hidden');
+                    empty.classList.remove('hidden');
+                };
+
+                const show = () => {
+                    const file = input.files && input.files[0];
+                    reset();
+                    if (!file || !file.type.startsWith('image/')) {
+                        input.value = '';
+                        return;
+                    }
+                    objectUrl = URL.createObjectURL(file);
+                    img.src = objectUrl;
+                    nameEl.textContent = file.name;
+                    empty.classList.add('hidden');
+                    filled.classList.remove('hidden');
+                };
+
+                zone.querySelectorAll('[data-pick]').forEach((btn) => btn.addEventListener('click', () => input.click()));
+                zone.querySelector('[data-clear]').addEventListener('click', () => {
+                    input.value = '';
+                    reset();
+                });
+                input.addEventListener('change', show);
+
+                ['dragenter', 'dragover'].forEach((evt) => zone.addEventListener(evt, (e) => {
+                    e.preventDefault();
+                    zone.classList.add('border-gold/60', 'bg-gold/5');
+                }));
+                ['dragleave', 'drop'].forEach((evt) => zone.addEventListener(evt, (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('border-gold/60', 'bg-gold/5');
+                }));
+                zone.addEventListener('drop', (e) => {
+                    if (e.dataTransfer && e.dataTransfer.files.length) {
+                        input.files = e.dataTransfer.files;
+                        show();
+                    }
+                });
+            });
+        });
+    </script>
     @stack('scripts')
 </body>
 
