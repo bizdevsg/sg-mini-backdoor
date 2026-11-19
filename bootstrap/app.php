@@ -9,6 +9,7 @@ use App\Http\Middleware\LogApiActivity;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\PostTooLargeException;
 use Illuminate\Http\Request;
 
 require_once __DIR__.'/../app/Support/helpers.php';
@@ -34,4 +35,15 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
+
+        // Request melebihi post_max_size PHP: tampilkan pesan yang jelas, bukan halaman 413.
+        $exceptions->render(function (PostTooLargeException $e, Request $request) {
+            $message = 'Ukuran file terlalu besar. Kompres file Anda lalu coba unggah lagi (gambar maksimal 5 MB).';
+
+            if ($request->expectsJson()) {
+                return response()->json(['message' => $message], 413);
+            }
+
+            return back()->with('status', $message)->with('status_type', 'error');
+        });
     })->create();

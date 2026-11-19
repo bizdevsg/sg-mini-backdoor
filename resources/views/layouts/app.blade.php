@@ -250,6 +250,7 @@
     <script>
         // Dropzone + live preview untuk semua input upload gambar.
         document.addEventListener('DOMContentLoaded', () => {
+            const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // samakan dengan validasi max:5120
             document.querySelectorAll('input[type="file"]').forEach((input) => {
                 if (!(input.getAttribute('accept') || '').includes('image/')) {
                     return;
@@ -309,6 +310,11 @@
                     reset();
                     if (!file || !file.type.startsWith('image/')) {
                         input.value = '';
+                        return;
+                    }
+                    if (file.size > MAX_IMAGE_BYTES) {
+                        input.value = '';
+                        alert('Ukuran gambar terlalu besar (' + (file.size / 1048576).toFixed(1) + ' MB). Maksimal 5 MB, silakan kompres dulu.');
                         return;
                     }
                     objectUrl = URL.createObjectURL(file);
