@@ -69,12 +69,15 @@
             <div data-auto-dismiss data-auto-dismiss-delay="{{ $dismissDelay }}" role="status"
                 class="pointer-events-auto w-full max-w-md overflow-hidden rounded-2xl border {{ $isErrorStatus ? 'border-red-400/30 bg-[linear-gradient(135deg,_rgba(92,24,24,0.97)_0%,_rgba(54,16,16,0.99)_100%)] text-red-50 shadow-[0_20px_50px_rgba(239,68,68,0.22)]' : 'border-emerald-400/25 bg-[linear-gradient(135deg,_rgba(16,70,52,0.97)_0%,_rgba(10,42,31,0.99)_100%)] text-emerald-50 shadow-[0_20px_50px_rgba(16,185,129,0.25)]' }} backdrop-blur-md transition-all duration-300 motion-safe:motion-preset-slide-up-sm">
                 <div class="flex items-start gap-3.5 px-4 py-4 sm:px-5">
-                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border {{ $isErrorStatus ? 'border-red-300/30 bg-red-400/15 text-red-200' : 'border-emerald-300/30 bg-emerald-400/15 text-emerald-300' }}">
-                        <i class="fa-solid {{ $isErrorStatus ? 'fa-circle-exclamation' : 'fa-circle-check' }} text-base"></i>
+                    <div
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border {{ $isErrorStatus ? 'border-red-300/30 bg-red-400/15 text-red-200' : 'border-emerald-300/30 bg-emerald-400/15 text-emerald-300' }}">
+                        <i
+                            class="fa-solid {{ $isErrorStatus ? 'fa-circle-exclamation' : 'fa-circle-check' }} text-base"></i>
                     </div>
 
                     <div class="min-w-0 flex-1">
-                        <p class="text-[10px] font-semibold uppercase tracking-[0.24em] {{ $isErrorStatus ? 'text-red-200/80' : 'text-emerald-300/80' }}">
+                        <p
+                            class="text-[10px] font-semibold uppercase tracking-[0.24em] {{ $isErrorStatus ? 'text-red-200/80' : 'text-emerald-300/80' }}">
                             {{ $isErrorStatus ? 'Tidak dapat diproses' : 'Pemberitahuan' }}
                         </p>
                         <p class="mt-0.5 text-xs font-medium leading-relaxed sm:text-sm">
@@ -260,11 +263,12 @@
 
                 // Input asli tetap ada (untuk submit & validasi), hanya disembunyikan secara visual.
                 input.className = '';
-                input.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0,0,0,0);';
+                input.style.cssText =
+                    'position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0,0,0,0);';
 
                 const zone = document.createElement('div');
-                zone.className = 'mt-3 rounded-2xl border bg-white/60 p-6 text-center transition-colors '
-                    + (hasError ? 'border-red-400/60' : 'border-black/8');
+                zone.className = 'mt-3 rounded-2xl border bg-white/60 p-6 text-center transition-colors ' +
+                    (hasError ? 'border-red-400/60' : 'border-black/8');
                 zone.innerHTML = `
                     <div data-empty class="flex flex-col items-center">
                         <svg class="h-7 w-7 text-obsidian" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
@@ -316,7 +320,8 @@
                     }
                     if (file.size > MAX_IMAGE_BYTES) {
                         input.value = '';
-                        errorEl.textContent = 'Ukuran gambar terlalu besar (' + (file.size / 1048576).toFixed(1) + ' MB). Maksimal 5 MB, silakan kompres dulu.';
+                        errorEl.textContent = 'Ukuran gambar terlalu besar (' + (file.size / 1048576)
+                            .toFixed(1) + ' MB). Maksimal 5 MB.';
                         errorEl.classList.remove('hidden');
                         zone.classList.add('border-red-400/60');
                         return;
@@ -330,7 +335,8 @@
                     filled.classList.remove('hidden');
                 };
 
-                zone.querySelectorAll('[data-pick]').forEach((btn) => btn.addEventListener('click', () => input.click()));
+                zone.querySelectorAll('[data-pick]').forEach((btn) => btn.addEventListener('click', () =>
+                    input.click()));
                 zone.querySelector('[data-clear]').addEventListener('click', () => {
                     input.value = '';
                     reset();
