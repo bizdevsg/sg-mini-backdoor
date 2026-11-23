@@ -14,7 +14,7 @@
     <div class="rounded-2xl border border-black/8 bg-black/3 p-6">
         <div class="border-b border-black/6 pb-4">
             <h3 class="text-base font-semibold text-ivory">Detail Video</h3>
-            <p class="mt-1 text-xs text-smoke">Video ID akan diambil otomatis dari embed YouTube.</p>
+            <p class="mt-1 text-xs text-smoke">Platform (YouTube/TikTok) dan Video ID dideteksi otomatis dari link.</p>
         </div>
 
         <div class="mt-5 space-y-5">
@@ -33,15 +33,15 @@
 
             <div>
                 <label for="video_url" class="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-smoke">
-                    Embed YouTube <span class="text-gold-soft">*</span>
+                    Link Video (YouTube / TikTok) <span class="text-gold-soft">*</span>
                 </label>
                 <input id="video_url" name="video_url" type="text" maxlength="1000"
                     value="{{ old('video_url', $video?->video_url) }}"
-                    placeholder="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                    placeholder="https://www.youtube.com/embed/dQw4w9WgXcQ atau https://www.tiktok.com/@username/video/7700863615682858247"
                     class="w-full rounded-xl border bg-onyx px-4 py-3 font-mono text-sm text-champagne placeholder:text-smoke/40 focus:border-gold/35 focus:outline-none focus:ring-2 focus:ring-gold/12 {{ $errors->has('video_url') ? 'border-red-400/60' : 'border-black/8' }}"
                     required>
                 <p class="mt-2 text-[11px] leading-5 text-smoke/70">
-                    Tempel URL embed <span class="font-mono text-champagne/80">https://www.youtube.com/embed/{video_id}</span> atau kode <span class="font-mono text-champagne/80">&lt;iframe&gt;</span> dari menu Bagikan &rarr; Sematkan di YouTube.
+                    Tempel URL embed / kode <span class="font-mono text-champagne/80">&lt;iframe&gt;</span> YouTube, atau URL video TikTok <span class="font-mono text-champagne/80">/@username/video/{video_id}</span>.
                 </p>
                 @error('video_url')
                     <p class="mt-1.5 text-xs font-medium text-red-700">{{ $message }}</p>
@@ -86,7 +86,7 @@
             <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-smoke/70">Preview Embed</p>
             @if ($video)
                 <div class="mt-3 overflow-hidden rounded-xl border border-black/10 bg-black">
-                    <iframe src="{{ \App\Models\ClientAreaTiktokVideo::youtubeEmbedUrl($video->video_id) }}"
+                    <iframe src="{{ \App\Models\ClientAreaTiktokVideo::embedUrl($video->platform, $video->video_id) }}"
                         title="Preview {{ $video->title }}" class="aspect-[9/16] w-full" loading="lazy"
                         allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
                         referrerpolicy="strict-origin-when-cross-origin"></iframe>

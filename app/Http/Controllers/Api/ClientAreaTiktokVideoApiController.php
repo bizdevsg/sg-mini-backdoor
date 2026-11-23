@@ -13,13 +13,14 @@ class ClientAreaTiktokVideoApiController extends Controller
         private readonly ApiJsonCacheService $apiJsonCacheService,
     ) {}
 
-    public function index(Request $request): JsonResponse
+    public function index(Request $request, string $platform): JsonResponse
     {
         $this->apiJsonCacheService->ensureClientAreaTiktokVideoCache();
         $perPage = min(max((int) $request->integer('per_page', 20), 1), 100);
         $search = $request->string('search')->toString();
         $page = max(1, (int) $request->integer('page', 1));
         $items = $this->apiJsonCacheService->clientAreaTiktokVideoItems();
+        $items = array_values(array_filter($items, fn (array $item): bool => ($item['platform'] ?? null) === $platform));
         $items = $this->apiJsonCacheService->search($items, $search, ['title', 'video_id', 'video_url']);
 
         return response()->json(

@@ -28,7 +28,11 @@ Route::prefix('v1')->middleware(['api.activity.log', 'api.settings', 'api.key'])
     });
 
     Route::prefix('video-tiktok')->group(function () {
-        Route::get('/', [ClientAreaTiktokVideoApiController::class, 'index']);
+        Route::get('/', [ClientAreaTiktokVideoApiController::class, 'index'])->defaults('platform', 'tiktok');
+    });
+
+    Route::prefix('video-youtube')->group(function () {
+        Route::get('/', [ClientAreaTiktokVideoApiController::class, 'index'])->defaults('platform', 'youtube');
     });
 
     Route::prefix('banner')->group(function () {

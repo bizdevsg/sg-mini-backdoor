@@ -1,0 +1,29 @@
+meta {
+  name: List Videos TikTok
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/video-tiktok
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~search:
+  ~page: 1
+  ~per_page: 20
+}
+
+docs {
+  Daftar video TikTok aktif. Request menggunakan environment `Local` secara default dan mengirim API key dari secret variable `apiKey`. Pencarian mencakup judul, `video_id`, dan URL; `per_page` dibatasi 1 sampai 100.
+
+  Setiap item dalam `data` memiliki `platform`, `video_id`, `video_url`, `embed_url`, `autoplay_embed_url`, dan `file_url`. `autoplay_embed_url` sudah berisi parameter autoplay tanpa suara (muted), sesuai syarat autoplay browser. `file_url` adalah URL file MP4 yang diunggah melalui admin, atau `null` jika belum ada.
+
+  Contoh item respons:
+
+  ```json
+x
+  ```
+}

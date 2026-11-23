@@ -45,7 +45,7 @@ class ApiJsonCacheService
 {
     public function ensureClientAreaTiktokVideoCache(): void
     {
-        if ($this->cacheExists('client-area-tiktok-videos-v2')) {
+        if ($this->cacheExists('client-area-tiktok-videos-v3')) {
             return;
         }
 
@@ -275,7 +275,7 @@ class ApiJsonCacheService
             ->map(fn (ClientAreaTiktokVideo $video) => (new ClientAreaTiktokVideoResource($video))->resolve())
             ->all();
 
-        $this->write('client-area-tiktok-videos-v2', $items);
+        $this->write('client-area-tiktok-videos-v3', $items);
     }
 
     public function refreshPengumuman(): void
@@ -475,7 +475,7 @@ class ApiJsonCacheService
      */
     public function clientAreaTiktokVideoItems(): array
     {
-        return $this->readItems('client-area-tiktok-videos-v2');
+        return $this->readItems('client-area-tiktok-videos-v3');
     }
 
     /**

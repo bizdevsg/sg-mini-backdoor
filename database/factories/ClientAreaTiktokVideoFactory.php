@@ -20,6 +20,7 @@ class ClientAreaTiktokVideoFactory extends Factory
         $videoId = fake()->unique()->regexify('[A-Za-z0-9_-]{11}');
 
         return [
+            'platform' => 'youtube',
             'video_id' => $videoId,
             'video_url' => "https://www.youtube.com/embed/{$videoId}",
             'title' => fake()->sentence(4),

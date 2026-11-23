@@ -16,6 +16,6 @@ Semua request mewarisi header berikut dari `collection.bru`:
 
 Parameter query opsional dinonaktifkan secara default. Aktifkan parameter tersebut dari tab **Params** ketika dibutuhkan. Request `POST /massages` membuat data production dan terkena rate limit 10 request per menit per IP.
 
-Folder **Video TikTok** menyediakan request daftar video aktif pada path `/video-tiktok` dengan dukungan pencarian dan pagination.
+Folder **Video** menyediakan dua request daftar video aktif: `/video-youtube` (video YouTube) dan `/video-tiktok` (video TikTok), masing-masing dengan dukungan pencarian dan pagination. Setiap item memuat `platform`, `embed_url`, dan `autoplay_embed_url` (autoplay tanpa suara).
 
-Koleksi mencakup seluruh route HTTP publik di `routes/api.php`: Client Area, Video TikTok, Banner Mini Micro dan Reguler, Produk SPA/JFX/Prime, Pengumuman, Ebook, Signal, Berita, Penghargaan, Legalitas, Company Profile, Terms and Conditions, Privacy Policy, TradingView Symbol, Wakil Pialang Berjangka, dan Massages. Produk memiliki request daftar dan detail terpisah untuk setiap section. Ganti nilai contoh `slug`, `uuid`, atau `symbolWs` dengan data yang tersedia sebelum menjalankan request detail.
+Koleksi mencakup seluruh route HTTP publik di `routes/api.php`: Client Area, Video YouTube dan TikTok, Banner Mini Micro dan Reguler, Produk SPA/JFX/Prime, Pengumuman, Ebook, Signal, Berita, Penghargaan, Legalitas, Company Profile, Terms and Conditions, Privacy Policy, TradingView Symbol, Wakil Pialang Berjangka, dan Massages. Produk memiliki request daftar dan detail terpisah untuk setiap section. Ganti nilai contoh `slug`, `uuid`, atau `symbolWs` dengan data yang tersedia sebelum menjalankan request detail.

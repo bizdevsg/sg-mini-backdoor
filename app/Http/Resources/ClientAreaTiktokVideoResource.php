@@ -17,10 +17,11 @@ class ClientAreaTiktokVideoResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'platform' => $this->platform,
             'video_id' => $this->video_id,
             'video_url' => $this->video_url,
-            'embed_url' => ClientAreaTiktokVideo::youtubeEmbedUrl($this->video_id),
-            'autoplay_embed_url' => ClientAreaTiktokVideo::youtubeEmbedUrl($this->video_id).'?autoplay=1&mute=1&playsinline=1&rel=0',
+            'embed_url' => ClientAreaTiktokVideo::embedUrl($this->platform, $this->video_id),
+            'autoplay_embed_url' => ClientAreaTiktokVideo::autoplayEmbedUrl($this->platform, $this->video_id),
             'file_url' => $this->file_path ? Storage::disk('public')->url($this->file_path) : null,
             'title' => $this->title,
             'is_active' => $this->is_active,

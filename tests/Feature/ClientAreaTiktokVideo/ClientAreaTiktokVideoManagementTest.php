@@ -130,7 +130,6 @@ test('tiktok video url must be a canonical video url', function (string $videoUr
         ->assertInvalid(['video_url']);
 })->with([
     'another domain' => 'https://example.com/embed/dQw4w9WgXcQ',
-    'tiktok url' => 'https://www.tiktok.com/@solid.prime/video/7700863615682858247',
     'short video id' => 'https://www.youtube.com/embed/abc',
 ]);
 
@@ -152,10 +151,25 @@ test('create and edit forms render a save confirmation prompt', function () {
 });
 
 test('youtube video id is extracted from embed, watch, short link and iframe code', function (string $input) {
-    expect(ClientAreaTiktokVideo::extractYoutubeId($input))->toBe('dQw4w9WgXcQ');
+    expect(ClientAreaTiktokVideo::detect($input))->toMatchArray(['platform' => 'youtube', 'video_id' => 'dQw4w9WgXcQ']);
 })->with([
     'embed' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
     'watch' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     'short link' => 'https://youtu.be/dQw4w9WgXcQ?t=10',
     'iframe code' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=abc" title="YouTube" allowfullscreen></iframe>',
 ]);
+
+test('tiktok video url is detected and stored with the tiktok platform', function () {
+    $user = User::factory()->superadmin()->create();
+    $url = 'https://www.tiktok.com/@solid.prime/video/7700863615682858247';
+
+    $this->actingAs($user)
+        ->post(route('tiktok-videos.store'), ['video_url' => $url, 'title' => 'Video'])
+        ->assertRedirect(route('tiktok-videos.index'));
+
+    $video = ClientAreaTiktokVideo::query()->firstOrFail();
+
+    expect($video->platform)->toBe('tiktok')
+        ->and($video->video_id)->toBe('7700863615682858247')
+        ->and($video->video_url)->toBe($url);
+});

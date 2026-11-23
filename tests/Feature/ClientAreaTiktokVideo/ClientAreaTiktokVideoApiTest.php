@@ -6,6 +6,10 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
 uses(LazilyRefreshDatabase::class);
 
+beforeEach(function () {
+    $this->withHeaders(['X-Client-Type' => 'mobile-app']);
+});
+
 test('tiktok video api only returns active videos ordered newest first', function () {
     $olderVideo = ClientAreaTiktokVideo::factory()->active()->create([
         'video_id' => 'AAAAAAAAAA1',
@@ -22,7 +26,7 @@ test('tiktok video api only returns active videos ordered newest first', functio
 
     app(ApiJsonCacheService::class)->refreshClientAreaTiktokVideo();
 
-    $response = $this->getJson('/api/v1/video-tiktok', apiKeyHeaders());
+    $response = $this->getJson('/api/v1/video-youtube', apiKeyHeaders());
 
     $response->assertSuccessful()
         ->assertJsonPath('meta.total', 2)
@@ -44,13 +48,37 @@ test('tiktok video api can search active videos', function () {
 
     app(ApiJsonCacheService::class)->refreshClientAreaTiktokVideo();
 
-    $this->getJson('/api/v1/video-tiktok?search=emas', apiKeyHeaders())
+    $this->getJson('/api/v1/video-youtube?search=emas', apiKeyHeaders())
         ->assertSuccessful()
         ->assertJsonPath('meta.total', 1)
         ->assertJsonPath('data.0.title', 'Analisis Harga Emas');
 });
 
 test('tiktok video api requires a valid api key', function () {
-    $this->getJson('/api/v1/video-tiktok')
+    $this->getJson('/api/v1/video-youtube')
         ->assertForbidden();
+});
+
+test('video api separates youtube and tiktok by endpoint', function () {
+    $youtube = ClientAreaTiktokVideo::factory()->active()->create();
+    $tiktok = ClientAreaTiktokVideo::factory()->active()->create([
+        'platform' => 'tiktok',
+        'video_id' => '7700863615682858247',
+        'video_url' => 'https://www.tiktok.com/@solid.prime/video/7700863615682858247',
+    ]);
+
+    app(ApiJsonCacheService::class)->refreshClientAreaTiktokVideo();
+
+    $this->getJson('/api/v1/video-youtube', apiKeyHeaders())
+        ->assertSuccessful()
+        ->assertJsonPath('meta.total', 1)
+        ->assertJsonPath('data.0.id', $youtube->id)
+        ->assertJsonPath('data.0.platform', 'youtube');
+
+    $this->getJson('/api/v1/video-tiktok', apiKeyHeaders())
+        ->assertSuccessful()
+        ->assertJsonPath('meta.total', 1)
+        ->assertJsonPath('data.0.id', $tiktok->id)
+        ->assertJsonPath('data.0.platform', 'tiktok')
+        ->assertJsonPath('data.0.embed_url', 'https://www.tiktok.com/player/v1/7700863615682858247');
 });
