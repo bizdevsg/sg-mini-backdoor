@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Video TikTok')
+@section('title', 'Tambah Video')
 
 @section('content')
     <section class="space-y-6">
@@ -8,7 +8,7 @@
             <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                     <span class="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-soft">Video Baru</span>
-                    <h1 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-ivory lg:text-3xl">Tambah Video TikTok</h1>
+                    <h1 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-ivory lg:text-3xl">Tambah Video</h1>
                     <p class="mt-2 text-sm text-smoke">Tambahkan URL video untuk ditampilkan sebagai embed pada client area.</p>
                 </div>
                 <a href="{{ route('tiktok-videos.index') }}"
@@ -21,7 +21,7 @@
         <form action="{{ route('tiktok-videos.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @include('client-area-tiktok-videos.partials.form', [
-                'confirmTitle' => 'Simpan video TikTok baru?',
+                'confirmTitle' => 'Simpan video baru?',
                 'confirmMessage' => 'Pastikan URL, judul, dan status tampil video sudah benar.',
                 'confirmActionLabel' => 'Ya, simpan',
                 'submitLabel' => 'Simpan Video',

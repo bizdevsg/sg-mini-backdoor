@@ -247,10 +247,10 @@ class ApiDocumentationController extends Controller
                 ],
             ],
             [
-                'title' => 'Video TikTok',
-                'description' => 'List API Video TikTok',
+                'title' => 'Video',
+                'description' => 'List API Video (embed YouTube)',
                 'endpoints' => [
-                    ['method' => 'GET', 'path' => '/video-tiktok', 'notes' => 'Daftar video TikTok aktif, dukung `search` dan pagination.'],
+                    ['method' => 'GET', 'path' => '/video-tiktok', 'notes' => 'Daftar video aktif (embed YouTube), dukung `search` dan pagination.'],
                 ],
             ],
             [

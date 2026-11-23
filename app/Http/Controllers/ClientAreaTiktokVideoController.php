@@ -61,7 +61,7 @@ class ClientAreaTiktokVideoController extends Controller
 
         return redirect()
             ->route('tiktok-videos.index')
-            ->with('status', 'Video TikTok berhasil ditambahkan.');
+            ->with('status', 'Video berhasil ditambahkan.');
     }
 
     public function edit(ClientAreaTiktokVideo $clientAreaTiktokVideo): View
@@ -88,7 +88,7 @@ class ClientAreaTiktokVideoController extends Controller
 
         return redirect()
             ->route('tiktok-videos.index')
-            ->with('status', 'Video TikTok berhasil diperbarui.');
+            ->with('status', 'Video berhasil diperbarui.');
     }
 
     public function destroy(ClientAreaTiktokVideo $clientAreaTiktokVideo): RedirectResponse
@@ -102,7 +102,7 @@ class ClientAreaTiktokVideoController extends Controller
 
         return redirect()
             ->route('tiktok-videos.index')
-            ->with('status', 'Video TikTok berhasil dihapus.');
+            ->with('status', 'Video berhasil dihapus.');
     }
 
     private function storeVideoFile(Request $request): string

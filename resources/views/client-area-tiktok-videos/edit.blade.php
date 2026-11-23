@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Video TikTok')
+@section('title', 'Edit Video')
 
 @section('content')
     <section class="space-y-6">
@@ -9,7 +9,7 @@
                 <div>
                     <span class="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-soft">Update Video</span>
                     <h1 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-ivory lg:text-3xl">Edit: {{ $video->title }}</h1>
-                    <p class="mt-2 text-sm text-smoke">Perbarui URL, judul, atau status tampil video TikTok.</p>
+                    <p class="mt-2 text-sm text-smoke">Perbarui URL, judul, atau status tampil video.</p>
                 </div>
                 <a href="{{ route('tiktok-videos.index') }}"
                     class="inline-flex w-fit items-center gap-2 rounded-xl border border-black/10 bg-black/5 px-4 py-2.5 text-sm text-smoke hover:text-ivory">

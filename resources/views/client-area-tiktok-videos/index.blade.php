@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Video TikTok')
+@section('title', 'Video')
 
 @section('content')
     <section class="space-y-6">
@@ -8,8 +8,8 @@
             <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                     <span class="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-soft">Client Area</span>
-                    <h1 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-ivory lg:text-3xl">Video TikTok</h1>
-                    <p class="mt-2 max-w-2xl text-sm leading-6 text-smoke">Kelola video TikTok yang dapat ditampilkan sebagai embed pada client area.</p>
+                    <h1 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-ivory lg:text-3xl">Video</h1>
+                    <p class="mt-2 max-w-2xl text-sm leading-6 text-smoke">Kelola video embed YouTube yang dapat ditampilkan pada client area.</p>
                 </div>
                 <a href="{{ route('tiktok-videos.create') }}"
                     class="inline-flex w-fit items-center gap-2 rounded-xl bg-gold px-5 py-2.5 text-sm font-semibold text-obsidian shadow-[0_4px_18px_rgba(199,161,90,0.28)] transition hover:bg-gold-soft">
@@ -49,9 +49,9 @@
         <div class="overflow-hidden rounded-2xl border border-black/8 bg-black/3">
             @if ($videos->isEmpty())
                 <div class="flex min-h-72 flex-col items-center justify-center px-6 text-center">
-                    <i class="fa-brands fa-tiktok text-4xl text-smoke/40"></i>
-                    <h2 class="mt-5 text-lg font-semibold text-ivory">Belum ada video TikTok</h2>
-                    <p class="mt-2 text-sm text-smoke">Tambahkan URL video TikTok pertama untuk mulai menampilkan embed.</p>
+                    <i class="fa-solid fa-video text-4xl text-smoke/40"></i>
+                    <h2 class="mt-5 text-lg font-semibold text-ivory">Belum ada video</h2>
+                    <p class="mt-2 text-sm text-smoke">Tambahkan embed YouTube pertama untuk mulai menampilkan embed.</p>
                 </div>
             @else
                 <div class="overflow-x-auto">
@@ -95,7 +95,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" data-confirm-submit data-confirm-intent="delete"
-                                                    data-confirm-title="Hapus video TikTok ini?"
+                                                    data-confirm-title="Hapus video ini?"
                                                     data-confirm-message="Video akan dihapus dari daftar client area."
                                                     data-confirm-action-label="Ya, hapus"
                                                     class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-red-500/20 bg-red-500/5 text-red-700 hover:bg-red-500/10"

@@ -188,8 +188,8 @@
                     'active' => request()->routeIs('tradingview.*'),
                 ],
                 [
-                    'label' => 'Video TikTok',
-                    'icon' => 'fa-brands fa-tiktok',
+                    'label' => 'Video',
+                    'icon' => 'fa-solid fa-video',
                     'href' => route('tiktok-videos.index'),
                     'active' => request()->routeIs('tiktok-videos.*'),
                 ],

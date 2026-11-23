@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\ClientAreaTiktokVideo;
 
+use App\Models\ClientAreaTiktokVideo;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -18,15 +19,15 @@ class StoreClientAreaTiktokVideoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'video_id' => ['required', 'string', 'max:30', 'regex:/^[0-9]+$/'],
+            'video_id' => ['required', 'string', 'size:11', 'regex:/^[A-Za-z0-9_-]+$/'],
             'video_url' => [
                 'required',
                 'string',
                 'max:500',
                 'url:http,https',
                 function (string $attribute, mixed $value, \Closure $fail): void {
-                    if (! is_string($value) || self::extractVideoId($value) === null) {
-                        $fail('URL video harus menggunakan format TikTok /@username/video/{video_id}.');
+                    if ($this->input('video_id') === null) {
+                        $fail('Embed YouTube tidak valid. Tempel URL embed (https://www.youtube.com/embed/ID) atau kode iframe dari YouTube.');
                     }
                 },
             ],
@@ -38,22 +39,28 @@ class StoreClientAreaTiktokVideoRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $submittedVideoUrl = $this->input('video_url');
-        $videoUrl = is_string($submittedVideoUrl) ? trim($submittedVideoUrl) : '';
+        $submitted = $this->input('video_url');
+        $videoId = is_string($submitted) ? ClientAreaTiktokVideo::extractYoutubeId($submitted) : null;
 
         $this->merge([
-            'video_url' => $videoUrl,
-            'video_id' => self::extractVideoId($videoUrl),
+            'video_url' => $videoId !== null
+                ? ClientAreaTiktokVideo::youtubeEmbedUrl($videoId)
+                : (is_string($submitted) ? trim($submitted) : ''),
+            'video_id' => $videoId,
             'is_active' => $this->boolean('is_active'),
         ]);
     }
 
-    private static function extractVideoId(string $videoUrl): ?string
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
     {
-        if (preg_match('~^https?://(?:www\.|m\.)?tiktok\.com/@[^/]+/video/([0-9]{1,30})(?:[/?#].*)?$~i', $videoUrl, $matches) !== 1) {
-            return null;
-        }
-
-        return $matches[1];
+        return [
+            'video_id.required' => 'Embed YouTube tidak valid. Tempel URL embed (https://www.youtube.com/embed/ID) atau kode iframe dari YouTube.',
+            'video_id.size' => 'Embed YouTube tidak valid. Tempel URL embed (https://www.youtube.com/embed/ID) atau kode iframe dari YouTube.',
+            'video_id.regex' => 'Embed YouTube tidak valid. Tempel URL embed (https://www.youtube.com/embed/ID) atau kode iframe dari YouTube.',
+            'video_url.url' => 'Embed YouTube tidak valid. Tempel URL embed (https://www.youtube.com/embed/ID) atau kode iframe dari YouTube.',
+        ];
     }
 }

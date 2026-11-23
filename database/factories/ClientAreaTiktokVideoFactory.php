@@ -17,11 +17,11 @@ class ClientAreaTiktokVideoFactory extends Factory
      */
     public function definition(): array
     {
-        $videoId = fake()->unique()->numerify('###################');
+        $videoId = fake()->unique()->regexify('[A-Za-z0-9_-]{11}');
 
         return [
             'video_id' => $videoId,
-            'video_url' => "https://www.tiktok.com/@solid.prime/video/{$videoId}",
+            'video_url' => "https://www.youtube.com/embed/{$videoId}",
             'title' => fake()->sentence(4),
             'is_active' => false,
         ];
