@@ -136,6 +136,7 @@ class ApiJsonCacheService
 
             if ($items === [] || collect($items)->every(
                 fn (array $item): bool => array_key_exists('is_notification', $item)
+                    && array_key_exists('breaking_news_expires_at', $item)
             )) {
                 return;
             }

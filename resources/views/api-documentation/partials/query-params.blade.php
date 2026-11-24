@@ -45,6 +45,10 @@
                 </p>
             </div>
             <div class="px-5 py-4">
+                <p class="mb-1 font-mono text-xs text-champagne">?is_breaking_news=1</p>
+                <p class="text-[11px] leading-5 text-smoke">Khusus berita: tampilkan hanya breaking news (<code>0</code> untuk sebaliknya).</p>
+            </div>
+            <div class="px-5 py-4">
                 <p class="mb-1 font-mono text-xs text-champagne">?category={slug}</p>
                 <p class="text-[11px] leading-5 text-smoke">Filter resource berdasarkan kategori / slug.</p>
                 <p class="mt-2 text-[11px] leading-5 text-smoke/80">

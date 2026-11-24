@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 #[Fillable([
@@ -27,6 +28,8 @@ use Illuminate\Support\Facades\Schema;
     'content_en',
     'image',
     'is_notification',
+    'is_breaking_news',
+    'breaking_news_expires_at',
 ])]
 class Berita extends Model
 {
@@ -36,6 +39,7 @@ class Berita extends Model
 
     protected $attributes = [
         'is_notification' => false,
+        'is_breaking_news' => false,
     ];
 
     protected $table = 'beritas';
@@ -48,7 +52,48 @@ class Berita extends Model
     {
         return [
             'is_notification' => 'boolean',
+            'is_breaking_news' => 'boolean',
+            'breaking_news_expires_at' => 'datetime',
         ];
+    }
+
+    public const BREAKING_NEWS_TTL_MINUTES = 60;
+
+    /**
+     * Breaking news dianggap aktif selama flag menyala dan belum lewat masa berlakunya.
+     */
+    public function isBreakingNewsActive(): bool
+    {
+        return (bool) $this->is_breaking_news
+            && $this->breaking_news_expires_at !== null
+            && $this->breaking_news_expires_at->isFuture();
+    }
+
+    /**
+     * Jadikan berita ini satu-satunya breaking news aktif selama 1 jam.
+     * Breaking news lain otomatis dinonaktifkan.
+     */
+    public function promoteToBreakingNews(): void
+    {
+        DB::transaction(function () {
+            static::query()
+                ->whereKeyNot($this->getKey())
+                ->where('is_breaking_news', true)
+                ->update(['is_breaking_news' => false, 'breaking_news_expires_at' => null]);
+
+            $this->forceFill([
+                'is_breaking_news' => true,
+                'breaking_news_expires_at' => now()->addMinutes(static::BREAKING_NEWS_TTL_MINUTES),
+            ])->save();
+        });
+    }
+
+    public function clearBreakingNews(): void
+    {
+        $this->forceFill([
+            'is_breaking_news' => false,
+            'breaking_news_expires_at' => null,
+        ])->save();
     }
 
     public function getRouteKeyName(): string

@@ -30,6 +30,8 @@ class BeritaResource extends JsonResource
             'image' => $this->image,
             'image_url' => $this->image_url,
             'is_notification' => $this->is_notification,
+            'is_breaking_news' => $this->isBreakingNewsActive(),
+            'breaking_news_expires_at' => $this->breaking_news_expires_at?->toIso8601String(),
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];

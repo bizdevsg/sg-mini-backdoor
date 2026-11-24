@@ -26,6 +26,11 @@ class PushNotificationService
         }
 
         [$title, $description] = match (true) {
+            // Breaking news: judul notif tetap "Breaking News", judul berita jadi isi notifnya.
+            $source instanceof Berita && $source->isBreakingNewsActive() => [
+                'Breaking News',
+                (string) $source->title_id,
+            ],
             $source instanceof Berita => [
                 (string) $source->title_id,
                 (string) $source->content_id,

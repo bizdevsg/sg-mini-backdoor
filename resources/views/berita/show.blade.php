@@ -13,6 +13,12 @@
                         <a href="{{ route('berita.index', $beritaCategory) }}"
                             class="hover:text-smoke">{{ $beritaCategory->name }}</a>
                     </div>
+                    @if ($berita->isBreakingNewsActive())
+                        <span class="inline-flex items-center gap-1.5 rounded-full border border-red-500/30 bg-red-50 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-red-700">
+                            <i class="fa-solid fa-bolt text-[9px]"></i>
+                            Breaking News · s/d {{ $berita->breaking_news_expires_at->format('H:i') }}
+                        </span>
+                    @endif
                     <h1 class="text-2xl font-semibold text-ivory lg:text-3xl">{{ $berita->title_id }}</h1>
                     <p class="text-sm text-gold-soft/80">{{ $berita->title_en }}</p>
                 </div>

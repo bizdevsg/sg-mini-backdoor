@@ -98,6 +98,12 @@
                     @endif
 
                     <div class="space-y-2.5 flex-1">
+                        @if ($berita->isBreakingNewsActive())
+                            <span class="inline-flex items-center gap-1.5 rounded-full border border-red-500/30 bg-red-50 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-red-700">
+                                <i class="fa-solid fa-bolt text-[9px]"></i>
+                                Breaking News · s/d {{ $berita->breaking_news_expires_at->format('H:i') }}
+                            </span>
+                        @endif
                         <div>
                             <h3 class="font-semibold text-ivory transition-colors line-clamp-2 text-base leading-snug">
                                 {{ $berita->title_id }}

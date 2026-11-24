@@ -146,6 +146,32 @@
         </div>
 
         <div class="rounded-2xl border border-black/8 bg-black/3 p-5">
+            <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-smoke/70">Breaking News</p>
+
+            <div class="mt-3 flex items-start gap-3 rounded-xl border border-black/6 bg-onyx/60 p-4">
+                <input type="hidden" name="is_breaking_news" value="0">
+                <input type="checkbox" id="is_breaking_news" name="is_breaking_news" value="1"
+                    @checked(old('is_breaking_news', $berita?->isBreakingNewsActive() ?? false))
+                    class="mt-0.5 h-4 w-4 cursor-pointer rounded border-black/20 bg-onyx text-gold focus:ring-gold/30">
+                <div>
+                    <label for="is_breaking_news" class="cursor-pointer select-none text-sm font-semibold text-ivory">
+                        Tandai sebagai Breaking News
+                    </label>
+                    <p class="mt-1 text-xs leading-5 text-smoke/80">
+                        Breaking news aktif selama 1 jam sejak diaktifkan, lalu otomatis hilang. Hanya satu breaking news yang aktif: mengaktifkan yang baru akan menonaktifkan yang lama.
+                        Saat breaking news baru diaktifkan, notifikasi push otomatis dikirim ke semua pengguna aplikasi.
+                    </p>
+                    @if ($berita?->isBreakingNewsActive())
+                        <p class="mt-1 text-xs font-medium text-red-700">
+                            Aktif sampai {{ $berita->breaking_news_expires_at->format('d M Y H:i') }}.
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <x-forms.field-error field="is_breaking_news" />
+        </div>
+
+        <div class="rounded-2xl border border-black/8 bg-black/3 p-5">
             <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-smoke/70">Kebutuhan Notifikasi</p>
 
             <div class="mt-3 flex items-start gap-3 rounded-xl border border-black/6 bg-onyx/60 p-4">

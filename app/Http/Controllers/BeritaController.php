@@ -79,10 +79,17 @@ class BeritaController extends Controller
             );
         }
 
+        $breakingNewsActivated = (bool) $berita->is_breaking_news;
+
+        if ($breakingNewsActivated) {
+            $berita->promoteToBreakingNews();
+        }
+
         $this->apiJsonCacheService->refreshBerita();
         $this->apiJsonCacheService->refreshBeritaCategories();
 
-        $result = $this->pushNotificationService->contentSaveMessage('Berita berhasil ditambahkan.', $request->user(), $berita, $berita->is_notification);
+        // Breaking news baru selalu di-push ke pengguna, meski checkbox notifikasi tidak dicentang.
+        $result = $this->pushNotificationService->contentSaveMessage('Berita berhasil ditambahkan.', $request->user(), $berita, $berita->is_notification || $breakingNewsActivated);
 
         return redirect()
             ->route('berita.index', $beritaCategory)
@@ -116,6 +123,7 @@ class BeritaController extends Controller
     {
         $this->ensureCategoryMatchesBerita($beritaCategory, $berita);
         $wasNotificationEnabled = $berita->is_notification;
+        $wasBreakingNewsActive = $berita->isBreakingNewsActive();
         $validated = $request->safe()->except('image');
         $imagePath = $berita->image;
 
@@ -145,10 +153,20 @@ class BeritaController extends Controller
             );
         }
 
+        $breakingNewsActivated = false;
+
+        if (! $berita->is_breaking_news) {
+            $berita->clearBreakingNews();
+        } elseif (! $wasBreakingNewsActive) {
+            // Baru diaktifkan (atau diaktifkan ulang setelah kedaluwarsa): mulai 1 jam baru.
+            $berita->promoteToBreakingNews();
+            $breakingNewsActivated = true;
+        }
+
         $this->apiJsonCacheService->refreshBerita();
         $this->apiJsonCacheService->refreshBeritaCategories();
 
-        $result = $this->pushNotificationService->contentSaveMessage('Berita berhasil diperbarui.', $request->user(), $berita, ! $wasNotificationEnabled && $berita->is_notification);
+        $result = $this->pushNotificationService->contentSaveMessage('Berita berhasil diperbarui.', $request->user(), $berita, (! $wasNotificationEnabled && $berita->is_notification) || $breakingNewsActivated);
 
         return redirect()
             ->route('berita.index', $beritaCategory)
